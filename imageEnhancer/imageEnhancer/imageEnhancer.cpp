@@ -1,6 +1,7 @@
 //-------------------------------DOCUMENTATION--------------------------------------------
 //	13/03/2017 - Nipun - Opening an image within project folder and displaying
 //					   - Defining separate functions for reading and displaying the image
+//					   - White balance functionality was added
 
 
 // Include header files
@@ -8,6 +9,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
 #include <string>
 
@@ -42,8 +44,18 @@ int displayImage(Mat *mainImage, string imageDes)
 int whiteBalance(Mat *mainImage)
 {
 	Mat resolvedImage[3];				// Matrix for splitting BGR channels
+	Mat grayImage;						// Convert to grayscale image
+	cvtColor(*mainImage, grayImage, CV_BGR2GRAY);
 	split(*mainImage, resolvedImage);	// Splitting the BGR channels
-	displayImage(&resolvedImage[0], "Blue Channel");
+	//	displayImage(&grayImage, "Grayscale Image");
+	//	cout << mean(grayImage)[0] << endl;
+
+	double meanGray, meanBlue, meanGreen, meanRed;	// Declare variables to store mean channel values
+	meanGray = mean(grayImage)[0];					// Mean grayscale intensity
+	meanBlue = mean(resolvedImage[0])[0];			// Mean blue intensity
+	meanGreen = mean(resolvedImage[1])[0];			// Mean green intensity
+	meanRed = mean(resolvedImage[2])[0];			// Mean red intensity
+	waitKey(0);
 	return 0;
 }
 
