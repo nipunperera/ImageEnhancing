@@ -36,7 +36,7 @@ int displayImage(Mat *mainImage, string imageDes)
 	}
 	namedWindow(imageDes, WINDOW_AUTOSIZE);		// Create a window for display.
 	imshow(imageDes, tempImage);                // Show our image inside it.
-	waitKey(0);											// Wait for a keystroke in the window
+	waitKey(0);									// Wait for a keystroke in the window
 	return 0;
 }
 
@@ -55,6 +55,23 @@ int whiteBalance(Mat *mainImage)
 	meanBlue = mean(resolvedImage[0])[0];			// Mean blue intensity
 	meanGreen = mean(resolvedImage[1])[0];			// Mean green intensity
 	meanRed = mean(resolvedImage[2])[0];			// Mean red intensity
+
+	// Calculating each channel so that the mean is equal in all three
+	// Contains BGR channels with mean intensity equal to the mean grayscale intensity
+	Mat equalizedImage[3];
+	equalizedImage[0] = resolvedImage[0] * meanGray / meanBlue;
+	equalizedImage[1] = resolvedImage[1] * meanGray / meanGreen;
+	equalizedImage[2] = resolvedImage[2] * meanGray / meanRed;
+
+	// Merging the BGR channels and obtaining the white balanced image
+	vector < Mat > arrayToMerge;
+	arrayToMerge.push_back(equalizedImage[0]);
+	arrayToMerge.push_back(equalizedImage[1]);
+	arrayToMerge.push_back(equalizedImage[2]);
+
+	Mat finalImage;
+	merge(arrayToMerge, finalImage);
+	displayImage(&finalImage, "White Balanced Image");
 	waitKey(0);
 	return 0;
 }
