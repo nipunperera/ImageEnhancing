@@ -1,5 +1,6 @@
 //-------------------------------DOCUMENTATION---------------------------------------
 //	13/03/2017 - Nipun - Opening an image within project folder and displaying
+//  14/03/2017 - Dileepa - Added image saving function
 
 
 // Include header files
@@ -21,6 +22,17 @@ int readImage(Mat *mainImage)
 	return 0;
 }
 
+//Image save Function
+
+int saveImage(Mat *image, string imageName){
+
+	char  savePath[100];
+	sprintf(savePath,"Images\\%s.jpg",imageName.c_str());
+	imwrite( savePath, *image );
+	return 0;
+
+}
+
 // Main function
 int main(int argc, char** argv)
 {
@@ -31,8 +43,11 @@ int main(int argc, char** argv)
 		cout << "Could not open or find the image" << endl;
 		return -1;
 	}
+	
+
 	namedWindow("Original Image", WINDOW_AUTOSIZE);		// Create a window for display.
 	imshow("Original Image", mainImage);                // Show our image inside it.
+	saveImage(&mainImage, "new");
 	waitKey(0);											// Wait for a keystroke in the window
 	return 0;
 }
