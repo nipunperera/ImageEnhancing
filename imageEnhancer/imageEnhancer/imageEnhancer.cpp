@@ -2,6 +2,7 @@
 //	13/03/2017 - Nipun - Opening an image within project folder and displaying
 //					   - Defining separate functions for reading and displaying the image
 //					   - White balance functionality was added
+//	14/03/2017 - Nipun - Colour temperature adjustment functionality was added
 
 
 // Include header files
@@ -40,6 +41,16 @@ int displayImage(Mat *mainImage, string imageDes)
 	return 0;
 }
 
+// Read RAW image
+int readRAWImage()
+{
+	string imageName("RAW\\img4.nef");
+	Mat rawImage;
+	rawImage = imread(imageName.c_str(), 1);
+	displayImage(&rawImage, "RAW Image");
+	return 0;
+}
+
 // Calculate white balanced image
 int whiteBalance(Mat *mainImage)
 {
@@ -72,7 +83,62 @@ int whiteBalance(Mat *mainImage)
 	Mat finalImage;
 	merge(arrayToMerge, finalImage);
 	displayImage(&finalImage, "White Balanced Image");
-	waitKey(0);
+	return 0;
+}
+
+//Colour temperature adjustment
+int colourTempAdjustment(Mat *mainImage)
+{
+	Mat resolvedImage[3];
+	Mat blueChannel, greenChannel, redChannel;
+	split(*mainImage, resolvedImage);	// Splitting the BGR channels
+	// Create warmer image
+	// Done by increasing the red channel and decreasing the blue channel 
+	// and increasing saturation of the image in HSV colour space
+
+	// Create a cooler image
+	// Done by decreasing the red channel and increasing blue channel
+	// and decreasing the saturation of the image in the HSV colour image
+	redChannel = resolvedImage[2] + 50; 
+	blueChannel = resolvedImage[0] - 50;
+	greenChannel = resolvedImage[1];
+
+	// Merging the BGR channels 
+	vector < Mat > arrayToMerge;
+	arrayToMerge.push_back(blueChannel);
+	arrayToMerge.push_back(greenChannel);
+	arrayToMerge.push_back(redChannel);
+
+	// Image with altered red abd blue channels
+	Mat bgrAdjusted;
+	merge(arrayToMerge, bgrAdjusted);
+	
+	// Convert image to HSV colour space and splitting layers for saturation adjustment
+	Mat hsvImage;
+	Mat hsvResolved[3];
+	cvtColor(bgrAdjusted, hsvImage, CV_BGR2HSV);
+	split(hsvImage, hsvResolved);
+
+	// Adjusting saturation
+	Mat hNew, sNew, vNew;
+	hNew = hsvResolved[0];
+	sNew = hsvResolved[1] + 50;
+	vNew = hsvResolved[2];
+
+	// Merging the HSV channels 
+	vector < Mat > arrayToMergeHSV;
+	arrayToMergeHSV.push_back(hNew);
+	arrayToMergeHSV.push_back(sNew);
+	arrayToMergeHSV.push_back(vNew);
+
+	// Converting the image back to BGR
+	Mat hsvAdjusted;			// Image with altered saturation channel
+	Mat tempAdjusted;
+	merge(arrayToMergeHSV, hsvAdjusted);
+	cvtColor(hsvAdjusted, tempAdjusted, CV_HSV2BGR);
+
+	// Display image
+	displayImage(&tempAdjusted, "Colour Temperature Adjusted Image");
 	return 0;
 }
 
@@ -82,6 +148,7 @@ int main(int argc, char** argv)
 	Mat mainImage;								// Declaring the variable to store the image
 	readImage(&mainImage);						// Function call to read the image
 	displayImage(&mainImage, "Original Image");
-	whiteBalance(&mainImage);
+	//whiteBalance(&mainImage);
+	colourTempAdjustment(&mainImage);
 	return 0;
 }
