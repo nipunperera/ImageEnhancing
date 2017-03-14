@@ -48,3 +48,8 @@ int main(int argc, char** argv)
 	displayImage(&mainImage, "Original Image");
 	return 0;
 }
+
+int exposure()
+{
+	return 0;
+}
