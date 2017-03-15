@@ -19,11 +19,11 @@ using namespace std;
 // Image read function
 int readImage(Mat *mainImage)
 {
-	string imageName("Images\\flower.jpg");
+	string imageName("E:\\Sem7\\Machine vision\\opencv_test\\project1\\data\\sd.jpg");
 	*mainImage = imread(imageName.c_str(), IMREAD_COLOR);
 	return 0;
 }
-//dsfdsfsdfsdfsd
+
 // Display image
 int displayImage(Mat *mainImage, string imageDes)
 {

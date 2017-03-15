@@ -32,5 +32,8 @@
     <ClCompile Include="imageEnhancer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="colorNoiseRedcution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
