@@ -23,7 +23,7 @@ int readImage(Mat *mainImage)
 	*mainImage = imread(imageName.c_str(), IMREAD_COLOR);
 	return 0;
 }
-
+//dsfdsfsdfsdfsd
 // Display image
 int displayImage(Mat *mainImage, string imageDes)
 {
