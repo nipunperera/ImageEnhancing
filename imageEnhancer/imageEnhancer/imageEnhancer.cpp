@@ -84,12 +84,15 @@ int exposureContrast(Mat *mainImage)
 	imshow("Original Image", tempImage);
 	imshow("New Image", newImage);
 
+	// Wait till user presses a key
+	waitKey(0);
+
 	return 0;
 }
 
 
-//----------------Colour Space Conversion------------------------------//
-int colourSpace(Mat *mainImage, string imageDes)
+//----------------Saturation - Colour Space Conversion------------------------------//
+int saturation(Mat *mainImage, string imageDes)
 {
 	Mat tempImage;
 	tempImage = *mainImage;
@@ -101,7 +104,63 @@ int colourSpace(Mat *mainImage, string imageDes)
 		return -1;
 	}
 
-	Mat newImage;
+	Mat newImage;			
+
+	// convert BGR image to HsV
+	cvtColor(tempImage, newImage, CV_BGR2HSV);
+	namedWindow("Original image", CV_WINDOW_AUTOSIZE);
+	imshow("Original image", tempImage);
+
+	namedWindow("HSV", CV_WINDOW_AUTOSIZE);
+	imshow("HSV", newImage);
+
+	// Wait till user presses a key
+	waitKey(0);
+
+	/// Using 50 bins for hue and 60 for saturation
+	int h_bins = 50; int s_bins = 60;
+	int histSize[] = { h_bins, s_bins };
+	// hue varies from 0 to 179, saturation from 0 to 255
+	float h_ranges[] = { 0, 180 };
+	float s_ranges[] = { 0, 256 };
+	const float* ranges[] = { h_ranges, s_ranges };
+	// Use the o-th and 1-st channels
+	int channels[] = { 0, 1 };
+	/// Histograms
+	MatND hist_base;
+	MatND hist_half_down;
+
+	/// Calculate the histograms for the HSV images
+	calcHist(&newImage, 1, channels, Mat(), hist_base, 2, histSize, ranges, true, false);
+	normalize(hist_base, hist_base, 0, 1, NORM_MINMAX, -1, Mat());
+
+
+	double sat;
+
+	std::cout << "Enter the Saturation value: "; std::cin >> sat;
+
+	vector<Mat> hsv_planes;
+	split(newImage, hsv_planes);
+	Mat h = hsv_planes[0]; // H channel
+	Mat s = hsv_planes[1]; // S channel
+	Mat v = hsv_planes[2]; // V channel
+
+
+
+//	namedWindow("hue", CV_WINDOW_AUTOSIZE);
+//	imshow("hue", h);
+	namedWindow("saturation original", CV_WINDOW_AUTOSIZE);
+	imshow("saturation original", s);
+	namedWindow("saturation", CV_WINDOW_AUTOSIZE);
+	imshow("saturation", s*sat);
+//	namedWindow("value", CV_WINDOW_AUTOSIZE);
+//	imshow("value", v);
+
+	hsv_planes[1] = s*sat;
+	namedWindow("Original image", CV_WINDOW_AUTOSIZE);
+	imshow("Original image", tempImage);
+	namedWindow("HSV", CV_WINDOW_AUTOSIZE);
+	imshow("HSV", newImage);
 
 	//BGR to Gray Scale
 //	if (imageDes == "gray")
@@ -110,11 +169,13 @@ int colourSpace(Mat *mainImage, string imageDes)
 //	}
 
 	//BGR to HSV
-//	if (imageDes == "gray")
+//	if (imageDes == "BGR")
 //	{
 //		cvtColor(tempImage, newImage, CV_BGR2HSV);
 //	}
 	
+	waitKey(0);
+
 	return 0;
 }
 
@@ -128,8 +189,11 @@ int main(int argc, char** argv)
 	//Exposure and Contrast
 	exposureContrast(&mainImage);
 
+	//Saturation
+	saturation(&mainImage, "BGR");
+
 	// Wait till user presses a key
-	waitKey();
+	waitKey(0);
 
 	return 0;
 }

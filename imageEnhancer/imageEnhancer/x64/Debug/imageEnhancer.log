@@ -1,4 +1,4 @@
-﻿Build started 14/03/2017 22:45:07.
+﻿Build started 15/03/2017 11:40:37.
      1>Project "D:\GitHub\VS2013\ImageEnhancing\imageEnhancer\imageEnhancer\imageEnhancer.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /IC:\opencv\build\install\include /Zi /nologo /W3 /WX- /Od /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"x64\Debug\imageEnhancer.pch" /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt imageEnhancer.cpp
@@ -6,11 +6,11 @@
      1>c:\opencv\build\install\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GitHub\VS2013\ImageEnhancing\imageEnhancer\x64\Debug\imageEnhancer.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\opencv\build\install\x64\vc12\bin /LIBPATH:C:\opencv\build\install\x64\vc12\lib opencv_core320d.lib opencv_highgui320d.lib opencv_imgcodecs320d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"D:\GitHub\VS2013\ImageEnhancing\imageEnhancer\x64\Debug\imageEnhancer.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GitHub\VS2013\ImageEnhancing\imageEnhancer\x64\Debug\imageEnhancer.lib" /MACHINE:X64 x64\Debug\imageEnhancer.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GitHub\VS2013\ImageEnhancing\imageEnhancer\x64\Debug\imageEnhancer.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\opencv\build\install\x64\vc12\bin /LIBPATH:C:\opencv\build\install\x64\vc12\lib opencv_core320d.lib opencv_highgui320d.lib opencv_imgcodecs320d.lib opencv_imgproc320d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"D:\GitHub\VS2013\ImageEnhancing\imageEnhancer\x64\Debug\imageEnhancer.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GitHub\VS2013\ImageEnhancing\imageEnhancer\x64\Debug\imageEnhancer.lib" /MACHINE:X64 x64\Debug\imageEnhancer.obj
          x64\Debug\stdafx.obj
          imageEnhancer.vcxproj -> D:\GitHub\VS2013\ImageEnhancing\imageEnhancer\x64\Debug\imageEnhancer.exe
      1>Done Building Project "D:\GitHub\VS2013\ImageEnhancing\imageEnhancer\imageEnhancer\imageEnhancer.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.31
+Time Elapsed 00:00:01.35
