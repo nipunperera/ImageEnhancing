@@ -1,11 +1,15 @@
-//14/03/2017
+//-------------------------------Documentation--------------------------------------//
+//14/03/2017 - Exposure Adjustment
+//14/03/2017 - Contrast Adjustment
+//15/03/2017 - Saturation Adjustment - Colour Space Conversion
+//16/03/2017 - GUI for Hue, Saturation and Value and algorithm optimization
 
 // Include header files
 #include "stdafx.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc/imgproc.hpp>	//Added to additional dependancies
 #include <iostream>
 #include <string>
 
@@ -13,6 +17,15 @@
 
 using namespace cv;
 using namespace std;
+
+/// Global variables
+Mat src, img, image;
+
+int elem1 = 255;
+int elem2 = 255;
+int elem3 = 255;
+
+int const max_elem = 500;
 
 // Image read function
 int readImage(Mat *mainImage)
@@ -60,8 +73,8 @@ int exposureContrast(Mat *mainImage)
 
 	// Initialize Values from user input
 	std::cout << " Basic Linear Transform " << std::endl;
-	std::cout << "Enter the alpha value (1-3): "; std::cin >> alpha;
-	std::cout << "Enter the beta value (0-100): "; std::cin >> beta;
+	std::cout << "Enter the Contrast (alpha) value (1-3): "; std::cin >> alpha;
+	std::cout << "Enter the Brightness (beta) value (0-100): "; std::cin >> beta;
 
 	// new_image(i,j) = alpha*tempImage(i,j) + beta operation 
 	// Access each pixel of each RGB colour planes
@@ -90,8 +103,7 @@ int exposureContrast(Mat *mainImage)
 	return 0;
 }
 
-
-//----------------Saturation - Colour Space Conversion------------------------------//
+//----------------Saturation - Colour Space Conversion - OLD ------------------------------//
 int saturation(Mat *mainImage, string imageDes)
 {
 	Mat tempImage;
@@ -106,54 +118,37 @@ int saturation(Mat *mainImage, string imageDes)
 
 	Mat newImage;			
 
-	// convert BGR image to HsV
+	// convert BGR image to HSV
 	cvtColor(tempImage, newImage, CV_BGR2HSV);
-	namedWindow("Original image", CV_WINDOW_AUTOSIZE);
+	namedWindow("Original image", CV_WINDOW_AUTOSIZE);		//Display Original BGR image
 	imshow("Original image", tempImage);
-
-	namedWindow("HSV", CV_WINDOW_AUTOSIZE);
-	imshow("HSV", newImage);
-
+	namedWindow("HSV Original", CV_WINDOW_AUTOSIZE);		//Display HSV image
+	imshow("HSV Original", newImage);
 	// Wait till user presses a key
 	waitKey(0);
 
-	/// Using 50 bins for hue and 60 for saturation
-	int h_bins = 50; int s_bins = 60;
-	int histSize[] = { h_bins, s_bins };
 	// hue varies from 0 to 179, saturation from 0 to 255
 	float h_ranges[] = { 0, 180 };
 	float s_ranges[] = { 0, 256 };
 	const float* ranges[] = { h_ranges, s_ranges };
 	// Use the o-th and 1-st channels
 	int channels[] = { 0, 1 };
-	/// Histograms
-	MatND hist_base;
-	MatND hist_half_down;
-
-	/// Calculate the histograms for the HSV images
-	calcHist(&newImage, 1, channels, Mat(), hist_base, 2, histSize, ranges, true, false);
-	normalize(hist_base, hist_base, 0, 1, NORM_MINMAX, -1, Mat());
-
 
 	double sat;
-
-	std::cout << "Enter the Saturation value: "; std::cin >> sat;
-
+	std::cout << "Enter the Saturation value: "; std::cin >> sat;		//User input normalized sat value
 	vector<Mat> hsv_planes;
 	split(newImage, hsv_planes);
 	Mat h = hsv_planes[0]; // H channel
 	Mat s = hsv_planes[1]; // S channel
 	Mat v = hsv_planes[2]; // V channel
 
-
-
-//	namedWindow("hue", CV_WINDOW_AUTOSIZE);
+//	namedWindow("hue", CV_WINDOW_AUTOSIZE);			// Display Hue image
 //	imshow("hue", h);
-	namedWindow("saturation original", CV_WINDOW_AUTOSIZE);
+	namedWindow("saturation original", CV_WINDOW_AUTOSIZE);		// Display oiginal saturation image
 	imshow("saturation original", s);
-	namedWindow("saturation", CV_WINDOW_AUTOSIZE);
+	namedWindow("saturation", CV_WINDOW_AUTOSIZE);		// Display New saturated image
 	imshow("saturation", s*sat);
-//	namedWindow("value", CV_WINDOW_AUTOSIZE);
+//	namedWindow("value", CV_WINDOW_AUTOSIZE);			// Display Value image
 //	imshow("value", v);
 
 	hsv_planes[1] = s*sat;
@@ -162,35 +157,92 @@ int saturation(Mat *mainImage, string imageDes)
 	namedWindow("HSV", CV_WINDOW_AUTOSIZE);
 	imshow("HSV", newImage);
 
-	//BGR to Gray Scale
-//	if (imageDes == "gray")
-//	{
-//		cvtColor(tempImage, newImage, COLOR_BGR2GRAY);
-//	}
+	Mat satBGR;
+	// convert HSV image to BGR
+	cvtColor(newImage, satBGR, CV_HSV2BGR);
+	namedWindow("BGR", CV_WINDOW_AUTOSIZE);
+	imshow("BGR", satBGR);
 
-	//BGR to HSV
-//	if (imageDes == "BGR")
-//	{
-//		cvtColor(tempImage, newImage, CV_BGR2HSV);
-//	}
-	
 	waitKey(0);
 
 	return 0;
 }
 
+// Function Headers */
+
+void Hue(int, void*);
+void Saturation(int, void*);
+void Value(int, void*);
+void Processing();
+
+void Hue(int, void *)
+{
+	Processing();
+}
+
+void Saturation(int, void *)
+{
+	Processing();
+}
+
+void Value(int, void *)
+{
+	Processing();
+}
+
+
+void Processing()
+{
+	cvtColor(src, img, CV_RGB2HSV);		//Convert from RGB to HSV
+
+	//Initialize
+	int hue = elem1 - 255;
+	int saturation = elem2 - 255;
+	int value = elem3 - 255;
+
+	for (int y = 0; y<img.cols; y++)
+	{
+		for (int x = 0; x<img.rows; x++)
+		{
+			int cur1 = img.at<Vec3b>(Point(y, x))[0];
+			int cur2 = img.at<Vec3b>(Point(y, x))[1];
+			int cur3 = img.at<Vec3b>(Point(y, x))[2];
+			cur1 += hue;
+			cur2 += saturation;
+			cur3 += value;
+
+			if (cur1 < 0) cur1 = 0; else if (cur1 > 255) cur1 = 255;
+			if (cur2 < 0) cur2 = 0; else if (cur2 > 255) cur2 = 255;
+			if (cur3 < 0) cur3 = 0; else if (cur3 > 255) cur3 = 255;
+
+			img.at<Vec3b>(Point(y, x))[0] = cur1;
+			img.at<Vec3b>(Point(y, x))[1] = cur2;
+			img.at<Vec3b>(Point(y, x))[2] = cur3;
+		}
+	}
+
+	cvtColor(img, image, CV_HSV2RGB);			// Convert HSV to RGB
+	imshow("image", image);						// Dispay aadjusted image
+
+}
 // Main function
 int main(int argc, char** argv)
 {
 	Mat mainImage;								// Declaring the variable to store the image
 	readImage(&mainImage);						// Function call to read the image
-	displayImage(&mainImage, "Original Image");
+//	displayImage(&mainImage, "Original Image");
 
 	//Exposure and Contrast
 	exposureContrast(&mainImage);
 
 	//Saturation
-	saturation(&mainImage, "BGR");
+//	saturation(&mainImage, "BGR");				// Old saturation Function call
+	namedWindow("image");
+	createTrackbar("Hue", "image", &elem1, max_elem, Hue);					// Slider for user to change Hue
+	createTrackbar("Saturation", "image", &elem2, max_elem, Saturation);	// Slider for user to change Saturation
+	createTrackbar("Value (Brightness)", "image", &elem3, max_elem, Value);	// Slider for user to change Value
+//	createTrackbar("", "image", &elem3, max_elem, Value);
+	src = mainImage;
 
 	// Wait till user presses a key
 	waitKey(0);
