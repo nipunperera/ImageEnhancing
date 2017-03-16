@@ -6,12 +6,14 @@
 
 // Include header files
 #include "stdafx.h"
-#include <opencv2/core/core.hpp>
+#include "noiseReduction.h"
+/*#include <opencv2/core/core.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
-#include <string>
+#include <string>*/
+
 
 using namespace cv;
 using namespace std;
@@ -43,8 +45,20 @@ int displayImage(Mat *mainImage, string imageDes)
 // Main function
 int main(int argc, char** argv)
 {
-	Mat mainImage;								// Declaring the variable to store the image
-	readImage(&mainImage);						// Function call to read the image
-	displayImage(&mainImage, "Original Image");
+	Mat inputImage;	
+	Mat outputImage;							// Declaring the variable to store the image
+
+	readImage(&inputImage);						// Function call to read the image
+	displayImage(&inputImage, "Original Image");
+
+	lumaNoiseFiltering(&inputImage, &outputImage);
+
+	namedWindow("Input", WINDOW_AUTOSIZE);
+	imshow("Input", inputImage);
+
+	namedWindow("Output Image", WINDOW_AUTOSIZE);
+	imshow("Output Image", outputImage);
+	waitKey(0);
+
 	return 0;
 }
