@@ -81,6 +81,87 @@ int vignetteFilter(Mat *image, int sigma){
 }
 
 
+//Vignette with offset
+int vignetteFilterOffset(Mat *image, int sigma, int offset_x,int offset_y){
+
+	Mat imageTemp = *image;
+	vector<Mat> channels(3), filtChannel;
+	Mat filteredChannel[3];
+
+	int im_height = imageTemp.rows;
+	int im_width  = imageTemp.cols;
+
+	int xLen =0 , yLen =0;
+	bool xFlag = false  ,yFlag = false;
+	if ( (im_height - offset_y ) <  im_height/2 ) {
+			yLen = offset_y ;
+
+	}
+	else 
+	{ 
+			yLen = im_height - offset_y ;
+			yFlag = true;
+	}
+
+	if ( (im_width - offset_x ) <  im_width/2 ) {
+			xLen = offset_x ;
+
+	}
+	else 
+	{ 
+			xLen = im_width - offset_x ;
+			xFlag = true;
+	}
+	
+	int cropX=0,cropY=0;
+	if(xFlag | yFlag){
+
+		cropY = xFlag ? yLen- offset_y : offset_y;
+		cropX = yFlag ? xLen- offset_x : offset_x;
+		
+	}
+	
+	//cout << xLen << " : " << yLen << endl;
+	//cout << cropX << " : " << cropY << endl;
+	
+	Mat kernel_x = getGaussianKernel(yLen * 2, sigma);
+	Mat kernel_y = getGaussianKernel(xLen * 2, sigma);
+	Mat filter = kernel_x * kernel_y.t();
+	Mat mask (imageTemp.rows,imageTemp.cols, CV_8UC1);
+
+	
+	cout << cropX << " : " << cropY << endl;
+	cout << filter.rows << " : " << filter.cols << endl;
+
+	Rect cropRect(cropX,cropY,imageTemp.cols,imageTemp.rows);
+	
+	Mat filterCropped = filter(cropRect);
+	normalize(filterCropped,mask,0,255,NORM_MINMAX, CV_8UC1);
+	split(imageTemp,channels);
+	
+	filteredChannel[0] = channels[0].mul(mask)/255;
+	filteredChannel[1] = channels[1].mul(mask)/255;
+	filteredChannel[2] = channels[2].mul(mask)/255;
+
+	filtChannel.push_back(filteredChannel[0]);
+	filtChannel.push_back(filteredChannel[1]);
+	filtChannel.push_back(filteredChannel[2]);
+	
+	Mat filteredImage(imageTemp.rows,imageTemp.cols, CV_8UC3);
+	merge(filtChannel,filteredImage);
+	
+	namedWindow("Filtered Image", WINDOW_AUTOSIZE);		    // Create a window for display.
+	imshow("Filtered Image", filteredImage);                // Show our image inside it.
+
+	namedWindow("Filter", WINDOW_AUTOSIZE);		    // Create a window for display.
+	imshow("Filter", mask);                // Show our image inside it.
+	return 0;
+
+}
+
+
+
+
 // Main function
 int main(int argc, char** argv)
 {
@@ -98,7 +179,7 @@ int main(int argc, char** argv)
 
 	Rect tempRect(50,100, 200 ,200);   // This rectangle dimensions should be given through the mouse events
 	//imageCrop(&mainImage,&tempRect);
-	vignetteFilter(&mainImage, 80);
+	vignetteFilterOffset(&mainImage, 200, 350,350);
 	waitKey(0);											// Wait for a keystroke in the window
 	return 0;
 }
