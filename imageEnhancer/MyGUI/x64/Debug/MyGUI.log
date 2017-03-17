@@ -3,14 +3,14 @@ c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\spline.h(58): warnin
 c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\spline.h(62): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
 c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\spline.h(147): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
 c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\spline.h(291): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(657): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(658): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(664): warning C4838: conversion from 'double' to 'float' requires a narrowing conversion
-c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(664): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(775): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(776): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(785): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(786): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(726): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(727): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(733): warning C4838: conversion from 'double' to 'float' requires a narrowing conversion
+c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(733): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(847): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(848): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(857): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+c:\users\charith\desktop\imageenhancing\imageenhancer\mygui\MyForm.h(858): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 c:\opencv-3.1.0\opencv\build\include\opencv2\core\cvstd.hpp(599): warning C4793: 'cv::String::String': function compiled as native:
   	Found an intrinsic not supported in managed code
 c:\opencv-3.1.0\opencv\build\include\opencv2\core\mat.inl.hpp(392): warning C4793: 'cv::Mat::Mat': function compiled as native:
