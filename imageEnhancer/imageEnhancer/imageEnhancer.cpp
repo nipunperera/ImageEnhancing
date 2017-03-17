@@ -70,7 +70,7 @@ int exposureContrast(Mat *mainImage)
 	}
 
 	double alpha;		//Contrast control - Gain parameter
-	int beta;			//Brightness/Exposure control - Bias parameter
+	int beta;			//Exposure (Brightness) control - Bias parameter
 
 	//Initialize zero matrix to store adjusted image - same size and type as original
 	Mat newImage = Mat::zeros(tempImage.size(), tempImage.type());	
@@ -78,7 +78,7 @@ int exposureContrast(Mat *mainImage)
 	// Initialize Values from user input
 	std::cout << " Basic Linear Transform " << std::endl;
 	std::cout << "Enter the Contrast (alpha) value (1-3): "; std::cin >> alpha;
-	std::cout << "Enter the Brightness (beta) value (0-100): "; std::cin >> beta;
+	std::cout << "Enter the Exposure (beta) value (0-100): "; std::cin >> beta;
 
 	// new_image(i,j) = alpha*tempImage(i,j) + beta operation 
 	// Access each pixel of each BGR colour planes
@@ -115,21 +115,19 @@ void Contrast1(int, void *)
 	// Access each pixel of each BGR colour planes
 	for (int y = 0; y < image.cols; y++) {			// Loop columns
 		for (int x = 0; x < image.rows; x++) {		// Loop rows
-			//for (int c = 0; c < 3; c++) {				// Loop 3 BGR (0,1,2) colour planes
-				int cur1 = image.at<Vec3b>(Point(y, x))[0];
-				int cur2 = image.at<Vec3b>(Point(y, x))[1];
-				int cur3 = image.at<Vec3b>(Point(y, x))[2];
-				cur1 *= contra;
-				cur2 *= contra;
-				cur3 *= contra;
-				if (cur1 < 0) cur1 = 0; else if (cur1 > 255) cur1 = 255;
-				if (cur2 < 0) cur2 = 0; else if (cur2 > 255) cur2 = 255;
-				if (cur3 < 0) cur3 = 0; else if (cur3 > 255) cur3 = 255;
+			int cur1 = image.at<Vec3b>(Point(y, x))[0];
+			int cur2 = image.at<Vec3b>(Point(y, x))[1];
+			int cur3 = image.at<Vec3b>(Point(y, x))[2];
+			cur1 *= contra;
+			cur2 *= contra;
+			cur3 *= contra;
+			if (cur1 < 0) cur1 = 0; else if (cur1 > 255) cur1 = 255;
+			if (cur2 < 0) cur2 = 0; else if (cur2 > 255) cur2 = 255;
+			if (cur3 < 0) cur3 = 0; else if (cur3 > 255) cur3 = 255;
 
-				image.at<Vec3b>(Point(y, x))[0] = cur1;
-				image.at<Vec3b>(Point(y, x))[1] = cur2;
-				image.at<Vec3b>(Point(y, x))[2] = cur3;
-			//}
+			image.at<Vec3b>(Point(y, x))[0] = cur1;
+			image.at<Vec3b>(Point(y, x))[1] = cur2;
+			image.at<Vec3b>(Point(y, x))[2] = cur3;
 		}
 	}
 	imshow("image", image);
@@ -273,17 +271,16 @@ void Luminance(int, void *)
 		}
 	}
 	cvtColor(img, image, CV_YCrCb2BGR);			// Back to BGR
-	imshow("image", image);						// Dispay adjusted image
+	imshow("image", image);						// Display adjusted image
 }
 
-// -------------------- Brightness and Contrast Adjustment with GUI----------------//
+// -------------------- Exposure and Contrast Adjustment with GUI----------------//
 void BC()
 {
-	Mat dst;
-	int iBrightness = bright - 50;
-	double dContrast = contrast / 25;		// Or divide by 50 to reduce range
-	src.convertTo(dst, -1, dContrast, iBrightness);
-	imshow("image", dst);
+	int exposure = bright - 50;
+	double ContrastNew = contrast / 50.0;				// Or divide by smaller no. to increase range
+	src.convertTo(image, -1, ContrastNew, exposure);	//Linear Transform - per pixel - contrast*im+brightness
+	imshow("image", image);
 }
 void Brightness(int, void *)
 {
@@ -307,19 +304,19 @@ int main(int argc, char** argv)
 	HistEq();									//Auto-adjust Contrast ;)
 	//Saturation
 //	saturation(&mainImage, "BGR");				// Old saturation Function call
-	namedWindow("image");						// Creates a window for UIs
-	imshow("image", mainImage);						// Dispay image
+
+	namedWindow("image");													// Creates a window for UIs
+	imshow("image", mainImage);												// Dispay original image
 	createTrackbar("Hue", "image", &elem1, max_elem, Hue);					// Slider for user to change Hue
 	createTrackbar("Saturation", "image", &elem2, max_elem, Saturation);	// Slider for user to change Saturation
-	createTrackbar("Value", "image", &elem3, max_elem, Value);	// Slider for user to change Value
-	createTrackbar("Luminance", "image", &elem4, max_elem, Luminance);	// Slider for user to change Value
+	createTrackbar("Value", "image", &elem3, max_elem, Value);				// Slider for user to change Value
+	createTrackbar("Luminance", "image", &elem4, max_elem, Luminance);		// Slider for user to change Luminance
 //	createTrackbar("Contrast1", "image", &elem4, max_alpha, Contrast1);
-	createTrackbar("Brightness","image",&bright, 100, Brightness);
-	createTrackbar("Contrast", "image", &contrast, 100, Contrast);
+	createTrackbar("Exposure","image",&bright, 100, Brightness);			// Slider for user to change Exposure
+	createTrackbar("Contrast", "image", &contrast, 100, Contrast);			// Slider for user to change Contrast
 
 	// Wait till user presses a key
 	waitKey(0);
-
 	return 0;
 }
 

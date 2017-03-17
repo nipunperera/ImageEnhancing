@@ -1,0 +1,36 @@
+﻿Build started 17/03/2017 19:56:58.
+     1>Project "D:\VS2013\GUI\T1\Test1\Test1.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /IC:\opencv\build\install\include /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\\" /AI"C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral" /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\\" /Zi /clr /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\mscorlib.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Drawing.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Windows.Forms.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Xml.dll" /errorReport:prompt /clr:nostdlib MyForm.cpp
+         MyForm.cpp
+     1>d:\vs2013\gui\t1\test1\spline.h(58): warning C4267: 'return' : conversion from 'size_t' to 'int', possible loss of data
+     1>d:\vs2013\gui\t1\test1\spline.h(62): warning C4267: 'return' : conversion from 'size_t' to 'int', possible loss of data
+     1>d:\vs2013\gui\t1\test1\spline.h(147): warning C4267: 'return' : conversion from 'size_t' to 'int', possible loss of data
+     1>d:\vs2013\gui\t1\test1\spline.h(291): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>d:\vs2013\gui\t1\test1\MyForm.h(1279): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>d:\vs2013\gui\t1\test1\MyForm.h(1280): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\opencv\build\install\include\opencv2\core\cvstd.hpp(596): warning C4793: 'cv::String::String' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\build\install\include\opencv2\core\mat.inl.hpp(413): warning C4793: 'cv::Mat::Mat' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\build\install\include\opencv2\core\mat.inl.hpp(703): warning C4793: 'cv::Mat::release' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\build\install\include\opencv2\core\mat.inl.hpp(1929): warning C4793: 'cv::SparseMat::addref' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\build\install\include\opencv2\core\mat.inl.hpp(3530): warning C4793: 'cv::UMat::addref' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\build\install\include\opencv2\core\mat.inl.hpp(601): warning C4793: 'cv::Mat::operator=' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\build\install\include\opencv2\core\ptr.inl.hpp(67): warning C4793: 'cv::detail::PtrOwner::incRef' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\build\install\include\opencv2\core\ptr.inl.hpp(72): warning C4793: 'cv::detail::PtrOwner::decRef' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\VS2013\GUI\T1\Test1\x64\Debug\Test1.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\opencv\build\install\x64\vc12\bin /LIBPATH:C:\opencv\build\install\x64\vc12\lib opencv_core320d.lib opencv_highgui320d.lib opencv_imgproc320d.lib opencv_imgcodecs320d.lib /ASSEMBLYRESOURCE:x64\Debug\Test1.MyForm.resources /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\VS2013\GUI\T1\Test1\x64\Debug\Test1.pdb" /ASSEMBLYDEBUG /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"Main" /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X64 x64\Debug\MyForm.obj
+         "x64\Debug\.NETFramework,Version=v4.5.AssemblyAttributes.obj"
+         Test1.vcxproj -> D:\VS2013\GUI\T1\Test1\x64\Debug\Test1.exe
+     1>Done Building Project "D:\VS2013\GUI\T1\Test1\Test1.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.24
