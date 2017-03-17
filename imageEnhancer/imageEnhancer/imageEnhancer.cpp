@@ -21,7 +21,7 @@ using namespace std;
 // Image read function
 int readImage(Mat *mainImage)
 {
-	string imageName("E:\\Sem7\\Machine vision\\opencv_test\\project1\\data\\sd.jpg");
+	string imageName("D:\\photos\\my\\10447159_319292064937769_340763318193530235_n.jpg");
 	*mainImage = imread(imageName.c_str(), IMREAD_COLOR);
 	return 0;
 }
@@ -49,12 +49,15 @@ int main(int argc, char** argv)
 	Mat outputImage;							// Declaring the variable to store the image
 
 	readImage(&inputImage);						// Function call to read the image
-	displayImage(&inputImage, "Original Image");
+	//displayImage(&inputImage, "Original Image");
 
-	lumaNoiseFiltering(&inputImage, &outputImage);
+	//lumaNoiseFiltering(&inputImage, &outputImage);
 
 	namedWindow("Input", WINDOW_AUTOSIZE);
 	imshow("Input", inputImage);
+
+	//shadowRecovery(&inputImage, &outputImage,50);
+	highlightsRecovery(&inputImage, &outputImage, -50);
 
 	namedWindow("Output Image", WINDOW_AUTOSIZE);
 	imshow("Output Image", outputImage);

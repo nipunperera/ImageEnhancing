@@ -41,5 +41,8 @@
     <ClCompile Include="lumaNoiseReduction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="highlights_shadow_recovery.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

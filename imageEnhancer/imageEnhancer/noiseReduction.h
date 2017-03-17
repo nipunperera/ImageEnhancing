@@ -5,6 +5,8 @@
 
 #include <iostream>
 #include <string>
+#include<math.h>
+
 
 using namespace std;
 using namespace cv;
@@ -20,3 +22,6 @@ int lumaNoiseGaussianFilter(Mat *y, Mat *Cb, Mat *Cr, Mat *outputImage, int i);
 int lumaNoiseMedianFilter(Mat *y, Mat *Cb, Mat *Cr, Mat *outputImage, int i);
 int lumaNoiseBilateralFilter(Mat *y, Mat *Cb, Mat *Cr, Mat *outputImage, int i);
 int lumaNoiseFiltering(Mat * inputImage, Mat *outputImage);
+
+int shadowRecovery(Mat * image, Mat * out, int gamma);
+int highlightsRecovery(Mat * image, Mat * out, int gamma);
