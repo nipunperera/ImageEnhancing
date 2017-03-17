@@ -7,8 +7,13 @@
 #include "spline.h"
 #include "math.h"
 
+//#include "pcdushantha.cpp"
+
 cv::Mat editedImage;
 cv::Mat tempAdjusted;
+
+int Sharpsigma = 0;
+int Sharpweight = 0;
 
 namespace MyGUI {
 
@@ -58,6 +63,22 @@ namespace MyGUI {
 
 	private: System::Windows::Forms::Panel^  panel1;
 	private: System::Windows::Forms::Button^  tempApply;
+	private: System::Windows::Forms::PictureBox^  RGBHist;
+	private: System::Windows::Forms::Label^  label5;
+	private: System::Windows::Forms::Panel^  shapning;
+	private: System::Windows::Forms::Label^  sharpninglabel;
+	private: System::Windows::Forms::Label^  weight;
+	private: System::Windows::Forms::Label^  sigmaValue;
+	private: System::Windows::Forms::TrackBar^  weightTrack;
+
+	private: System::Windows::Forms::TrackBar^  sigmatrack;
+	private: System::Windows::Forms::Label^  label9;
+	private: System::Windows::Forms::Label^  label8;
+	private: System::Windows::Forms::Label^  label7;
+	private: System::Windows::Forms::Label^  label6;
+
+
+
 
 
 	private:
@@ -85,18 +106,36 @@ namespace MyGUI {
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
 			this->tempApply = (gcnew System::Windows::Forms::Button());
+			this->RGBHist = (gcnew System::Windows::Forms::PictureBox());
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->shapning = (gcnew System::Windows::Forms::Panel());
+			this->sigmatrack = (gcnew System::Windows::Forms::TrackBar());
+			this->weightTrack = (gcnew System::Windows::Forms::TrackBar());
+			this->sigmaValue = (gcnew System::Windows::Forms::Label());
+			this->weight = (gcnew System::Windows::Forms::Label());
+			this->sharpninglabel = (gcnew System::Windows::Forms::Label());
+			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->label9 = (gcnew System::Windows::Forms::Label());
 			this->menuStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
 			this->panel1->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->RGBHist))->BeginInit();
+			this->shapning->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->sigmatrack))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->weightTrack))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// menuStrip1
 			// 
+			this->menuStrip1->ImageScalingSize = System::Drawing::Size(32, 32);
 			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->fileToolStripMenuItem });
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(1264, 24);
+			this->menuStrip1->Padding = System::Windows::Forms::Padding(12, 4, 0, 4);
+			this->menuStrip1->Size = System::Drawing::Size(2849, 44);
 			this->menuStrip1->TabIndex = 0;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -107,38 +146,41 @@ namespace MyGUI {
 					this->exitToolStripMenuItem
 			});
 			this->fileToolStripMenuItem->Name = L"fileToolStripMenuItem";
-			this->fileToolStripMenuItem->Size = System::Drawing::Size(37, 20);
+			this->fileToolStripMenuItem->Size = System::Drawing::Size(64, 36);
 			this->fileToolStripMenuItem->Text = L"File";
 			// 
 			// importToolStripMenuItem
 			// 
 			this->importToolStripMenuItem->Name = L"importToolStripMenuItem";
-			this->importToolStripMenuItem->Size = System::Drawing::Size(110, 22);
+			this->importToolStripMenuItem->Size = System::Drawing::Size(186, 38);
 			this->importToolStripMenuItem->Text = L"Import";
 			this->importToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::importToolStripMenuItem_Click);
 			// 
 			// exitToolStripMenuItem
 			// 
 			this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
-			this->exitToolStripMenuItem->Size = System::Drawing::Size(110, 22);
+			this->exitToolStripMenuItem->Size = System::Drawing::Size(186, 38);
 			this->exitToolStripMenuItem->Text = L"Exit";
 			// 
 			// pictureBox1
 			// 
-			this->pictureBox1->Location = System::Drawing::Point(12, 27);
+			this->pictureBox1->Location = System::Drawing::Point(24, 52);
+			this->pictureBox1->Margin = System::Windows::Forms::Padding(6);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(640, 480);
+			this->pictureBox1->Size = System::Drawing::Size(1280, 923);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox1->TabIndex = 1;
 			this->pictureBox1->TabStop = false;
+			this->pictureBox1->Click += gcnew System::EventHandler(this, &MyForm::pictureBox1_Click);
 			// 
 			// trackBar1
 			// 
-			this->trackBar1->Location = System::Drawing::Point(710, 88);
+			this->trackBar1->Location = System::Drawing::Point(1420, 169);
+			this->trackBar1->Margin = System::Windows::Forms::Padding(6);
 			this->trackBar1->Maximum = 5;
 			this->trackBar1->Minimum = -5;
 			this->trackBar1->Name = L"trackBar1";
-			this->trackBar1->Size = System::Drawing::Size(166, 45);
+			this->trackBar1->Size = System::Drawing::Size(332, 90);
 			this->trackBar1->TabIndex = 2;
 			this->trackBar1->TickFrequency = 0;
 			this->trackBar1->Scroll += gcnew System::EventHandler(this, &MyForm::trackBar1_Scroll);
@@ -149,20 +191,23 @@ namespace MyGUI {
 			this->label1->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label1->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->label1->Location = System::Drawing::Point(747, 68);
+			this->label1->Location = System::Drawing::Point(1494, 131);
+			this->label1->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(96, 18);
+			this->label1->Size = System::Drawing::Size(188, 35);
 			this->label1->TabIndex = 3;
 			this->label1->Text = L"Temperature ";
+			this->label1->Click += gcnew System::EventHandler(this, &MyForm::label1_Click);
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
 			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label2->Location = System::Drawing::Point(765, 185);
+			this->label2->Location = System::Drawing::Point(1530, 356);
+			this->label2->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(55, 17);
+			this->label2->Size = System::Drawing::Size(100, 31);
 			this->label2->TabIndex = 4;
 			this->label2->Text = L"Colour";
 			// 
@@ -172,9 +217,10 @@ namespace MyGUI {
 			this->label3->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label3->ForeColor = System::Drawing::Color::Blue;
-			this->label3->Location = System::Drawing::Point(684, 88);
+			this->label3->Location = System::Drawing::Point(1368, 169);
+			this->label3->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(31, 16);
+			this->label3->Size = System::Drawing::Size(56, 27);
 			this->label3->TabIndex = 5;
 			this->label3->Text = L"Cold";
 			// 
@@ -184,9 +230,10 @@ namespace MyGUI {
 			this->label4->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label4->ForeColor = System::Drawing::Color::Red;
-			this->label4->Location = System::Drawing::Point(872, 88);
+			this->label4->Location = System::Drawing::Point(1744, 169);
+			this->label4->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(37, 16);
+			this->label4->Size = System::Drawing::Size(69, 27);
 			this->label4->TabIndex = 6;
 			this->label4->Text = L"Warm";
 			// 
@@ -194,26 +241,153 @@ namespace MyGUI {
 			// 
 			this->panel1->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
 			this->panel1->Controls->Add(this->tempApply);
-			this->panel1->Location = System::Drawing::Point(676, 61);
+			this->panel1->Location = System::Drawing::Point(1352, 117);
+			this->panel1->Margin = System::Windows::Forms::Padding(6);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(240, 108);
+			this->panel1->Size = System::Drawing::Size(476, 204);
 			this->panel1->TabIndex = 8;
 			// 
 			// tempApply
 			// 
-			this->tempApply->Location = System::Drawing::Point(75, 70);
+			this->tempApply->Location = System::Drawing::Point(150, 135);
+			this->tempApply->Margin = System::Windows::Forms::Padding(6);
 			this->tempApply->Name = L"tempApply";
-			this->tempApply->Size = System::Drawing::Size(80, 24);
+			this->tempApply->Size = System::Drawing::Size(160, 46);
 			this->tempApply->TabIndex = 0;
 			this->tempApply->Text = L"Apply";
 			this->tempApply->UseVisualStyleBackColor = true;
 			this->tempApply->Click += gcnew System::EventHandler(this, &MyForm::tempApply_Click);
 			// 
+			// RGBHist
+			// 
+			this->RGBHist->Location = System::Drawing::Point(1889, 117);
+			this->RGBHist->Name = L"RGBHist";
+			this->RGBHist->Size = System::Drawing::Size(800, 300);
+			this->RGBHist->TabIndex = 9;
+			this->RGBHist->TabStop = false;
+			this->RGBHist->Click += gcnew System::EventHandler(this, &MyForm::RGBHist_Click);
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10.125F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label5->Location = System::Drawing::Point(2107, 79);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(200, 35);
+			this->label5->TabIndex = 10;
+			this->label5->Text = L"RGB Histogram";
+			// 
+			// shapning
+			// 
+			this->shapning->Controls->Add(this->label9);
+			this->shapning->Controls->Add(this->label8);
+			this->shapning->Controls->Add(this->label7);
+			this->shapning->Controls->Add(this->label6);
+			this->shapning->Controls->Add(this->sharpninglabel);
+			this->shapning->Controls->Add(this->weight);
+			this->shapning->Controls->Add(this->sigmaValue);
+			this->shapning->Controls->Add(this->weightTrack);
+			this->shapning->Controls->Add(this->sigmatrack);
+			this->shapning->Location = System::Drawing::Point(1373, 437);
+			this->shapning->Name = L"shapning";
+			this->shapning->Size = System::Drawing::Size(510, 279);
+			this->shapning->TabIndex = 11;
+			// 
+			// sigmatrack
+			// 
+			this->sigmatrack->Location = System::Drawing::Point(66, 74);
+			this->sigmatrack->Maximum = 16;
+			this->sigmatrack->Name = L"sigmatrack";
+			this->sigmatrack->Size = System::Drawing::Size(332, 90);
+			this->sigmatrack->TabIndex = 0;
+			this->sigmatrack->Scroll += gcnew System::EventHandler(this, &MyForm::sigmatrack_Scroll);
+			// 
+			// weightTrack
+			// 
+			this->weightTrack->Location = System::Drawing::Point(66, 170);
+			this->weightTrack->Name = L"weightTrack";
+			this->weightTrack->Size = System::Drawing::Size(332, 90);
+			this->weightTrack->TabIndex = 1;
+			this->weightTrack->Scroll += gcnew System::EventHandler(this, &MyForm::weightTrack_Scroll);
+			// 
+			// sigmaValue
+			// 
+			this->sigmaValue->AutoSize = true;
+			this->sigmaValue->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10.125F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->sigmaValue->Location = System::Drawing::Point(198, 36);
+			this->sigmaValue->Name = L"sigmaValue";
+			this->sigmaValue->Size = System::Drawing::Size(93, 35);
+			this->sigmaValue->TabIndex = 2;
+			this->sigmaValue->Text = L"SIGMA";
+			// 
+			// weight
+			// 
+			this->weight->AutoSize = true;
+			this->weight->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10.125F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->weight->Location = System::Drawing::Point(204, 139);
+			this->weight->Name = L"weight";
+			this->weight->Size = System::Drawing::Size(115, 35);
+			this->weight->TabIndex = 3;
+			this->weight->Text = L"WEIGHT";
+			// 
+			// sharpninglabel
+			// 
+			this->sharpninglabel->AutoSize = true;
+			this->sharpninglabel->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10.125F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->sharpninglabel->Location = System::Drawing::Point(4, 4);
+			this->sharpninglabel->Name = L"sharpninglabel";
+			this->sharpninglabel->Size = System::Drawing::Size(143, 35);
+			this->sharpninglabel->TabIndex = 4;
+			this->sharpninglabel->Text = L"Sharpness";
+			// 
+			// label6
+			// 
+			this->label6->AutoSize = true;
+			this->label6->Location = System::Drawing::Point(77, 116);
+			this->label6->Name = L"label6";
+			this->label6->Size = System::Drawing::Size(24, 25);
+			this->label6->TabIndex = 5;
+			this->label6->Text = L"0";
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Location = System::Drawing::Point(77, 218);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(24, 25);
+			this->label7->TabIndex = 6;
+			this->label7->Text = L"0";
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Location = System::Drawing::Point(362, 107);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(36, 25);
+			this->label8->TabIndex = 7;
+			this->label8->Text = L"16";
+			// 
+			// label9
+			// 
+			this->label9->AutoSize = true;
+			this->label9->Location = System::Drawing::Point(362, 207);
+			this->label9->Name = L"label9";
+			this->label9->Size = System::Drawing::Size(36, 25);
+			this->label9->TabIndex = 8;
+			this->label9->Text = L"10";
+			// 
 			// MyForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1264, 681);
+			this->ClientSize = System::Drawing::Size(2849, 1310);
+			this->Controls->Add(this->shapning);
+			this->Controls->Add(this->label5);
+			this->Controls->Add(this->RGBHist);
 			this->Controls->Add(this->label4);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
@@ -223,13 +397,20 @@ namespace MyGUI {
 			this->Controls->Add(this->menuStrip1);
 			this->Controls->Add(this->panel1);
 			this->MainMenuStrip = this->menuStrip1;
+			this->Margin = System::Windows::Forms::Padding(6);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
+			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			this->menuStrip1->ResumeLayout(false);
 			this->menuStrip1->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->EndInit();
 			this->panel1->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->RGBHist))->EndInit();
+			this->shapning->ResumeLayout(false);
+			this->shapning->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->sigmatrack))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->weightTrack))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -252,6 +433,7 @@ namespace MyGUI {
 			pictureBox1->Load(openFileDialog1->FileName);
 			pictureBox1->Image->Save("cache.jpg", System::Drawing::Imaging::ImageFormat::Jpeg);
 			editedImage = cv::imread("cache.jpg", cv::IMREAD_COLOR);
+			refreshHistBox(Histogram(&editedImage));
 		}
 	}
 	private: System::Void trackBar1_Scroll(System::Object^  sender, System::EventArgs^  e) {
@@ -262,8 +444,39 @@ namespace MyGUI {
 		cv::Mat mainImage;
 		mainImage = editedImage;
 		colourTempAdjustment(&mainImage, trackBarValue);
+		refreshHistBox(Histogram(&editedImage));
 		tempApply->Enabled = true;
 	}
+
+	private: System::Void sigmatrack_Scroll(System::Object^  sender, System::EventArgs^  e) {
+
+		// Acquire track bar value
+		Sharpsigma = sigmatrack->Value;
+
+		// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage;
+		GaussianSharpning(&mainImage,&editedImage, Sharpsigma, Sharpweight);
+		
+		refreshHistBox(Histogram(&mainImage));
+		
+			 }
+	private: System::Void weightTrack_Scroll(System::Object^  sender, System::EventArgs^  e ) {
+
+		// Acquire track bar value
+		Sharpweight = weightTrack->Value;
+
+		// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage;
+
+		GaussianSharpning(&mainImage,&editedImage, Sharpsigma, Sharpweight);
+		
+
+		refreshHistBox(Histogram(&mainImage));
+
+		
+}
 
 	private: System::Void tempApply_Click(System::Object^  sender, System::EventArgs^  e) {
 		editedImage = tempAdjusted;
@@ -399,7 +612,159 @@ namespace MyGUI {
 				 merge(arrayToMergeHSV, hsvAdjusted);
 				 cvtColor(hsvAdjusted, tempAdjusted, CV_HSV2BGR);
 				 refreshPicBox(tempAdjusted);
+				 
 				 return 0;
+			 }
+
+
+			 int GaussianSharpning(cv::Mat* mainImage, cv::Mat* editedImage, int Gvalue, int Wvalue) {
+
+				  cv::Mat Gimage, Simage;
+				
+
+				  if (Gvalue == 0 || Wvalue == 0) {  *mainImage = *editedImage  ; refreshPicBox(*mainImage); return 0; }
+					
+					 //Wvalue = std::max(Wvalue, 1);
+					  
+					 //Gvalue = std::max(1, Gvalue);
+				  else {
+
+					  GaussianBlur(*editedImage,Gimage, cv::Size(0, 0), Gvalue);
+
+					  addWeighted(*editedImage, (Wvalue + 1), Gimage, -Wvalue, 0, Simage);
+					  *mainImage = Simage;
+					  refreshPicBox(*mainImage);
+					  return  0;
+				  }
+
+			 }
+
+			 cv::Mat Histogram(cv::Mat* editedImage) {
+
+				 cv::Mat dst;
+				 cvtColor(*editedImage, dst, cv::COLOR_BGR2GRAY);
+
+
+				 /// Separate the image in 3 places ( B, G and R )
+				 std::vector<cv::Mat> bgr_planes;
+
+
+				 split(*editedImage, bgr_planes);
+
+
+				 /// Establish the number of bins
+				 int histSize = 256;
+				 int ShadowHistSize = 2.55 * 25;
+				 int HighlightHistSize = 2.55 * 25;
+
+				 /// Set the ranges ( for B,G,R) )
+				 float range[] = { 0, 256 };
+				 const float* histRange = { range };
+
+				 float ShadowRange[] = { 0, 2.55 * 25 };
+				 const float* ShadowHistRange = { ShadowRange };
+
+				 float HighlightRange[] = { 2.55 * 75, 255 };
+				 const float* HighlightHistRange = { HighlightRange };
+
+				 bool uniform = true; bool accumulate = false;
+
+				 cv::Mat b_hist, g_hist, r_hist, hist, shadowHist, highlightHist;
+
+
+				 /// Compute the histograms:
+				 calcHist(&bgr_planes[0], 1, 0, cv::Mat(), b_hist, 1, &histSize, &histRange, uniform, accumulate);
+				 calcHist(&bgr_planes[1], 1, 0, cv::Mat(), g_hist, 1, &histSize, &histRange, uniform, accumulate);
+				 calcHist(&bgr_planes[2], 1, 0, cv::Mat(), r_hist, 1, &histSize, &histRange, uniform, accumulate);
+				 calcHist(&dst, 1, 0, cv::Mat(), hist, 1, &histSize, &histRange, uniform, accumulate);
+				 calcHist(&dst, 1, 0, cv::Mat(), shadowHist, 1, &ShadowHistSize, &ShadowHistRange, uniform, accumulate);
+				 calcHist(&dst, 1, 0, cv::Mat(), highlightHist, 1, &HighlightHistSize, &HighlightHistRange, uniform, accumulate);
+
+
+				 // Draw the histograms for B, G and R
+				 int hist_w = 800; int hist_h = 300;
+				 int bin_w = cvRound((double)hist_w / histSize);
+				 int bin_Sw = cvRound((double)hist_w / ShadowHistSize);
+				 int bin_Hw = cvRound((double)hist_w / HighlightHistSize);
+
+				 cv::Mat histImage(hist_h, hist_w, CV_8UC3, cv::Scalar(255, 255, 255));
+
+				 cv::Mat histnew(hist_h, hist_w, CV_8UC3, cv::Scalar(255, 255, 255));
+
+				 cv::Mat ShadowHist(hist_h, hist_w, CV_8UC3, cv::Scalar(255, 255, 255));
+				 cv::Mat HighlightHist(hist_h, hist_w, CV_8UC3, cv::Scalar(255, 255, 255));
+
+
+				 /// Normalize the result to [ 0, histImage.rows ]
+				 normalize(b_hist, b_hist, 0, histImage.rows, cv::NORM_MINMAX, -1, cv::Mat());
+				 normalize(g_hist, g_hist, 0, histImage.rows, cv::NORM_MINMAX, -1, cv::Mat());
+				 normalize(r_hist, r_hist, 0, histImage.rows, cv::NORM_MINMAX, -1, cv::Mat());
+				 normalize(hist, hist, 0, histnew.rows, cv::NORM_MINMAX, -1, cv::Mat());
+				 normalize(shadowHist, shadowHist, 0, ShadowHist.rows, cv::NORM_MINMAX, -1, cv::Mat());
+				 normalize(highlightHist, highlightHist, 0, HighlightHist.rows, cv::NORM_MINMAX, -1, cv::Mat());
+				 
+
+				 /// Draw for each channel
+				 for (int i = 1; i < histSize; i++)
+				 {
+					 line(histImage, cv::Point(bin_w*(i - 1), hist_h - cvRound(b_hist.at<float>(i - 1))),
+						 cv::Point(bin_w*(i), hist_h - cvRound(b_hist.at<float>(i))),
+						 cv::Scalar(255, 0, 0), 2, cv::LINE_AA, 0);
+					 line(histImage, cv::Point(bin_w*(i - 1), hist_h - cvRound(g_hist.at<float>(i - 1))),
+						 cv::Point(bin_w*(i), hist_h - cvRound(g_hist.at<float>(i))),
+						 cv::Scalar(0, 255, 0), 2, cv::LINE_AA, 0);
+					 line(histImage, cv::Point(bin_w*(i - 1), hist_h - cvRound(r_hist.at<float>(i - 1))),
+						 cv::Point(bin_w*(i), hist_h - cvRound(r_hist.at<float>(i))),
+						 cv::Scalar(0, 0, 255), 2, cv::LINE_AA, 0);
+
+
+					 line(histnew, cv::Point(bin_w*(i - 1), hist_h - cvRound(hist.at<float>(i - 1))),
+						 cv::Point(bin_w*(i), hist_h - cvRound(hist.at<float>(i))),
+						 cv::Scalar(0, 0, 0), 1, cv::LINE_AA, 0);
+
+
+
+
+				 }
+				 for (int i = 1; i < ShadowHistSize; i++)
+				 {
+
+					 line(ShadowHist, cv::Point(bin_Sw*(i - 1), hist_h - cvRound(shadowHist.at<float>(i - 1))),
+						 cv::Point(bin_Sw*(i), hist_h - cvRound(shadowHist.at<float>(i))),
+						 cv::Scalar(0, 0, 0), 1, cv::LINE_AA, 0);
+
+				 }
+
+				 for (int i = 1; i < HighlightHistSize; i++)
+				 {
+
+					 line(HighlightHist, cv::Point(bin_Sw*(i - 1), hist_h - cvRound(highlightHist.at<float>(i - 1))),
+						 cv::Point(bin_Sw*(i), hist_h - cvRound(highlightHist.at<float>(i))),
+						 cv::Scalar(0, 0, 0), 1, cv::LINE_AA, 0);
+
+				 }
+
+
+				 return histImage;
+				 /// Display
+				 /*
+
+				 cv::namedWindow("calcHist Demo", cv::WINDOW_AUTOSIZE);
+				 imshow("calcHist Demo", histImage);
+
+				 cv::namedWindow("Grayscale", cv::WINDOW_AUTOSIZE);
+				 imshow("Grayscale", histnew);
+
+				 cv::namedWindow("Shadow", cv::WINDOW_AUTOSIZE);
+				 imshow("Shadow", ShadowHist);
+
+				 cv::namedWindow("HIGHLIGHT", cv::WINDOW_AUTOSIZE);
+				 imshow("HIGHLIGHT", HighlightHist);
+
+				 */
+
+				//cv::waitKey(0);
+
 			 }
 
 			 //refresh the image in the picture box
@@ -413,7 +778,30 @@ namespace MyGUI {
 				 return 0;
 			 }
 
+			 int refreshHistBox(cv::Mat displayImage)
+			 {
+				 System::Drawing::Graphics^ graphics = RGBHist->CreateGraphics();
+				 System::IntPtr ptr(displayImage.ptr());
+				 System::Drawing::Bitmap^ b = gcnew System::Drawing::Bitmap(displayImage.cols, displayImage.rows, displayImage.step, System::Drawing::Imaging::PixelFormat::Format24bppRgb, ptr);
+				 System::Drawing::RectangleF rect(0, 0, RGBHist->Width, RGBHist->Height);
+				 graphics->DrawImage(b, rect);
+				 return 0;
+			 }
+
+
+private: System::Void pictureBox1_Click(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void label1_Click(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void RGBHist_Click(System::Object^  sender, System::EventArgs^  e) {
+}
 
 };
+
+
 
 }
