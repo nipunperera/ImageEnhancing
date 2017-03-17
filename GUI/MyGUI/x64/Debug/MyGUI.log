@@ -1,0 +1,24 @@
+﻿  MyForm.cpp
+c:\users\nipun perera\documents\visual studio 2017\projects\mygui\mygui\spline.h(58): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+c:\users\nipun perera\documents\visual studio 2017\projects\mygui\mygui\spline.h(62): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+c:\users\nipun perera\documents\visual studio 2017\projects\mygui\mygui\spline.h(147): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+c:\users\nipun perera\documents\visual studio 2017\projects\mygui\mygui\spline.h(291): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\nipun perera\documents\visual studio 2017\projects\mygui\mygui\MyForm.h(408): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+c:\users\nipun perera\documents\visual studio 2017\projects\mygui\mygui\MyForm.h(409): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\program files\opencv\build\include\opencv2\core\cvstd.hpp(599): warning C4793: 'cv::String::String': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\mat.inl.hpp(392): warning C4793: 'cv::Mat::Mat': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\mat.inl.hpp(681): warning C4793: 'cv::Mat::release': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\mat.inl.hpp(1872): warning C4793: 'cv::SparseMat::addref': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\mat.inl.hpp(3473): warning C4793: 'cv::UMat::addref': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\mat.inl.hpp(580): warning C4793: 'cv::Mat::operator=': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\ptr.inl.hpp(67): warning C4793: 'cv::detail::PtrOwner::incRef': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\ptr.inl.hpp(72): warning C4793: 'cv::detail::PtrOwner::decRef': function compiled as native:
+  	Found an intrinsic not supported in managed code
+  MyGUI.vcxproj -> C:\Users\Nipun Perera\documents\visual studio 2017\Projects\MyGUI\x64\Debug\MyGUI.exe
