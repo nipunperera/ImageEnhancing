@@ -1,0 +1,35 @@
+﻿Build started 3/18/2017 1:32:49 PM.
+     1>Project "F:\Projects-Machine Vision\GUI\GUIImageEnhancer\GUIImageEnhancer\GUIImageEnhancer.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files\opencv\build\install\include" /IC:\opencv\opencv\build\install\include /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\\" /AI"C:\Program Files (x86)\Windows Kits\8.0\References\CommonConfiguration\Neutral" /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\\" /Zi /clr /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc110.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\mscorlib.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Drawing.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Windows.Forms.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Xml.dll" /errorReport:prompt /clr:nostdlib MainForm.cpp
+         MainForm.cpp
+     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(378): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(546): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(551): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(549): warning C4101: 'e' : unreferenced local variable
+     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(563): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\opencv\opencv\build\install\include\opencv2\core\cvstd.hpp(599): warning C4793: 'cv::String::String' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\opencv\build\install\include\opencv2\core\mat.inl.hpp(392): warning C4793: 'cv::Mat::Mat' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\opencv\build\install\include\opencv2\core\mat.inl.hpp(681): warning C4793: 'cv::Mat::release' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\opencv\build\install\include\opencv2\core\mat.inl.hpp(1872): warning C4793: 'cv::SparseMat::addref' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\opencv\build\install\include\opencv2\core\mat.inl.hpp(3473): warning C4793: 'cv::UMat::addref' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\opencv\build\install\include\opencv2\core\mat.inl.hpp(580): warning C4793: 'cv::Mat::operator=' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\opencv\build\install\include\opencv2\core\ptr.inl.hpp(67): warning C4793: 'cv::detail::PtrOwner::incRef' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\opencv\build\install\include\opencv2\core\ptr.inl.hpp(72): warning C4793: 'cv::detail::PtrOwner::decRef' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"F:\Projects-Machine Vision\GUI\GUIImageEnhancer\x64\Debug\GUIImageEnhancer.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\opencv\opencv\build\install\x64\vc11\lib\ /LIBPATH:C:\opencv\opencv\build\install\x64\vc11\bin\ opencv_core310d.lib opencv_highgui310d.lib opencv_imgcodecs310d.lib opencv_imgproc310d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /ASSEMBLYRESOURCE:x64\Debug\GUIImageEnhancer.MainForm.resources /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:\Projects-Machine Vision\GUI\GUIImageEnhancer\x64\Debug\GUIImageEnhancer.pdb" /ASSEMBLYDEBUG /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"main" /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X64 x64\Debug\MainForm.obj
+         "x64\Debug\.NETFramework,Version=v4.5.AssemblyAttributes.obj"
+         GUIImageEnhancer.vcxproj -> F:\Projects-Machine Vision\GUI\GUIImageEnhancer\x64\Debug\GUIImageEnhancer.exe
+     1>Done Building Project "F:\Projects-Machine Vision\GUI\GUIImageEnhancer\GUIImageEnhancer\GUIImageEnhancer.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.21
