@@ -1,0 +1,31 @@
+﻿  MyForm.cpp
+d:\university\assignments\en4553 - machine vision\project 1\imageenhancing\imageenhancer\mygui\spline.h(58): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+d:\university\assignments\en4553 - machine vision\project 1\imageenhancing\imageenhancer\mygui\spline.h(62): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+d:\university\assignments\en4553 - machine vision\project 1\imageenhancing\imageenhancer\mygui\spline.h(147): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+d:\university\assignments\en4553 - machine vision\project 1\imageenhancing\imageenhancer\mygui\spline.h(291): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+d:\university\assignments\en4553 - machine vision\project 1\imageenhancing\imageenhancer\mygui\MyForm.h(495): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\university\assignments\en4553 - machine vision\project 1\imageenhancing\imageenhancer\mygui\MyForm.h(530): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\university\assignments\en4553 - machine vision\project 1\imageenhancing\imageenhancer\mygui\MyForm.h(563): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\university\assignments\en4553 - machine vision\project 1\imageenhancing\imageenhancer\mygui\MyForm.h(717): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+d:\university\assignments\en4553 - machine vision\project 1\imageenhancing\imageenhancer\mygui\MyForm.h(718): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\program files\opencv\build\include\opencv2\core\cvstd.hpp(599): warning C4793: 'cv::String::String': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\mat.inl.hpp(392): warning C4793: 'cv::Mat::Mat': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\fast_math.hpp(204): warning C4793: '`anonymous namespace'::cvRound': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\fast_math.hpp(205): warning C4793: '`anonymous namespace'::cvRound': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\mat.inl.hpp(681): warning C4793: 'cv::Mat::release': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\mat.inl.hpp(1872): warning C4793: 'cv::SparseMat::addref': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\mat.inl.hpp(3473): warning C4793: 'cv::UMat::addref': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\ptr.inl.hpp(67): warning C4793: 'cv::detail::PtrOwner::incRef': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\ptr.inl.hpp(72): warning C4793: 'cv::detail::PtrOwner::decRef': function compiled as native:
+  	Found an intrinsic not supported in managed code
+c:\program files\opencv\build\include\opencv2\core\mat.inl.hpp(580): warning C4793: 'cv::Mat::operator=': function compiled as native:
+  	Found an intrinsic not supported in managed code
+  MyGUI.vcxproj -> D:\University\Assignments\EN4553 - Machine Vision\Project 1\ImageEnhancing\imageEnhancer\x64\Debug\MyGUI.exe
