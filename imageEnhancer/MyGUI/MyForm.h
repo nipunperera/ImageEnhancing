@@ -7,6 +7,8 @@
 #include "spline.h"
 #include "math.h"
 #include <msclr\marshal_cppstd.h>
+#include"exif.h"
+#include"exif.cpp"
 
 //#include "pcdushantha.cpp"
 
@@ -81,6 +83,11 @@ namespace MyGUI {
 	private: System::Windows::Forms::Label^  label6;
 	private: System::Windows::Forms::ComboBox^  comboBox1;
 
+	private: System::Windows::Forms::Button^  EXIF;
+
+
+
+
 
 
 
@@ -123,6 +130,7 @@ namespace MyGUI {
 			this->sigmaValue = (gcnew System::Windows::Forms::Label());
 			this->weightTrack = (gcnew System::Windows::Forms::TrackBar());
 			this->sigmatrack = (gcnew System::Windows::Forms::TrackBar());
+			this->EXIF = (gcnew System::Windows::Forms::Button());
 			this->menuStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
@@ -397,11 +405,22 @@ namespace MyGUI {
 			this->sigmatrack->TabIndex = 0;
 			this->sigmatrack->Scroll += gcnew System::EventHandler(this, &MyForm::sigmatrack_Scroll);
 			// 
+			// EXIF
+			// 
+			this->EXIF->Location = System::Drawing::Point(2020, 508);
+			this->EXIF->Name = L"EXIF";
+			this->EXIF->Size = System::Drawing::Size(238, 48);
+			this->EXIF->TabIndex = 13;
+			this->EXIF->Text = L"EXIF Data";
+			this->EXIF->UseVisualStyleBackColor = true;
+			this->EXIF->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::EXIF_MouseClick);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(2849, 1310);
+			this->Controls->Add(this->EXIF);
 			this->Controls->Add(this->shapning);
 			this->Controls->Add(this->label5);
 			this->Controls->Add(this->RGBHist);
@@ -819,25 +838,44 @@ namespace MyGUI {
 
 				 return histImage;
 				 /// Display
-				 /*
-
-				 cv::namedWindow("calcHist Demo", cv::WINDOW_AUTOSIZE);
-				 imshow("calcHist Demo", histImage);
-
-				 cv::namedWindow("Grayscale", cv::WINDOW_AUTOSIZE);
-				 imshow("Grayscale", histnew);
-
-				 cv::namedWindow("Shadow", cv::WINDOW_AUTOSIZE);
-				 imshow("Shadow", ShadowHist);
-
-				 cv::namedWindow("HIGHLIGHT", cv::WINDOW_AUTOSIZE);
-				 imshow("HIGHLIGHT", HighlightHist);
-
-				 */
-
-				//cv::waitKey(0);
+				
 
 			 }
+
+			 int metadata() {
+				 MessageBox::Show("META DATA");
+				 FILE *fp = fopen("cache.jpg", "rb");
+				 if (!fp) {
+					 MessageBox::Show("Can't open file");
+					 return -1;
+				 }
+				 fseek(fp, 0, SEEK_END);
+				 unsigned long fsize = ftell(fp);
+				 rewind(fp);
+				 unsigned char *buf = new unsigned char[fsize];
+				 if (fread(buf, 1, fsize, fp) != fsize) {
+					 MessageBox::Show("Can't read file");
+					 delete[] buf;
+					 return -2;
+				 }
+				 fclose(fp);
+
+				 // Parse EXIF
+				 easyexif::EXIFInfo result;
+				 int code = result.parseFrom(buf, fsize);
+				 delete[] buf;
+				 if (code) {
+					 MessageBox::Show("Error parsing EXIF");
+					 return -3;
+				 }
+				 
+				 MessageBox::Show("Camera Make  " );
+				 return 0;
+
+
+			 }
+
+
 
 			 //refresh the image in the picture box
 			 int refreshPicBox(cv::Mat displayImage)
@@ -877,6 +915,14 @@ private: System::Void comboBox1_SelectedIndexChanged(System::Object^  sender, Sy
 	msclr::interop::marshal_context context;
 	sharpningType = context.marshal_as<std::string>(comboBox1->SelectedItem->ToString());
 }
+
+private: System::Void EXIF_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+	
+	int metadata();
+
+
+}
+
 };
 
 
