@@ -1,13 +1,15 @@
-﻿Build started 3/18/2017 1:32:49 PM.
+﻿Build started 3/18/2017 2:26:52 PM.
      1>Project "F:\Projects-Machine Vision\GUI\GUIImageEnhancer\GUIImageEnhancer\GUIImageEnhancer.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files\opencv\build\install\include" /IC:\opencv\opencv\build\install\include /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\\" /AI"C:\Program Files (x86)\Windows Kits\8.0\References\CommonConfiguration\Neutral" /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\\" /Zi /clr /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc110.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\mscorlib.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Drawing.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Windows.Forms.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Xml.dll" /errorReport:prompt /clr:nostdlib MainForm.cpp
          MainForm.cpp
-     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(378): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(546): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(551): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(549): warning C4101: 'e' : unreferenced local variable
-     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(563): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(394): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(564): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(569): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(567): warning C4101: 'e' : unreferenced local variable
+     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(581): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>f:\projects-machine vision\gui\guiimageenhancer\guiimageenhancer\MainForm.h(624): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'sprintf'
      1>c:\opencv\opencv\build\install\include\opencv2\core\cvstd.hpp(599): warning C4793: 'cv::String::String' : function compiled as native :
          	Found an intrinsic not supported in managed code
      1>c:\opencv\opencv\build\install\include\opencv2\core\mat.inl.hpp(392): warning C4793: 'cv::Mat::Mat' : function compiled as native :

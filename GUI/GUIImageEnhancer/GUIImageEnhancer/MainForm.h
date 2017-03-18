@@ -85,6 +85,8 @@ namespace GUIImageEnhancer {
 	private: System::Windows::Forms::Button^  cropApplyButton;
 	private: System::Windows::Forms::Button^  cropCancelButton;
 
+	private: System::Windows::Forms::Button^  saveButton;
+
 
 
 
@@ -117,6 +119,7 @@ namespace GUIImageEnhancer {
 			this->cropPanel = (gcnew System::Windows::Forms::Panel());
 			this->cropApplyButton = (gcnew System::Windows::Forms::Button());
 			this->cropCancelButton = (gcnew System::Windows::Forms::Button());
+			this->saveButton = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->vignettePanel->SuspendLayout();
@@ -283,11 +286,23 @@ namespace GUIImageEnhancer {
 			this->cropCancelButton->UseVisualStyleBackColor = true;
 			this->cropCancelButton->Click += gcnew System::EventHandler(this, &MainForm::cropCancelButton_Click);
 			// 
+			// saveButton
+			// 
+			this->saveButton->Enabled = false;
+			this->saveButton->Location = System::Drawing::Point(784, 36);
+			this->saveButton->Name = L"saveButton";
+			this->saveButton->Size = System::Drawing::Size(75, 23);
+			this->saveButton->TabIndex = 8;
+			this->saveButton->Text = L"Save";
+			this->saveButton->UseVisualStyleBackColor = true;
+			this->saveButton->Click += gcnew System::EventHandler(this, &MainForm::saveButton_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(909, 546);
+			this->Controls->Add(this->saveButton);
 			this->Controls->Add(this->cropPanel);
 			this->Controls->Add(this->vignettePanel);
 			this->Controls->Add(this->vignetteButton);
@@ -342,6 +357,7 @@ namespace GUIImageEnhancer {
 				 cropSelected = true;
 				 cropPanel->Visible = true;
 				 vignetteButton->Enabled = false;
+				 saveButton->Enabled = false;
 
 			 }
 	private: System::Void pictureBox1_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -426,6 +442,7 @@ namespace GUIImageEnhancer {
 				 cropStarted = false;
 				 cropSelected = false;
 				 cropButton->Enabled = false;
+				 saveButton->Enabled = false;
 				 vignetteSelected = true;
 				 vignettePanel->Visible = true;
 				 vignetteCenterX = mainImage.cols / 2 ;
@@ -534,6 +551,7 @@ namespace GUIImageEnhancer {
 				 vignetteSelected = false;
 				 vignettePanel->Visible = false;
 				 cropButton->Enabled = true;
+				 saveButton->Enabled = true;
 			 }
 
 			 int refreshPicBox(cv::Mat displayImage)
@@ -565,6 +583,7 @@ namespace GUIImageEnhancer {
 				 vignetteSelected = false; 
 				 vignettePanel->Visible = false;
 				 cropButton->Enabled = true;
+				 saveButton->Enabled = true;
 			 }
 	private: System::Void cropApplyButton_Click(System::Object^  sender, System::EventArgs^  e) {
 
@@ -573,6 +592,7 @@ namespace GUIImageEnhancer {
 				 mainImage = croppedImage;
 				 cropPanel->Visible = false;
 				 vignetteButton->Enabled = true;
+				 saveButton->Enabled = true;
 
 			 }
 	private: System::Void cropCancelButton_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -581,7 +601,31 @@ namespace GUIImageEnhancer {
 				 cropStarted = false;
 				 cropPanel->Visible = false;
 				 vignetteButton->Enabled = true;
+				 saveButton->Enabled = true;
 				 refreshPicBox(mainImage);
+
+			 }
+	private: System::Void saveButton_Click(System::Object^  sender, System::EventArgs^  e) {
+				 // Displays a SaveFileDialog so the user can save the Image  
+				 // assigned to Button2.
+				 char  savePath[100];
+				 SaveFileDialog ^ saveFileDialog1 = gcnew SaveFileDialog();  
+				 saveFileDialog1->Filter =   
+					 "Jpeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";  
+				 saveFileDialog1->Title = "Save an Image File";  
+				 saveFileDialog1->ShowDialog();
+				 //saveFileDialog1->FileName= "new";
+				 // Show the Dialog.  
+				 // If the user clicked OK in the dialog and  
+				 if(saveFileDialog1->FileName )  
+				 {  
+
+					 std::string filePath = msclr::interop::marshal_as<std::string>(saveFileDialog1->FileName);
+					 sprintf(savePath,"%s",filePath.c_str());
+					 cv::imwrite( savePath, mainImage );
+
+				 }  
+
 
 			 }
 	};
