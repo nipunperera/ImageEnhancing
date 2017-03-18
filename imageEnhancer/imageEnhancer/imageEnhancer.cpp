@@ -298,7 +298,7 @@ int main(int argc, char** argv)
 	readImage(&mainImage);						// Function call to read the image
 	displayImage(&mainImage, "Original Image");
 
-	src = mainImage;
+	src = mainImage.clone();
 	//Exposure and Contrast
 //	exposureContrast(&mainImage);				// Old contrast Function call
 	HistEq();									//Auto-adjust Contrast ;)

@@ -56,58 +56,53 @@ namespace MyGUI {
 	private: System::Windows::Forms::ToolStripMenuItem^  importToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  exitToolStripMenuItem;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
-	private: System::Windows::Forms::TrackBar^  trackBar1;
-	private: System::Windows::Forms::Label^  label1;
-
-	private: System::Windows::Forms::Label^  label3;
-	private: System::Windows::Forms::Label^  label4;
-
-	private: System::Windows::Forms::Panel^  panel1;
-	private: System::Windows::Forms::Button^  tempApply;
-	private: System::Windows::Forms::Label^  label2;
-	private: System::Windows::Forms::Label^  label5;
-	private: System::Windows::Forms::Label^  label6;
-	private: System::Windows::Forms::TrackBar^  trackBar2;
-	private: System::Windows::Forms::Panel^  panel2;
+	private: System::Windows::Forms::Label^  labelLuminanceHigh;
+	private: System::Windows::Forms::Label^  labelLuminanceLow;
+	private: System::Windows::Forms::Label^  labelLuminance;
+	private: System::Windows::Forms::TrackBar^  trackBarLuminance;
+	private: System::Windows::Forms::Panel^  panelLuminance;
 	private: System::Windows::Forms::Button^  luminanceApply;
-	private: System::Windows::Forms::Label^  label7;
-	private: System::Windows::Forms::Label^  label8;
-	private: System::Windows::Forms::Label^  label9;
-	private: System::Windows::Forms::TrackBar^  trackBar4;
-	private: System::Windows::Forms::Panel^  panel3;
+
+	private: System::Windows::Forms::Label^  labelContrastHigh;
+	private: System::Windows::Forms::Label^  labelContrastLow;
+	private: System::Windows::Forms::Label^  labelContrast;
+	private: System::Windows::Forms::TrackBar^  trackBarContrast;
+	private: System::Windows::Forms::Panel^  panelContrast;
 	private: System::Windows::Forms::Button^  contrastApply;
-	private: System::Windows::Forms::Label^  label10;
-	private: System::Windows::Forms::Label^  label11;
-	private: System::Windows::Forms::Label^  label12;
-	private: System::Windows::Forms::TrackBar^  trackBar3;
-	private: System::Windows::Forms::Panel^  panel4;
+
+	private: System::Windows::Forms::Label^  labelExposureHigh;
+	private: System::Windows::Forms::Label^  labelExposureLow;
+	private: System::Windows::Forms::Label^  labelExposure;
+	private: System::Windows::Forms::TrackBar^  trackBarExposure;
+	private: System::Windows::Forms::Panel^  panelExposure;
 	private: System::Windows::Forms::Button^  exposureApply;
-	private: System::Windows::Forms::Label^  label13;
-	private: System::Windows::Forms::Label^  label14;
-	private: System::Windows::Forms::Label^  label15;
-	private: System::Windows::Forms::TrackBar^  trackBar5;
-	private: System::Windows::Forms::Panel^  panel5;
+
+	private: System::Windows::Forms::Label^  labelHueHigh;
+	private: System::Windows::Forms::Label^  labelHueLow;
+	private: System::Windows::Forms::Label^  labelHue;
+	private: System::Windows::Forms::TrackBar^  trackBarHue;
+	private: System::Windows::Forms::Panel^  panelHue;
 	private: System::Windows::Forms::Button^  hueApply;
 
-
-	private: System::Windows::Forms::Label^  label16;
-	private: System::Windows::Forms::Label^  label17;
-	private: System::Windows::Forms::Label^  label18;
-	private: System::Windows::Forms::TrackBar^  trackBar7;
-	private: System::Windows::Forms::Panel^  panel6;
+	private: System::Windows::Forms::Label^  labelSaturationHigh;
+	private: System::Windows::Forms::Label^  labelSaturationLow;
+	private: System::Windows::Forms::Label^  labelSaturation;
+	private: System::Windows::Forms::TrackBar^  trackBarSaturation;
+	private: System::Windows::Forms::Panel^  panelSaturation;
 	private: System::Windows::Forms::Button^  saturationApply;
-	private: System::Windows::Forms::TrackBar^  trackBar8;
-	private: System::Windows::Forms::Label^  label19;
-	private: System::Windows::Forms::Label^  label20;
-	private: System::Windows::Forms::Label^  label21;
-	private: System::Windows::Forms::TrackBar^  trackBar9;
-	private: System::Windows::Forms::Panel^  panel7;
+
+	private: System::Windows::Forms::Label^  labelValueHigh; 
+	private: System::Windows::Forms::Label^  labelValueLow;
+	private: System::Windows::Forms::Label^  labelValue;
+	private: System::Windows::Forms::TrackBar^  trackBarValue;
+	private: System::Windows::Forms::Panel^  panelValue;
 	private: System::Windows::Forms::Button^  valueApply;
-	private: System::Windows::Forms::TrackBar^  trackBar10;
+
 	private: System::Windows::Forms::Button^  ContrastAutoAdjust;
+	private: System::Windows::Forms::Button^  UNDO;
 
-
-
+	private: System::Windows::Forms::TrackBar^  trackBar7;
+	private: System::Windows::Forms::Button^  ExposureAutoAdjust;
 
 	private:
 		/// <summary>
@@ -127,69 +122,61 @@ namespace MyGUI {
 			this->importToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
-			this->trackBar1 = (gcnew System::Windows::Forms::TrackBar());
-			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->label3 = (gcnew System::Windows::Forms::Label());
-			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->panel1 = (gcnew System::Windows::Forms::Panel());
-			this->tempApply = (gcnew System::Windows::Forms::Button());
-			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->label5 = (gcnew System::Windows::Forms::Label());
-			this->label6 = (gcnew System::Windows::Forms::Label());
-			this->trackBar2 = (gcnew System::Windows::Forms::TrackBar());
-			this->panel2 = (gcnew System::Windows::Forms::Panel());
+			this->labelLuminanceHigh = (gcnew System::Windows::Forms::Label());
+			this->labelLuminanceLow = (gcnew System::Windows::Forms::Label());
+			this->labelLuminance = (gcnew System::Windows::Forms::Label());
+			this->trackBarLuminance = (gcnew System::Windows::Forms::TrackBar());
+			this->panelLuminance = (gcnew System::Windows::Forms::Panel());
 			this->luminanceApply = (gcnew System::Windows::Forms::Button());
-			this->label7 = (gcnew System::Windows::Forms::Label());
-			this->label8 = (gcnew System::Windows::Forms::Label());
-			this->label9 = (gcnew System::Windows::Forms::Label());
-			this->trackBar4 = (gcnew System::Windows::Forms::TrackBar());
-			this->panel3 = (gcnew System::Windows::Forms::Panel());
+			this->labelContrastHigh = (gcnew System::Windows::Forms::Label());
+			this->labelContrastLow = (gcnew System::Windows::Forms::Label());
+			this->labelContrast = (gcnew System::Windows::Forms::Label());
+			this->trackBarContrast = (gcnew System::Windows::Forms::TrackBar());
+			this->panelContrast = (gcnew System::Windows::Forms::Panel());
 			this->contrastApply = (gcnew System::Windows::Forms::Button());
-			this->label10 = (gcnew System::Windows::Forms::Label());
-			this->label11 = (gcnew System::Windows::Forms::Label());
-			this->label12 = (gcnew System::Windows::Forms::Label());
-			this->trackBar3 = (gcnew System::Windows::Forms::TrackBar());
-			this->panel4 = (gcnew System::Windows::Forms::Panel());
+			this->labelExposureHigh = (gcnew System::Windows::Forms::Label());
+			this->labelExposureLow = (gcnew System::Windows::Forms::Label());
+			this->labelExposure = (gcnew System::Windows::Forms::Label());
+			this->trackBarExposure = (gcnew System::Windows::Forms::TrackBar());
+			this->panelExposure = (gcnew System::Windows::Forms::Panel());
 			this->exposureApply = (gcnew System::Windows::Forms::Button());
-			this->label13 = (gcnew System::Windows::Forms::Label());
-			this->label14 = (gcnew System::Windows::Forms::Label());
-			this->label15 = (gcnew System::Windows::Forms::Label());
-			this->trackBar5 = (gcnew System::Windows::Forms::TrackBar());
-			this->panel5 = (gcnew System::Windows::Forms::Panel());
+			this->labelHueHigh = (gcnew System::Windows::Forms::Label());
+			this->labelHueLow = (gcnew System::Windows::Forms::Label());
+			this->labelHue = (gcnew System::Windows::Forms::Label());
+			this->panelHue = (gcnew System::Windows::Forms::Panel());
 			this->hueApply = (gcnew System::Windows::Forms::Button());
-			this->label16 = (gcnew System::Windows::Forms::Label());
-			this->label17 = (gcnew System::Windows::Forms::Label());
-			this->label18 = (gcnew System::Windows::Forms::Label());
+			this->trackBarHue = (gcnew System::Windows::Forms::TrackBar());
+			this->labelSaturationHigh = (gcnew System::Windows::Forms::Label());
+			this->labelSaturationLow = (gcnew System::Windows::Forms::Label());
+			this->labelSaturation = (gcnew System::Windows::Forms::Label());
 			this->trackBar7 = (gcnew System::Windows::Forms::TrackBar());
-			this->panel6 = (gcnew System::Windows::Forms::Panel());
+			this->panelSaturation = (gcnew System::Windows::Forms::Panel());
 			this->saturationApply = (gcnew System::Windows::Forms::Button());
-			this->trackBar8 = (gcnew System::Windows::Forms::TrackBar());
-			this->label19 = (gcnew System::Windows::Forms::Label());
-			this->label20 = (gcnew System::Windows::Forms::Label());
-			this->label21 = (gcnew System::Windows::Forms::Label());
-			this->trackBar9 = (gcnew System::Windows::Forms::TrackBar());
-			this->panel7 = (gcnew System::Windows::Forms::Panel());
+			this->labelValueHigh = (gcnew System::Windows::Forms::Label());
+			this->labelValueLow = (gcnew System::Windows::Forms::Label());
+			this->labelValue = (gcnew System::Windows::Forms::Label());
+			this->trackBarValue = (gcnew System::Windows::Forms::TrackBar());
+			this->panelValue = (gcnew System::Windows::Forms::Panel());
 			this->valueApply = (gcnew System::Windows::Forms::Button());
-			this->trackBar10 = (gcnew System::Windows::Forms::TrackBar());
+			this->trackBarSaturation = (gcnew System::Windows::Forms::TrackBar());
 			this->ContrastAutoAdjust = (gcnew System::Windows::Forms::Button());
+			this->UNDO = (gcnew System::Windows::Forms::Button());
+			this->ExposureAutoAdjust = (gcnew System::Windows::Forms::Button());
 			this->menuStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
-			this->panel1->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar2))->BeginInit();
-			this->panel2->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar4))->BeginInit();
-			this->panel3->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar3))->BeginInit();
-			this->panel4->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar5))->BeginInit();
-			this->panel5->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarLuminance))->BeginInit();
+			this->panelLuminance->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarContrast))->BeginInit();
+			this->panelContrast->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarExposure))->BeginInit();
+			this->panelExposure->SuspendLayout();
+			this->panelHue->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarHue))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar7))->BeginInit();
-			this->panel6->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar8))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar9))->BeginInit();
-			this->panel7->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar10))->BeginInit();
+			this->panelSaturation->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarValue))->BeginInit();
+			this->panelValue->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarSaturation))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// menuStrip1
@@ -228,7 +215,7 @@ namespace MyGUI {
 			// 
 			// pictureBox1
 			// 
-			this->pictureBox1->Location = System::Drawing::Point(16, 33);
+			this->pictureBox1->Location = System::Drawing::Point(13, 44);
 			this->pictureBox1->Margin = System::Windows::Forms::Padding(4);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(853, 591);
@@ -236,144 +223,74 @@ namespace MyGUI {
 			this->pictureBox1->TabIndex = 1;
 			this->pictureBox1->TabStop = false;
 			// 
-			// trackBar1
+			// labelLuminanceHigh
 			// 
-			this->trackBar1->Location = System::Drawing::Point(947, 66);
-			this->trackBar1->Margin = System::Windows::Forms::Padding(4);
-			this->trackBar1->Maximum = 5;
-			this->trackBar1->Minimum = -5;
-			this->trackBar1->Name = L"trackBar1";
-			this->trackBar1->Size = System::Drawing::Size(221, 56);
-			this->trackBar1->TabIndex = 2;
-			this->trackBar1->TickFrequency = 0;
-			this->trackBar1->Scroll += gcnew System::EventHandler(this, &MyForm::trackBar1_Scroll);
-			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->labelLuminanceHigh->AutoSize = true;
+			this->labelLuminanceHigh->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label1->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->label1->Location = System::Drawing::Point(100, 4);
-			this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(117, 23);
-			this->label1->TabIndex = 3;
-			this->label1->Text = L"Temperature ";
+			this->labelLuminanceHigh->ForeColor = System::Drawing::Color::Red;
+			this->labelLuminanceHigh->Location = System::Drawing::Point(1163, 88);
+			this->labelLuminanceHigh->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelLuminanceHigh->Name = L"labelLuminanceHigh";
+			this->labelLuminanceHigh->Size = System::Drawing::Size(36, 18);
+			this->labelLuminanceHigh->TabIndex = 12;
+			this->labelLuminanceHigh->Text = L"High";
 			// 
-			// label3
+			// labelLuminanceLow
 			// 
-			this->label3->AutoSize = true;
-			this->label3->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+			this->labelLuminanceLow->AutoSize = true;
+			this->labelLuminanceLow->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label3->ForeColor = System::Drawing::Color::Blue;
-			this->label3->Location = System::Drawing::Point(912, 66);
-			this->label3->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(36, 18);
-			this->label3->TabIndex = 5;
-			this->label3->Text = L"Cold";
+			this->labelLuminanceLow->ForeColor = System::Drawing::Color::Blue;
+			this->labelLuminanceLow->Location = System::Drawing::Point(912, 88);
+			this->labelLuminanceLow->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelLuminanceLow->Name = L"labelLuminanceLow";
+			this->labelLuminanceLow->Size = System::Drawing::Size(33, 18);
+			this->labelLuminanceLow->TabIndex = 11;
+			this->labelLuminanceLow->Text = L"Low";
 			// 
-			// label4
+			// labelLuminance
 			// 
-			this->label4->AutoSize = true;
-			this->label4->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+			this->labelLuminance->AutoSize = true;
+			this->labelLuminance->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label4->ForeColor = System::Drawing::Color::Red;
-			this->label4->Location = System::Drawing::Point(1163, 66);
-			this->label4->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(44, 18);
-			this->label4->TabIndex = 6;
-			this->label4->Text = L"Warm";
+			this->labelLuminance->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->labelLuminance->Location = System::Drawing::Point(105, 4);
+			this->labelLuminance->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelLuminance->Name = L"labelLuminance";
+			this->labelLuminance->Size = System::Drawing::Size(97, 23);
+			this->labelLuminance->TabIndex = 10;
+			this->labelLuminance->Text = L"Luminance";
 			// 
-			// panel1
+			// trackBarLuminance
 			// 
-			this->panel1->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-			this->panel1->Controls->Add(this->tempApply);
-			this->panel1->Controls->Add(this->label1);
-			this->panel1->Location = System::Drawing::Point(901, 33);
-			this->panel1->Margin = System::Windows::Forms::Padding(4);
-			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(446, 67);
-			this->panel1->TabIndex = 8;
+			this->trackBarLuminance->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->trackBarLuminance->Location = System::Drawing::Point(44, 25);
+			this->trackBarLuminance->Margin = System::Windows::Forms::Padding(4);
+			this->trackBarLuminance->Maximum = 255;
+			this->trackBarLuminance->Minimum = -255;
+			this->trackBarLuminance->Name = L"trackBarLuminance";
+			this->trackBarLuminance->Size = System::Drawing::Size(221, 56);
+			this->trackBarLuminance->TabIndex = 9;
+			this->trackBarLuminance->TickFrequency = 0;
+			this->trackBarLuminance->Scroll += gcnew System::EventHandler(this, &MyForm::Luminance_Scroll);
 			// 
-			// tempApply
+			// panelLuminance
 			// 
-			this->tempApply->Location = System::Drawing::Point(323, 19);
-			this->tempApply->Margin = System::Windows::Forms::Padding(4);
-			this->tempApply->Name = L"tempApply";
-			this->tempApply->Size = System::Drawing::Size(107, 30);
-			this->tempApply->TabIndex = 0;
-			this->tempApply->Text = L"Apply";
-			this->tempApply->UseVisualStyleBackColor = true;
-			this->tempApply->Click += gcnew System::EventHandler(this, &MyForm::tempApply_Click);
-			// 
-			// label2
-			// 
-			this->label2->AutoSize = true;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label2->ForeColor = System::Drawing::Color::Red;
-			this->label2->Location = System::Drawing::Point(1163, 141);
-			this->label2->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(36, 18);
-			this->label2->TabIndex = 12;
-			this->label2->Text = L"High";
-			// 
-			// label5
-			// 
-			this->label5->AutoSize = true;
-			this->label5->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label5->ForeColor = System::Drawing::Color::Blue;
-			this->label5->Location = System::Drawing::Point(912, 141);
-			this->label5->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(33, 18);
-			this->label5->TabIndex = 11;
-			this->label5->Text = L"Low";
-			// 
-			// label6
-			// 
-			this->label6->AutoSize = true;
-			this->label6->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label6->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->label6->Location = System::Drawing::Point(100, 4);
-			this->label6->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(97, 23);
-			this->label6->TabIndex = 10;
-			this->label6->Text = L"Luminance";
-			// 
-			// trackBar2
-			// 
-			this->trackBar2->Location = System::Drawing::Point(947, 141);
-			this->trackBar2->Margin = System::Windows::Forms::Padding(4);
-			this->trackBar2->Maximum = 255;
-			this->trackBar2->Minimum = -255;
-			this->trackBar2->Name = L"trackBar2";
-			this->trackBar2->Size = System::Drawing::Size(221, 56);
-			this->trackBar2->TabIndex = 9;
-			this->trackBar2->TickFrequency = 0;
-			this->trackBar2->Scroll += gcnew System::EventHandler(this, &MyForm::Luminance_Scroll);
-			// 
-			// panel2
-			// 
-			this->panel2->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-			this->panel2->Controls->Add(this->luminanceApply);
-			this->panel2->Controls->Add(this->label6);
-			this->panel2->Location = System::Drawing::Point(901, 108);
-			this->panel2->Margin = System::Windows::Forms::Padding(4);
-			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(446, 67);
-			this->panel2->TabIndex = 13;
+			this->panelLuminance->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->panelLuminance->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+			this->panelLuminance->Controls->Add(this->luminanceApply);
+			this->panelLuminance->Controls->Add(this->labelLuminance);
+			this->panelLuminance->Controls->Add(this->trackBarLuminance);
+			this->panelLuminance->Location = System::Drawing::Point(901, 55);
+			this->panelLuminance->Margin = System::Windows::Forms::Padding(4);
+			this->panelLuminance->Name = L"panelLuminance";
+			this->panelLuminance->Size = System::Drawing::Size(446, 67);
+			this->panelLuminance->TabIndex = 13;
 			// 
 			// luminanceApply
 			// 
-			this->luminanceApply->Location = System::Drawing::Point(323, 19);
+			this->luminanceApply->Location = System::Drawing::Point(323, 25);
 			this->luminanceApply->Margin = System::Windows::Forms::Padding(4);
 			this->luminanceApply->Name = L"luminanceApply";
 			this->luminanceApply->Size = System::Drawing::Size(107, 30);
@@ -382,67 +299,69 @@ namespace MyGUI {
 			this->luminanceApply->UseVisualStyleBackColor = true;
 			this->luminanceApply->Click += gcnew System::EventHandler(this, &MyForm::Luminance_Click);
 			// 
-			// label7
+			// labelContrastHigh
 			// 
-			this->label7->AutoSize = true;
-			this->label7->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+			this->labelContrastHigh->AutoSize = true;
+			this->labelContrastHigh->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label7->ForeColor = System::Drawing::Color::Red;
-			this->label7->Location = System::Drawing::Point(1163, 291);
-			this->label7->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(36, 18);
-			this->label7->TabIndex = 22;
-			this->label7->Text = L"High";
+			this->labelContrastHigh->ForeColor = System::Drawing::Color::Red;
+			this->labelContrastHigh->Location = System::Drawing::Point(1163, 238);
+			this->labelContrastHigh->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelContrastHigh->Name = L"labelContrastHigh";
+			this->labelContrastHigh->Size = System::Drawing::Size(36, 18);
+			this->labelContrastHigh->TabIndex = 22;
+			this->labelContrastHigh->Text = L"High";
 			// 
-			// label8
+			// labelContrastLow
 			// 
-			this->label8->AutoSize = true;
-			this->label8->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+			this->labelContrastLow->AutoSize = true;
+			this->labelContrastLow->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label8->ForeColor = System::Drawing::Color::Blue;
-			this->label8->Location = System::Drawing::Point(912, 291);
-			this->label8->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(33, 18);
-			this->label8->TabIndex = 21;
-			this->label8->Text = L"Low";
+			this->labelContrastLow->ForeColor = System::Drawing::Color::Blue;
+			this->labelContrastLow->Location = System::Drawing::Point(912, 238);
+			this->labelContrastLow->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelContrastLow->Name = L"labelContrastLow";
+			this->labelContrastLow->Size = System::Drawing::Size(33, 18);
+			this->labelContrastLow->TabIndex = 21;
+			this->labelContrastLow->Text = L"Low";
 			// 
-			// label9
+			// labelContrast
 			// 
-			this->label9->AutoSize = true;
-			this->label9->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->labelContrast->AutoSize = true;
+			this->labelContrast->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label9->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->label9->Location = System::Drawing::Point(114, 4);
-			this->label9->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label9->Name = L"label9";
-			this->label9->Size = System::Drawing::Size(76, 23);
-			this->label9->TabIndex = 20;
-			this->label9->Text = L"Contrast";
+			this->labelContrast->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->labelContrast->Location = System::Drawing::Point(114, 4);
+			this->labelContrast->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelContrast->Name = L"labelContrast";
+			this->labelContrast->Size = System::Drawing::Size(76, 23);
+			this->labelContrast->TabIndex = 20;
+			this->labelContrast->Text = L"Contrast";
 			// 
-			// trackBar4
+			// trackBarContrast
 			// 
-			this->trackBar4->Location = System::Drawing::Point(947, 291);
-			this->trackBar4->Margin = System::Windows::Forms::Padding(4);
-			this->trackBar4->Maximum = 100;
-			this->trackBar4->Name = L"trackBar4";
-			this->trackBar4->Size = System::Drawing::Size(221, 56);
-			this->trackBar4->TabIndex = 19;
-			this->trackBar4->TickFrequency = 0;
-			this->trackBar4->Value = 50;
-			this->trackBar4->Scroll += gcnew System::EventHandler(this, &MyForm::Contrast_Scroll);
+			this->trackBarContrast->BackColor = System::Drawing::SystemColors::Control;
+			this->trackBarContrast->Location = System::Drawing::Point(947, 238);
+			this->trackBarContrast->Margin = System::Windows::Forms::Padding(4);
+			this->trackBarContrast->Maximum = 100;
+			this->trackBarContrast->Name = L"trackBarContrast";
+			this->trackBarContrast->Size = System::Drawing::Size(221, 56);
+			this->trackBarContrast->TabIndex = 19;
+			this->trackBarContrast->TickFrequency = 0;
+			this->trackBarContrast->Value = 50;
+			this->trackBarContrast->Scroll += gcnew System::EventHandler(this, &MyForm::Contrast_Scroll);
 			// 
-			// panel3
+			// panelContrast
 			// 
-			this->panel3->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-			this->panel3->Controls->Add(this->contrastApply);
-			this->panel3->Controls->Add(this->label9);
-			this->panel3->Location = System::Drawing::Point(901, 258);
-			this->panel3->Margin = System::Windows::Forms::Padding(4);
-			this->panel3->Name = L"panel3";
-			this->panel3->Size = System::Drawing::Size(446, 67);
-			this->panel3->TabIndex = 23;
+			this->panelContrast->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->panelContrast->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+			this->panelContrast->Controls->Add(this->contrastApply);
+			this->panelContrast->Controls->Add(this->labelContrast);
+			this->panelContrast->Location = System::Drawing::Point(901, 205);
+			this->panelContrast->Margin = System::Windows::Forms::Padding(4);
+			this->panelContrast->Name = L"panelContrast";
+			this->panelContrast->Size = System::Drawing::Size(446, 67);
+			this->panelContrast->TabIndex = 23;
 			// 
 			// contrastApply
 			// 
@@ -455,67 +374,69 @@ namespace MyGUI {
 			this->contrastApply->UseVisualStyleBackColor = true;
 			this->contrastApply->Click += gcnew System::EventHandler(this, &MyForm::Contrast_Click);
 			// 
-			// label10
+			// labelExposureHigh
 			// 
-			this->label10->AutoSize = true;
-			this->label10->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+			this->labelExposureHigh->AutoSize = true;
+			this->labelExposureHigh->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label10->ForeColor = System::Drawing::Color::Red;
-			this->label10->Location = System::Drawing::Point(1163, 216);
-			this->label10->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label10->Name = L"label10";
-			this->label10->Size = System::Drawing::Size(36, 18);
-			this->label10->TabIndex = 17;
-			this->label10->Text = L"High";
+			this->labelExposureHigh->ForeColor = System::Drawing::Color::Red;
+			this->labelExposureHigh->Location = System::Drawing::Point(1163, 163);
+			this->labelExposureHigh->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelExposureHigh->Name = L"labelExposureHigh";
+			this->labelExposureHigh->Size = System::Drawing::Size(36, 18);
+			this->labelExposureHigh->TabIndex = 17;
+			this->labelExposureHigh->Text = L"High";
 			// 
-			// label11
+			// labelExposureLow
 			// 
-			this->label11->AutoSize = true;
-			this->label11->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+			this->labelExposureLow->AutoSize = true;
+			this->labelExposureLow->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label11->ForeColor = System::Drawing::Color::Blue;
-			this->label11->Location = System::Drawing::Point(912, 216);
-			this->label11->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label11->Name = L"label11";
-			this->label11->Size = System::Drawing::Size(33, 18);
-			this->label11->TabIndex = 16;
-			this->label11->Text = L"Low";
+			this->labelExposureLow->ForeColor = System::Drawing::Color::Blue;
+			this->labelExposureLow->Location = System::Drawing::Point(912, 163);
+			this->labelExposureLow->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelExposureLow->Name = L"labelExposureLow";
+			this->labelExposureLow->Size = System::Drawing::Size(33, 18);
+			this->labelExposureLow->TabIndex = 16;
+			this->labelExposureLow->Text = L"Low";
 			// 
-			// label12
+			// labelExposure
 			// 
-			this->label12->AutoSize = true;
-			this->label12->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->labelExposure->AutoSize = true;
+			this->labelExposure->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label12->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->label12->Location = System::Drawing::Point(114, 4);
-			this->label12->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label12->Name = L"label12";
-			this->label12->Size = System::Drawing::Size(83, 23);
-			this->label12->TabIndex = 15;
-			this->label12->Text = L"Exposure";
+			this->labelExposure->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->labelExposure->Location = System::Drawing::Point(114, 4);
+			this->labelExposure->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelExposure->Name = L"labelExposure";
+			this->labelExposure->Size = System::Drawing::Size(83, 23);
+			this->labelExposure->TabIndex = 15;
+			this->labelExposure->Text = L"Exposure";
 			// 
-			// trackBar3
+			// trackBarExposure
 			// 
-			this->trackBar3->Location = System::Drawing::Point(947, 216);
-			this->trackBar3->Margin = System::Windows::Forms::Padding(4);
-			this->trackBar3->Maximum = 100;
-			this->trackBar3->Name = L"trackBar3";
-			this->trackBar3->Size = System::Drawing::Size(221, 56);
-			this->trackBar3->TabIndex = 14;
-			this->trackBar3->TickFrequency = 0;
-			this->trackBar3->Value = 50;
-			this->trackBar3->Scroll += gcnew System::EventHandler(this, &MyForm::Exposure_Scroll);
+			this->trackBarExposure->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->trackBarExposure->Location = System::Drawing::Point(947, 163);
+			this->trackBarExposure->Margin = System::Windows::Forms::Padding(4);
+			this->trackBarExposure->Maximum = 100;
+			this->trackBarExposure->Name = L"trackBarExposure";
+			this->trackBarExposure->Size = System::Drawing::Size(221, 56);
+			this->trackBarExposure->TabIndex = 14;
+			this->trackBarExposure->TickFrequency = 0;
+			this->trackBarExposure->Value = 50;
+			this->trackBarExposure->Scroll += gcnew System::EventHandler(this, &MyForm::Exposure_Scroll);
 			// 
-			// panel4
+			// panelExposure
 			// 
-			this->panel4->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-			this->panel4->Controls->Add(this->exposureApply);
-			this->panel4->Controls->Add(this->label12);
-			this->panel4->Location = System::Drawing::Point(901, 183);
-			this->panel4->Margin = System::Windows::Forms::Padding(4);
-			this->panel4->Name = L"panel4";
-			this->panel4->Size = System::Drawing::Size(446, 67);
-			this->panel4->TabIndex = 18;
+			this->panelExposure->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->panelExposure->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+			this->panelExposure->Controls->Add(this->exposureApply);
+			this->panelExposure->Controls->Add(this->labelExposure);
+			this->panelExposure->Location = System::Drawing::Point(901, 130);
+			this->panelExposure->Margin = System::Windows::Forms::Padding(4);
+			this->panelExposure->Name = L"panelExposure";
+			this->panelExposure->Size = System::Drawing::Size(446, 67);
+			this->panelExposure->TabIndex = 18;
 			// 
 			// exposureApply
 			// 
@@ -528,66 +449,57 @@ namespace MyGUI {
 			this->exposureApply->UseVisualStyleBackColor = true;
 			this->exposureApply->Click += gcnew System::EventHandler(this, &MyForm::Exposure_Click);
 			// 
-			// label13
+			// labelHueHigh
 			// 
-			this->label13->AutoSize = true;
-			this->label13->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+			this->labelHueHigh->AutoSize = true;
+			this->labelHueHigh->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label13->ForeColor = System::Drawing::Color::Red;
-			this->label13->Location = System::Drawing::Point(1163, 366);
-			this->label13->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label13->Name = L"label13";
-			this->label13->Size = System::Drawing::Size(36, 18);
-			this->label13->TabIndex = 28;
-			this->label13->Text = L"High";
+			this->labelHueHigh->ForeColor = System::Drawing::Color::Red;
+			this->labelHueHigh->Location = System::Drawing::Point(1163, 313);
+			this->labelHueHigh->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelHueHigh->Name = L"labelHueHigh";
+			this->labelHueHigh->Size = System::Drawing::Size(36, 18);
+			this->labelHueHigh->TabIndex = 28;
+			this->labelHueHigh->Text = L"High";
 			// 
-			// label14
+			// labelHueLow
 			// 
-			this->label14->AutoSize = true;
-			this->label14->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+			this->labelHueLow->AutoSize = true;
+			this->labelHueLow->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label14->ForeColor = System::Drawing::Color::Blue;
-			this->label14->Location = System::Drawing::Point(912, 366);
-			this->label14->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label14->Name = L"label14";
-			this->label14->Size = System::Drawing::Size(33, 18);
-			this->label14->TabIndex = 27;
-			this->label14->Text = L"Low";
+			this->labelHueLow->ForeColor = System::Drawing::Color::Blue;
+			this->labelHueLow->Location = System::Drawing::Point(912, 313);
+			this->labelHueLow->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelHueLow->Name = L"labelHueLow";
+			this->labelHueLow->Size = System::Drawing::Size(33, 18);
+			this->labelHueLow->TabIndex = 27;
+			this->labelHueLow->Text = L"Low";
 			// 
-			// label15
+			// labelHue
 			// 
-			this->label15->AutoSize = true;
-			this->label15->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->labelHue->AutoSize = true;
+			this->labelHue->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label15->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->label15->Location = System::Drawing::Point(134, 4);
-			this->label15->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label15->Name = L"label15";
-			this->label15->Size = System::Drawing::Size(42, 23);
-			this->label15->TabIndex = 26;
-			this->label15->Text = L"Hue";
+			this->labelHue->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->labelHue->Location = System::Drawing::Point(134, 4);
+			this->labelHue->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelHue->Name = L"labelHue";
+			this->labelHue->Size = System::Drawing::Size(42, 23);
+			this->labelHue->TabIndex = 26;
+			this->labelHue->Text = L"Hue";
 			// 
-			// trackBar5
+			// panelHue
 			// 
-			this->trackBar5->Location = System::Drawing::Point(947, 366);
-			this->trackBar5->Margin = System::Windows::Forms::Padding(4);
-			this->trackBar5->Maximum = 100;
-			this->trackBar5->Name = L"trackBar5";
-			this->trackBar5->Size = System::Drawing::Size(221, 56);
-			this->trackBar5->TabIndex = 25;
-			this->trackBar5->TickFrequency = 0;
-			this->trackBar5->Value = 50;
-			// 
-			// panel5
-			// 
-			this->panel5->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-			this->panel5->Controls->Add(this->hueApply);
-			this->panel5->Controls->Add(this->label15);
-			this->panel5->Location = System::Drawing::Point(901, 333);
-			this->panel5->Margin = System::Windows::Forms::Padding(4);
-			this->panel5->Name = L"panel5";
-			this->panel5->Size = System::Drawing::Size(446, 67);
-			this->panel5->TabIndex = 29;
+			this->panelHue->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->panelHue->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+			this->panelHue->Controls->Add(this->hueApply);
+			this->panelHue->Controls->Add(this->labelHue);
+			this->panelHue->Controls->Add(this->trackBarHue);
+			this->panelHue->Location = System::Drawing::Point(901, 280);
+			this->panelHue->Margin = System::Windows::Forms::Padding(4);
+			this->panelHue->Name = L"panelHue";
+			this->panelHue->Size = System::Drawing::Size(446, 67);
+			this->panelHue->TabIndex = 29;
 			// 
 			// hueApply
 			// 
@@ -600,48 +512,61 @@ namespace MyGUI {
 			this->hueApply->UseVisualStyleBackColor = true;
 			this->hueApply->Click += gcnew System::EventHandler(this, &MyForm::Hue_Click);
 			// 
-			// label16
+			// trackBarHue
 			// 
-			this->label16->AutoSize = true;
-			this->label16->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+			this->trackBarHue->BackColor = System::Drawing::SystemColors::Control;
+			this->trackBarHue->Location = System::Drawing::Point(44, 31);
+			this->trackBarHue->Margin = System::Windows::Forms::Padding(4);
+			this->trackBarHue->Maximum = 360;
+			this->trackBarHue->Minimum = -360;
+			this->trackBarHue->Name = L"trackBarHue";
+			this->trackBarHue->Size = System::Drawing::Size(221, 56);
+			this->trackBarHue->TabIndex = 30;
+			this->trackBarHue->TickFrequency = 0;
+			this->trackBarHue->Scroll += gcnew System::EventHandler(this, &MyForm::Hue_Scroll);
+			// 
+			// labelSaturationHigh
+			// 
+			this->labelSaturationHigh->AutoSize = true;
+			this->labelSaturationHigh->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label16->ForeColor = System::Drawing::Color::Red;
-			this->label16->Location = System::Drawing::Point(1163, 441);
-			this->label16->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label16->Name = L"label16";
-			this->label16->Size = System::Drawing::Size(36, 18);
-			this->label16->TabIndex = 34;
-			this->label16->Text = L"High";
+			this->labelSaturationHigh->ForeColor = System::Drawing::Color::Red;
+			this->labelSaturationHigh->Location = System::Drawing::Point(1163, 388);
+			this->labelSaturationHigh->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelSaturationHigh->Name = L"labelSaturationHigh";
+			this->labelSaturationHigh->Size = System::Drawing::Size(36, 18);
+			this->labelSaturationHigh->TabIndex = 34;
+			this->labelSaturationHigh->Text = L"High";
 			// 
-			// label17
+			// labelSaturationLow
 			// 
-			this->label17->AutoSize = true;
-			this->label17->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+			this->labelSaturationLow->AutoSize = true;
+			this->labelSaturationLow->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label17->ForeColor = System::Drawing::Color::Blue;
-			this->label17->Location = System::Drawing::Point(912, 441);
-			this->label17->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label17->Name = L"label17";
-			this->label17->Size = System::Drawing::Size(33, 18);
-			this->label17->TabIndex = 33;
-			this->label17->Text = L"Low";
+			this->labelSaturationLow->ForeColor = System::Drawing::Color::Blue;
+			this->labelSaturationLow->Location = System::Drawing::Point(912, 388);
+			this->labelSaturationLow->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelSaturationLow->Name = L"labelSaturationLow";
+			this->labelSaturationLow->Size = System::Drawing::Size(33, 18);
+			this->labelSaturationLow->TabIndex = 33;
+			this->labelSaturationLow->Text = L"Low";
 			// 
-			// label18
+			// labelSaturation
 			// 
-			this->label18->AutoSize = true;
-			this->label18->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->labelSaturation->AutoSize = true;
+			this->labelSaturation->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label18->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->label18->Location = System::Drawing::Point(105, 4);
-			this->label18->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label18->Name = L"label18";
-			this->label18->Size = System::Drawing::Size(92, 23);
-			this->label18->TabIndex = 32;
-			this->label18->Text = L"Saturation";
+			this->labelSaturation->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->labelSaturation->Location = System::Drawing::Point(105, 4);
+			this->labelSaturation->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelSaturation->Name = L"labelSaturation";
+			this->labelSaturation->Size = System::Drawing::Size(92, 23);
+			this->labelSaturation->TabIndex = 32;
+			this->labelSaturation->Text = L"Saturation";
 			// 
 			// trackBar7
 			// 
-			this->trackBar7->Location = System::Drawing::Point(947, 441);
+			this->trackBar7->Location = System::Drawing::Point(947, 388);
 			this->trackBar7->Margin = System::Windows::Forms::Padding(4);
 			this->trackBar7->Maximum = 100;
 			this->trackBar7->Name = L"trackBar7";
@@ -650,19 +575,21 @@ namespace MyGUI {
 			this->trackBar7->TickFrequency = 0;
 			this->trackBar7->Value = 50;
 			// 
-			// panel6
+			// panelSaturation
 			// 
-			this->panel6->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-			this->panel6->Controls->Add(this->saturationApply);
-			this->panel6->Controls->Add(this->label18);
-			this->panel6->Location = System::Drawing::Point(901, 408);
-			this->panel6->Margin = System::Windows::Forms::Padding(4);
-			this->panel6->Name = L"panel6";
-			this->panel6->Size = System::Drawing::Size(446, 67);
-			this->panel6->TabIndex = 35;
+			this->panelSaturation->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->panelSaturation->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+			this->panelSaturation->Controls->Add(this->saturationApply);
+			this->panelSaturation->Controls->Add(this->labelSaturation);
+			this->panelSaturation->Location = System::Drawing::Point(901, 355);
+			this->panelSaturation->Margin = System::Windows::Forms::Padding(4);
+			this->panelSaturation->Name = L"panelSaturation";
+			this->panelSaturation->Size = System::Drawing::Size(446, 67);
+			this->panelSaturation->TabIndex = 35;
 			// 
 			// saturationApply
 			// 
+			this->saturationApply->DialogResult = System::Windows::Forms::DialogResult::Cancel;
 			this->saturationApply->Location = System::Drawing::Point(323, 19);
 			this->saturationApply->Margin = System::Windows::Forms::Padding(4);
 			this->saturationApply->Name = L"saturationApply";
@@ -672,79 +599,69 @@ namespace MyGUI {
 			this->saturationApply->UseVisualStyleBackColor = true;
 			this->saturationApply->Click += gcnew System::EventHandler(this, &MyForm::Saturation_Click);
 			// 
-			// trackBar8
+			// labelValueHigh
 			// 
-			this->trackBar8->Location = System::Drawing::Point(947, 366);
-			this->trackBar8->Margin = System::Windows::Forms::Padding(4);
-			this->trackBar8->Maximum = 50;
-			this->trackBar8->Minimum = -50;
-			this->trackBar8->Name = L"trackBar8";
-			this->trackBar8->Size = System::Drawing::Size(221, 56);
-			this->trackBar8->TabIndex = 30;
-			this->trackBar8->TickFrequency = 0;
-			this->trackBar8->Scroll += gcnew System::EventHandler(this, &MyForm::Hue_Scroll);
-			// 
-			// label19
-			// 
-			this->label19->AutoSize = true;
-			this->label19->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+			this->labelValueHigh->AutoSize = true;
+			this->labelValueHigh->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label19->ForeColor = System::Drawing::Color::Red;
-			this->label19->Location = System::Drawing::Point(1163, 516);
-			this->label19->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label19->Name = L"label19";
-			this->label19->Size = System::Drawing::Size(36, 18);
-			this->label19->TabIndex = 40;
-			this->label19->Text = L"High";
+			this->labelValueHigh->ForeColor = System::Drawing::Color::Red;
+			this->labelValueHigh->Location = System::Drawing::Point(1163, 463);
+			this->labelValueHigh->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelValueHigh->Name = L"labelValueHigh";
+			this->labelValueHigh->Size = System::Drawing::Size(36, 18);
+			this->labelValueHigh->TabIndex = 40;
+			this->labelValueHigh->Text = L"High";
 			// 
-			// label20
+			// labelValueLow
 			// 
-			this->label20->AutoSize = true;
-			this->label20->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+			this->labelValueLow->AutoSize = true;
+			this->labelValueLow->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label20->ForeColor = System::Drawing::Color::Blue;
-			this->label20->Location = System::Drawing::Point(912, 516);
-			this->label20->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label20->Name = L"label20";
-			this->label20->Size = System::Drawing::Size(33, 18);
-			this->label20->TabIndex = 39;
-			this->label20->Text = L"Low";
+			this->labelValueLow->ForeColor = System::Drawing::Color::Blue;
+			this->labelValueLow->Location = System::Drawing::Point(912, 463);
+			this->labelValueLow->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelValueLow->Name = L"labelValueLow";
+			this->labelValueLow->Size = System::Drawing::Size(33, 18);
+			this->labelValueLow->TabIndex = 39;
+			this->labelValueLow->Text = L"Low";
 			// 
-			// label21
+			// labelValue
 			// 
-			this->label21->AutoSize = true;
-			this->label21->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->labelValue->AutoSize = true;
+			this->labelValue->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label21->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->label21->Location = System::Drawing::Point(121, 4);
-			this->label21->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->label21->Name = L"label21";
-			this->label21->Size = System::Drawing::Size(55, 23);
-			this->label21->TabIndex = 38;
-			this->label21->Text = L"Value";
+			this->labelValue->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->labelValue->Location = System::Drawing::Point(121, 4);
+			this->labelValue->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->labelValue->Name = L"labelValue";
+			this->labelValue->Size = System::Drawing::Size(55, 23);
+			this->labelValue->TabIndex = 38;
+			this->labelValue->Text = L"Value";
 			// 
-			// trackBar9
+			// trackBarValue
 			// 
-			this->trackBar9->Location = System::Drawing::Point(947, 516);
-			this->trackBar9->Margin = System::Windows::Forms::Padding(4);
-			this->trackBar9->Maximum = 50;
-			this->trackBar9->Minimum = -50;
-			this->trackBar9->Name = L"trackBar9";
-			this->trackBar9->Size = System::Drawing::Size(221, 56);
-			this->trackBar9->TabIndex = 37;
-			this->trackBar9->TickFrequency = 0;
-			this->trackBar9->Scroll += gcnew System::EventHandler(this, &MyForm::Value_Scroll);
+			this->trackBarValue->BackColor = System::Drawing::SystemColors::Control;
+			this->trackBarValue->Location = System::Drawing::Point(947, 463);
+			this->trackBarValue->Margin = System::Windows::Forms::Padding(4);
+			this->trackBarValue->Maximum = 255;
+			this->trackBarValue->Minimum = -255;
+			this->trackBarValue->Name = L"trackBarValue";
+			this->trackBarValue->Size = System::Drawing::Size(221, 56);
+			this->trackBarValue->TabIndex = 37;
+			this->trackBarValue->TickFrequency = 0;
+			this->trackBarValue->Scroll += gcnew System::EventHandler(this, &MyForm::Value_Scroll);
 			// 
-			// panel7
+			// panelValue
 			// 
-			this->panel7->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-			this->panel7->Controls->Add(this->valueApply);
-			this->panel7->Controls->Add(this->label21);
-			this->panel7->Location = System::Drawing::Point(901, 483);
-			this->panel7->Margin = System::Windows::Forms::Padding(4);
-			this->panel7->Name = L"panel7";
-			this->panel7->Size = System::Drawing::Size(446, 67);
-			this->panel7->TabIndex = 41;
+			this->panelValue->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->panelValue->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+			this->panelValue->Controls->Add(this->valueApply);
+			this->panelValue->Controls->Add(this->labelValue);
+			this->panelValue->Location = System::Drawing::Point(901, 430);
+			this->panelValue->Margin = System::Windows::Forms::Padding(4);
+			this->panelValue->Name = L"panelValue";
+			this->panelValue->Size = System::Drawing::Size(446, 67);
+			this->panelValue->TabIndex = 41;
 			// 
 			// valueApply
 			// 
@@ -757,97 +674,117 @@ namespace MyGUI {
 			this->valueApply->UseVisualStyleBackColor = true;
 			this->valueApply->Click += gcnew System::EventHandler(this, &MyForm::Value_Click);
 			// 
-			// trackBar10
+			// trackBarSaturation
 			// 
-			this->trackBar10->Location = System::Drawing::Point(947, 441);
-			this->trackBar10->Margin = System::Windows::Forms::Padding(4);
-			this->trackBar10->Maximum = 50;
-			this->trackBar10->Minimum = -50;
-			this->trackBar10->Name = L"trackBar10";
-			this->trackBar10->Size = System::Drawing::Size(221, 56);
-			this->trackBar10->TabIndex = 36;
-			this->trackBar10->TickFrequency = 0;
-			this->trackBar10->Scroll += gcnew System::EventHandler(this, &MyForm::Saturation_Scroll);
+			this->trackBarSaturation->BackColor = System::Drawing::SystemColors::Control;
+			this->trackBarSaturation->Location = System::Drawing::Point(947, 388);
+			this->trackBarSaturation->Margin = System::Windows::Forms::Padding(4);
+			this->trackBarSaturation->Maximum = 255;
+			this->trackBarSaturation->Minimum = -255;
+			this->trackBarSaturation->Name = L"trackBarSaturation";
+			this->trackBarSaturation->Size = System::Drawing::Size(221, 56);
+			this->trackBarSaturation->TabIndex = 36;
+			this->trackBarSaturation->TickFrequency = 0;
+			this->trackBarSaturation->Scroll += gcnew System::EventHandler(this, &MyForm::Saturation_Scroll);
 			// 
 			// ContrastAutoAdjust
 			// 
-			this->ContrastAutoAdjust->Location = System::Drawing::Point(901, 574);
+			this->ContrastAutoAdjust->BackColor = System::Drawing::SystemColors::Info;
+			this->ContrastAutoAdjust->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->ContrastAutoAdjust->Location = System::Drawing::Point(901, 578);
 			this->ContrastAutoAdjust->Name = L"ContrastAutoAdjust";
 			this->ContrastAutoAdjust->Size = System::Drawing::Size(446, 34);
 			this->ContrastAutoAdjust->TabIndex = 42;
 			this->ContrastAutoAdjust->Text = L"Contrast Auto-adjust";
-			this->ContrastAutoAdjust->UseVisualStyleBackColor = true;
+			this->ContrastAutoAdjust->UseVisualStyleBackColor = false;
 			this->ContrastAutoAdjust->Click += gcnew System::EventHandler(this, &MyForm::ContrastAutoAdjust_Click);
+			// 
+			// UNDO
+			// 
+			this->UNDO->BackColor = System::Drawing::SystemColors::Highlight;
+			this->UNDO->Location = System::Drawing::Point(1354, 31);
+			this->UNDO->Name = L"UNDO";
+			this->UNDO->Size = System::Drawing::Size(124, 38);
+			this->UNDO->TabIndex = 43;
+			this->UNDO->Text = L"UNDO";
+			this->UNDO->UseVisualStyleBackColor = false;
+			this->UNDO->Click += gcnew System::EventHandler(this, &MyForm::UNDO_Click);
+			// 
+			// ExposureAutoAdjust
+			// 
+			this->ExposureAutoAdjust->BackColor = System::Drawing::SystemColors::Info;
+			this->ExposureAutoAdjust->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->ExposureAutoAdjust->Location = System::Drawing::Point(901, 529);
+			this->ExposureAutoAdjust->Name = L"ExposureAutoAdjust";
+			this->ExposureAutoAdjust->Size = System::Drawing::Size(446, 34);
+			this->ExposureAutoAdjust->TabIndex = 44;
+			this->ExposureAutoAdjust->Text = L"Exposure Auto-adjust";
+			this->ExposureAutoAdjust->UseVisualStyleBackColor = false;
+			this->ExposureAutoAdjust->Click += gcnew System::EventHandler(this, &MyForm::ExposureAutoAdjust_Click);
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1685, 838);
+			this->Controls->Add(this->labelExposureHigh);
+			this->Controls->Add(this->ExposureAutoAdjust);
+			this->Controls->Add(this->UNDO);
 			this->Controls->Add(this->ContrastAutoAdjust);
-			this->Controls->Add(this->label19);
-			this->Controls->Add(this->label20);
-			this->Controls->Add(this->trackBar9);
-			this->Controls->Add(this->panel7);
-			this->Controls->Add(this->trackBar10);
-			this->Controls->Add(this->label16);
-			this->Controls->Add(this->label17);
+			this->Controls->Add(this->labelValueHigh);
+			this->Controls->Add(this->labelValueLow);
+			this->Controls->Add(this->trackBarValue);
+			this->Controls->Add(this->panelValue);
+			this->Controls->Add(this->trackBarSaturation);
+			this->Controls->Add(this->labelSaturationHigh);
+			this->Controls->Add(this->labelSaturationLow);
 			this->Controls->Add(this->trackBar7);
-			this->Controls->Add(this->panel6);
-			this->Controls->Add(this->trackBar8);
-			this->Controls->Add(this->label13);
-			this->Controls->Add(this->label14);
-			this->Controls->Add(this->trackBar5);
-			this->Controls->Add(this->panel5);
-			this->Controls->Add(this->trackBar4);
-			this->Controls->Add(this->label7);
-			this->Controls->Add(this->label8);
-			this->Controls->Add(this->panel3);
-			this->Controls->Add(this->label10);
-			this->Controls->Add(this->label11);
-			this->Controls->Add(this->trackBar3);
-			this->Controls->Add(this->panel4);
-			this->Controls->Add(this->label2);
-			this->Controls->Add(this->label5);
-			this->Controls->Add(this->trackBar2);
-			this->Controls->Add(this->panel2);
-			this->Controls->Add(this->label4);
-			this->Controls->Add(this->label3);
-			this->Controls->Add(this->trackBar1);
+			this->Controls->Add(this->panelSaturation);
+			this->Controls->Add(this->labelHueHigh);
+			this->Controls->Add(this->labelHueLow);
+			this->Controls->Add(this->panelHue);
+			this->Controls->Add(this->trackBarContrast);
+			this->Controls->Add(this->labelContrastHigh);
+			this->Controls->Add(this->labelContrastLow);
+			this->Controls->Add(this->panelContrast);
+			this->Controls->Add(this->labelExposureLow);
+			this->Controls->Add(this->labelLuminanceHigh);
+			this->Controls->Add(this->labelLuminanceLow);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->menuStrip1);
-			this->Controls->Add(this->panel1);
+			this->Controls->Add(this->panelLuminance);
+			this->Controls->Add(this->trackBarExposure);
+			this->Controls->Add(this->panelExposure);
 			this->MainMenuStrip = this->menuStrip1;
 			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"MyForm";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"MyForm";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			this->menuStrip1->ResumeLayout(false);
 			this->menuStrip1->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->EndInit();
-			this->panel1->ResumeLayout(false);
-			this->panel1->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar2))->EndInit();
-			this->panel2->ResumeLayout(false);
-			this->panel2->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar4))->EndInit();
-			this->panel3->ResumeLayout(false);
-			this->panel3->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar3))->EndInit();
-			this->panel4->ResumeLayout(false);
-			this->panel4->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar5))->EndInit();
-			this->panel5->ResumeLayout(false);
-			this->panel5->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarLuminance))->EndInit();
+			this->panelLuminance->ResumeLayout(false);
+			this->panelLuminance->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarContrast))->EndInit();
+			this->panelContrast->ResumeLayout(false);
+			this->panelContrast->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarExposure))->EndInit();
+			this->panelExposure->ResumeLayout(false);
+			this->panelExposure->PerformLayout();
+			this->panelHue->ResumeLayout(false);
+			this->panelHue->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarHue))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar7))->EndInit();
-			this->panel6->ResumeLayout(false);
-			this->panel6->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar8))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar9))->EndInit();
-			this->panel7->ResumeLayout(false);
-			this->panel7->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar10))->EndInit();
+			this->panelSaturation->ResumeLayout(false);
+			this->panelSaturation->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarValue))->EndInit();
+			this->panelValue->ResumeLayout(false);
+			this->panelValue->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarSaturation))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -872,129 +809,139 @@ namespace MyGUI {
 					 editedImage = cv::imread("cache.jpg", cv::IMREAD_COLOR);
 				 }
 	}
-	private: System::Void trackBar1_Scroll(System::Object^  sender, System::EventArgs^  e) {
-				 // Acquire track bar value
-				 int trackBarValue = trackBar1->Value;
 
-				 // Initiate a Mat to save the cache.jpg image
-				 cv::Mat mainImage;
-				 mainImage = editedImage;
-				 colourTempAdjustment(&mainImage, trackBarValue);
-				 tempApply->Enabled = true;
-	}
-
-
-	private: System::Void tempApply_Click(System::Object^  sender, System::EventArgs^  e) {
-				 editedImage = tempAdjusted;
-				 tempApply->Enabled = false;
-	}
 	private: System::Void Luminance_Scroll(System::Object^  sender, System::EventArgs^  e) {
 				 // Acquire track bar value
-				 int trackBarValue2 = trackBar2->Value;
+				 int trackBarValueLuminance = trackBarLuminance->Value;				// Get Luminance slider value
 
 				 // Initiate a Mat to save the cache.jpg image
 				 cv::Mat mainImage;
-				 mainImage = editedImage;
-				 Luminance(&mainImage, trackBarValue2);
+				 mainImage = editedImage.clone();
+				 Luminance(&mainImage, trackBarValueLuminance);						// Call Luminance function
 				 luminanceApply->Enabled = true;
 	}
 	private: System::Void Luminance_Click(System::Object^  sender, System::EventArgs^  e) {
-				 editedImage = tempAdjusted;
+				 editedImage = tempAdjusted.clone();								// Luminance changes made permanent
 				 luminanceApply->Enabled = false;
+				 trackBarLuminance->Value = 0;										// Center slider
 	}
 	private: System::Void Exposure_Scroll(System::Object^  sender, System::EventArgs^  e) {
 				 // Acquire track bar value
-				 int trackBarValue3 = trackBar3->Value;
-				 int trackBarValue4 = trackBar4->Value;
+				 int trackBarValueExposure = trackBarExposure->Value;				// Get Exposure slider value
+				 int trackBarValueContrast = trackBarContrast->Value;				// Get Contrast slider value
 
 				 // Initiate a Mat to save the cache.jpg image
 				 cv::Mat mainImage;
-				 mainImage = editedImage;
-				 Exposure(&mainImage, trackBarValue3, trackBarValue4);
+				 mainImage = editedImage.clone();
+				 Exposure(&mainImage, trackBarValueExposure, trackBarValueContrast);	//Call Exposure function
 				 exposureApply->Enabled = true;
 	}
 	private: System::Void Exposure_Click(System::Object^  sender, System::EventArgs^  e) {
-				 editedImage = tempAdjusted;
+				 editedImage = tempAdjusted.clone();								// Exposure changes made permanent
 				 exposureApply->Enabled = false;
+				 trackBarExposure->Value = 50;										// Center slider
 	}
 
 	private: System::Void Contrast_Scroll(System::Object^  sender, System::EventArgs^  e) {
 				 // Acquire track bar value
-				 int trackBarValue4 = trackBar4->Value;
-				 int trackBarValue3 = trackBar3->Value;
+				 int trackBarValueExposure = trackBarExposure->Value;				// Get Exposure slider value
+				 int trackBarValueContrast = trackBarContrast->Value;				// Get Contrast slider value
 
 				 // Initiate a Mat to save the cache.jpg image
 				 cv::Mat mainImage;
-				 mainImage = editedImage;
-				 Contrast(&mainImage, trackBarValue4, trackBarValue3);
+				 mainImage = editedImage.clone();
+				 Contrast(&mainImage, trackBarValueExposure, trackBarValueContrast);	//Call Contrast function
 				 contrastApply->Enabled = true;
 	}
 	private: System::Void Contrast_Click(System::Object^  sender, System::EventArgs^  e) {
-				 editedImage = tempAdjusted;
+				 editedImage = tempAdjusted.clone();								// Contrast changes made permanent
 				 contrastApply->Enabled = false;
+				 trackBarContrast->Value = 50;										// Center slider
 	}
 	private: System::Void Hue_Scroll(System::Object^  sender, System::EventArgs^  e) {
 				 // Acquire track bar value
-				 int trackBarValueHue = trackBar8->Value;
-				 int trackBarValueSaturation = trackBar10->Value;
-				 int trackBarValueValue = trackBar9->Value;
+				 int trackBarValueHue = trackBarHue->Value;
+				 int trackBarValueSaturation = trackBarSaturation->Value;
+				 int trackBarValueValue = trackBarValue->Value;
 
 				 // Initiate a Mat to save the cache.jpg image
 				 cv::Mat mainImage;
-				 mainImage = editedImage;
-				 Hue(&mainImage, trackBarValueHue, trackBarValueSaturation, trackBarValueValue);
+				 mainImage = editedImage.clone();
+				 Hue(&mainImage, trackBarValueHue, trackBarValueSaturation, trackBarValueValue); //Call Hue function
 				 hueApply->Enabled = true;
 	}
 	private: System::Void Hue_Click(System::Object^  sender, System::EventArgs^  e) {
-				 editedImage = tempAdjusted;
+				 editedImage = tempAdjusted.clone();								// Hue changes made permanent
 				 hueApply->Enabled = false;
+				 trackBarHue->Value = 0;											// Center slider
 	}
 	private: System::Void Saturation_Scroll(System::Object^  sender, System::EventArgs^  e) {
 				 // Acquire track bar value
-				 int trackBarValueHue = trackBar8->Value;
-				 int trackBarValueSaturation = trackBar10->Value;
-				 int trackBarValueValue = trackBar9->Value;
+				 int trackBarValueHue = trackBarHue->Value;
+				 int trackBarValueSaturation = trackBarSaturation->Value;
+				 int trackBarValueValue = trackBarValue->Value;
 
 				 // Initiate a Mat to save the cache.jpg image
 				 cv::Mat mainImage;
-				 mainImage = editedImage;
-				 Saturation(&mainImage, trackBarValueHue, trackBarValueSaturation, trackBarValueValue);
+				 mainImage = editedImage.clone();
+				 Saturation(&mainImage, trackBarValueHue, trackBarValueSaturation, trackBarValueValue);	// Call Saturation function
 				 saturationApply->Enabled = true;
 	}
 	private: System::Void Saturation_Click(System::Object^  sender, System::EventArgs^  e) {
-				 editedImage = tempAdjusted;
+				 editedImage = tempAdjusted.clone();								// Saturation changes made permanent
 				 saturationApply->Enabled = false;
+				 trackBarSaturation->Value = 0;										// Center slider
 	}
 	private: System::Void Value_Scroll(System::Object^  sender, System::EventArgs^  e) {
 				 // Acquire track bar value
-				 int trackBarValueHue = trackBar8->Value;
-				 int trackBarValueSaturation = trackBar10->Value;
-				 int trackBarValueValue = trackBar9->Value;
+				 int trackBarValueHue = trackBarHue->Value;
+				 int trackBarValueSaturation = trackBarSaturation->Value;
+				 int trackBarValueValue = trackBarValue->Value;
 
 				 // Initiate a Mat to save the cache.jpg image
 				 cv::Mat mainImage;
-				 mainImage = editedImage;
-				 Value(&mainImage, trackBarValueHue, trackBarValueSaturation, trackBarValueValue);
+				 mainImage = editedImage.clone();
+				 Value(&mainImage, trackBarValueHue, trackBarValueSaturation, trackBarValueValue);	//Call Value function
 				 valueApply->Enabled = true;
 	}
 	private: System::Void Value_Click(System::Object^  sender, System::EventArgs^  e) {
-				 editedImage = tempAdjusted;
+				 editedImage = tempAdjusted.clone();								// Value changes made permanent
 				 valueApply->Enabled = false;
+				 trackBarValue->Value = 0;											// Center slider
 	}
 	private: System::Void ContrastAutoAdjust_Click(System::Object^  sender, System::EventArgs^  e) {
 				 cv::Mat img;
 				 std::vector<cv::Mat> channels;
-				 cvtColor(editedImage, img, CV_BGR2YCrCb);			// Change the color image from BGR to YCrCb format
-				 cv::split(img, channels);						// Split the image into channels
-				 cv::equalizeHist(channels[0], channels[0]);		// Equalize histogram on the 1st channel (Y)
-				 cv::merge(channels, img);						// Merge the 3 channels 
-				 cvtColor(img, tempAdjusted, CV_YCrCb2BGR);		// Back to BGR
-				 //imshow("Histogram Equalized Image", img);	// Shows image
-				 refreshPicBox(tempAdjusted);
-				 editedImage = tempAdjusted;
+				 cvtColor(editedImage, img, CV_BGR2YCrCb);							// Change the color image from BGR to YCrCb format
+				 cv::split(img, channels);											// Split the image into channels
+				 cv::equalizeHist(channels[0], channels[0]);						// Equalize histogram on the 1st channel (Y)
+				 cv::merge(channels, img);											// Merge the 3 channels 
+				 cvtColor(img, tempAdjusted, CV_YCrCb2BGR);							// Back to BGR
+				 //imshow("Histogram Equalized Image", img);						// Shows image
+				 refreshPicBox(tempAdjusted);										// Update picture displayed
+				 editedImage = tempAdjusted.clone();
 				 //valueApply->Enabled = false;
 	}
-
+	private: System::Void ExposureAutoAdjust_Click(System::Object^  sender, System::EventArgs^  e) {
+				 double min, max, alpha, beta;
+				 cv::Mat tempIm = editedImage.clone();
+				 cv::minMaxLoc(tempIm, &min, &max);
+				 alpha = 255 / (max - min);
+				 beta = min * alpha;
+				 tempIm.convertTo(tempAdjusted, -1, alpha, beta);					//Linear Transform per pixel
+				 refreshPicBox(tempAdjusted);										// Update picture displayed
+				 editedImage = tempAdjusted.clone();
+	}
+	private: System::Void UNDO_Click(System::Object^  sender, System::EventArgs^  e) {
+				 refreshPicBox(editedImage);										// Revert to previous image
+				 //Reposition sliders to the center
+				 trackBarLuminance->Value = 0;
+				 trackBarExposure->Value = 50;
+				 trackBarContrast->Value = 50;
+				 trackBarHue->Value = 0;
+				 trackBarSaturation->Value = 0;
+				 trackBarValue->Value = 0;
+	}
 			 // Functions defined in opencv
 			 cv::Mat readImage()
 			 {
@@ -1009,269 +956,136 @@ namespace MyGUI {
 			 {
 				 cv::Mat tempImage;
 				 tempImage = *mainImage;
-				 if (tempImage.empty())                      // Check for invalid input
+				 if (tempImage.empty())											   // Check for invalid input
 				 {
 					 return -1;
 				 }
-				 namedWindow(imageDes, cv::WINDOW_AUTOSIZE);		// Create a window for display.
-				 imshow(imageDes, tempImage);                // Show our image inside it.
-				 cv::waitKey(0);									// Wait for a keystroke in the window
+				 namedWindow(imageDes, cv::WINDOW_AUTOSIZE);						// Create a window for display.
+				 imshow(imageDes, tempImage);									    // Show our image inside it.
+				 cv::waitKey(0);													// Wait for a keystroke in the window
 				 return 0;
 			 }
 
-			 //Colour temperature adjustment
-			 int colourTempAdjustment(cv::Mat *mainImage, int tempValue)
-			 {
-				 int absTemp = abs(tempValue);
-				 cv::Mat resolvedImage[3];
-				 cv::Mat blueChannel, greenChannel, redChannel;
-				 split(*mainImage, resolvedImage);	// Splitting the BGR channels
-
-				 // Create warmer image
-				 // Done by increasing the red channel and decreasing the blue channel 
-				 // and increasing saturation of the image in HSV colour space
-
-				 // Create a cooler image
-				 // Done by decreasing the red channel and increasing blue channel
-				 // and decreasing the saturation of the image in the HSV colour image
-
-				 // Spline interpolation 
-				 std::vector<double> X(5), Y(5), Z(5);
-				 X[0] = 0; X[1] = 64; X[2] = 128; X[3] = 192; X[4] = 255;
-
-				 Y[0] = 5 * absTemp;  Y[1] = 64 + (7 * absTemp); Y[2] = 128 + (8 * absTemp);
-				 Y[3] = 192 + (10 * absTemp); Y[4] = 255;
-
-				 Z[0] = 0; Z[1] = 64 - (5 * absTemp); Z[2] = 128 - (7 * absTemp);
-				 Z[3] = 192 - (8 * absTemp); Z[4] = 255 - (10 * absTemp);
-
-				 // Creating spline functions
-				 tk::spline incIntensity, decIntensity;
-				 incIntensity.set_points(X, Y);
-				 decIntensity.set_points(X, Z);
-
-				 redChannel = resolvedImage[2]; //+ (10 * tempValue); 
-				 blueChannel = resolvedImage[0]; //- (10 * tempValue);
-				 greenChannel = resolvedImage[1];
-
-				 int width = redChannel.cols;
-				 int height = redChannel.rows;
-				 int nElements = width*height;
-
-				 // Calculating interpolated value for each matrix element
-				 uchar* p1 = resolvedImage[2].data;
-				 uchar* p2 = resolvedImage[0].data;
-
-				 for (int i = 0; i < nElements; ++i)
-				 {
-					 if (tempValue >= 0)
-					 {
-						 p1[i] = (uchar)(incIntensity(p1[i]));
-						 p2[i] = (uchar)(decIntensity(p2[i]));
-					 }
-					 else
-					 {
-						 p1[i] = (uchar)(decIntensity(p1[i]));
-						 p2[i] = (uchar)(incIntensity(p2[i]));
-					 }
-				 }
-
-				 // Merging the BGR channels 
-				 std::vector < cv::Mat > arrayToMerge;
-				 arrayToMerge.push_back(blueChannel);
-				 arrayToMerge.push_back(greenChannel);
-				 arrayToMerge.push_back(redChannel);
-
-				 // Image with altered red abd blue channels
-				 cv::Mat bgrAdjusted;
-				 merge(arrayToMerge, bgrAdjusted);
-
-				 // Convert image to HSV colour space and splitting layers for saturation adjustment
-				 cv::Mat hsvImage;
-				 cv::Mat hsvResolved[3];
-				 cvtColor(bgrAdjusted, hsvImage, CV_BGR2HSV);
-				 split(hsvImage, hsvResolved);
-
-				 // Adjusting saturation
-				 cv::Mat hNew, sNew, vNew;
-				 hNew = hsvResolved[0];
-				 sNew = hsvResolved[1]; // +(10 * tempValue);
-				 vNew = hsvResolved[2];
-
-				 // Calculate interpolated value for saturation layer
-				 uchar* p3 = sNew.data;
-
-				 for (int i = 0; i < nElements; ++i)
-				 {
-					 if (tempValue >= 0)
-					 {
-						 p3[i] = (uchar)(incIntensity(p3[i]));
-					 }
-					 else
-					 {
-						 p3[i] = (uchar)(decIntensity(p3[i]));
-					 }
-				 }
-
-				 // Merging the HSV channels 
-				 std::vector < cv::Mat > arrayToMergeHSV;
-				 arrayToMergeHSV.push_back(hNew);
-				 arrayToMergeHSV.push_back(sNew);
-				 arrayToMergeHSV.push_back(vNew);
-
-				 // Converting the image back to BGR
-				 cv::Mat hsvAdjusted;			// Image with altered saturation channel
-				 merge(arrayToMergeHSV, hsvAdjusted);
-				 cvtColor(hsvAdjusted, tempAdjusted, CV_HSV2BGR);
-				 refreshPicBox(tempAdjusted);
-				 return 0;
-			 }
-
-			 void Luminance(cv::Mat *mainImage, int tempValue)
+			 void Luminance(cv::Mat *mainImageLum, int tempValue)
 			 {
 				 cv::Mat img;
-				 cvtColor(editedImage, img, CV_BGR2YCrCb);			// Change the color image from BGR to YCrCb format
+				 cvtColor(*mainImageLum, img, CV_BGR2YCrCb);						// Change the color image from BGR to YCrCb format
 
 				 //Initialize
-				 int luminosity = tempValue;
+				 int luminosity = tempValue;										// Slider Value
 //				 int luminosity = elem4 - 255;
 
-				 // Loop for each pixel in each HSV plane
+				 // Loop for each pixel in Y plane
 				 for (int y = 0; y<img.cols; y++)
 				 {
 					 for (int x = 0; x<img.rows; x++)
 					 {
 						 int cur1 = img.at<cv::Vec3b>(cv::Point(y, x))[0];			// Y-Luminosity Plane
-						 cur1 += luminosity;
-						 if (cur1 < 0) cur1 = 0; else if (cur1 > 255) cur1 = 255;
-						 img.at<cv::Vec3b>(cv::Point(y, x))[0] = cur1;
+						 cur1 += luminosity;										// Change 
+						 if (cur1 < 0) cur1 = 0; else if (cur1 > 255) cur1 = 255;	// Check thresholds
+						 img.at<cv::Vec3b>(cv::Point(y, x))[0] = cur1;				// Adjust pixel
 					 }
 				 }
-				 cvtColor(img, tempAdjusted, CV_YCrCb2BGR);			// Back to BGR
-	//			 imshow("image", tempAdjusted);						// Display adjusted image
-				 refreshPicBox(tempAdjusted);
+				 cvtColor(img, tempAdjusted, CV_YCrCb2BGR);							// Back to BGR
+				 //imshow("image", tempAdjusted);									// Display adjusted image
+				 refreshPicBox(tempAdjusted);										// Update picture displayed
 			 }
-			 void Exposure(cv::Mat *mainImage, int tempValue, int tempValue1)
+			 void Exposure(cv::Mat *mainImageEx, int tempValueExposure, int tempValueContrast)
 			 {
-				 int exposure = tempValue - 50;
-				 double ContrastNew = tempValue1 / 50.0;				// Or divide by smaller no. to increase range
-				 editedImage.convertTo(tempAdjusted, -1, ContrastNew, exposure);	//Linear Transform - per pixel - contrast*im+brightness
-	//			 imshow("image", tempAdjusted);
-				 refreshPicBox(tempAdjusted);
+				 int exposure = tempValueExposure - 50;
+				 double ContrastNew = tempValueContrast / 50.0;						// Or divide by smaller no. to increase range
+				 cv::Mat temp = *mainImageEx;
+				 temp.convertTo(tempAdjusted, -1, ContrastNew, exposure);			//Linear Transform - per pixel
+				//imshow("image", tempAdjusted);
+				 refreshPicBox(tempAdjusted);										// Update picture displayed
 			 }
-			 void Contrast(cv::Mat *mainImage, int tempValue, int tempValue1)
+			 void Contrast(cv::Mat *mainImageCon, int tempValueExposure, int tempValueContrast)
 			 {
-				 int exposure = tempValue1 - 50;
-				 double ContrastNew = tempValue / 50.0;				// Or divide by smaller no. to increase range
-				 editedImage.convertTo(tempAdjusted, -1, ContrastNew, exposure);	//Linear Transform - per pixel - contrast*im+brightness
+				 int exposure = tempValueExposure - 50;
+				 double ContrastNew = tempValueContrast / 50.0;						// Or divide by smaller no. to increase range
+				 cv::Mat temp = *mainImageCon;
+				 temp.convertTo(tempAdjusted, -1, ContrastNew, exposure);			//Linear Transform - per pixel - contrast*im+brightness
 	//			 imshow("image", tempAdjusted);
-				 refreshPicBox(tempAdjusted);
+				 refreshPicBox(tempAdjusted);										// Update picture displayed
 			 }
 
-			 void Hue(cv::Mat *mainImage, int tempValueHue, int tempValueSaturation, int tempValueValue)
+			 void Hue(cv::Mat *mainImageHue, int tempValueHue, int tempValueSaturation, int tempValueValue)
 			 {
 				 cv::Mat img;
-				 cvtColor(editedImage, img, CV_BGR2HSV);		//Convert from BGR to HSV
+				 cvtColor(*mainImageHue, img, CV_BGR2HSV);							//Convert from BGR to HSV
 				 //Initialize
-				 int hue = tempValueHue;
-				 int saturation = tempValueSaturation;
-				 int value = tempValueValue;
-				 // Loop for each pixel in each HSV plane
+				 int hue = tempValueHue;											// Hue slider value
+
+				 // Loop for each pixel in Hue plane
 				 for (int y = 0; y<img.cols; y++)
 				 {
 					 for (int x = 0; x<img.rows; x++)
 					 {
 						 int cur1 = img.at<cv::Vec3b>(cv::Point(y, x))[0];			// Hue Plane
-						 int cur2 = img.at<cv::Vec3b>(cv::Point(y, x))[1];			// Saturation Plane
-						 int cur3 = img.at<cv::Vec3b>(cv::Point(y, x))[2];			// Value Plane
+					//	 int cur2 = img.at<cv::Vec3b>(cv::Point(y, x))[1];			// Saturation Plane
+					//	 int cur3 = img.at<cv::Vec3b>(cv::Point(y, x))[2];			// Value Plane
 						 cur1 += hue;
-						 cur2 += saturation;
-						 cur3 += value;
+						// cur2 += saturation;
+						 //cur3 += value;
 
-						 if (cur1 < 0) cur1 = 0; else if (cur1 > 255) cur1 = 255;
-						 if (cur2 < 0) cur2 = 0; else if (cur2 > 255) cur2 = 255;
-						 if (cur3 < 0) cur3 = 0; else if (cur3 > 255) cur3 = 255;
+						 if (cur1 < 0) cur1 = 0; else if (cur1 > 255) cur1 = 255;	// Check thresholds
+					//	 if (cur2 < 0) cur2 = 0; else if (cur2 > 255) cur2 = 255;
+					//	 if (cur3 < 0) cur3 = 0; else if (cur3 > 255) cur3 = 255;
 
-						 img.at<cv::Vec3b>(cv::Point(y, x))[0] = cur1;
-						 img.at<cv::Vec3b>(cv::Point(y, x))[1] = cur2;
-						 img.at<cv::Vec3b>(cv::Point(y, x))[2] = cur3;
+						 img.at<cv::Vec3b>(cv::Point(y, x))[0] = cur1;				// Adjust pixel Hue
+					//	 img.at<cv::Vec3b>(cv::Point(y, x))[1] = cur2;
+					//	 img.at<cv::Vec3b>(cv::Point(y, x))[2] = cur3;
 					 }
 				 }
-				 cvtColor(img, tempAdjusted, CV_HSV2BGR);			// Convert HSV to BGR
-	//			 imshow("image", tempAdjusted);						// Dispay adjusted image
-				 refreshPicBox(tempAdjusted);
+				 cvtColor(img, tempAdjusted, CV_HSV2BGR);							// Convert HSV to BGR
+	//			 imshow("image", tempAdjusted);										// Dispay adjusted image
+				 refreshPicBox(tempAdjusted);										// Update picture displayed
 			 }
 
-			 void Saturation(cv::Mat *mainImage, int tempValueHue, int tempValueSaturation, int tempValueValue)
+			 void Saturation(cv::Mat *mainImageSat, int tempValueHue, int tempValueSaturation, int tempValueValue)
 			 {
 				 cv::Mat img;
-				 cvtColor(editedImage, img, CV_BGR2HSV);		//Convert from BGR to HSV
+				 cvtColor(*mainImageSat, img, CV_BGR2HSV);							//Convert from BGR to HSV
 				 //Initialize
-				 int hue = tempValueHue;
-				 int saturation = tempValueSaturation;
-				 int value = tempValueValue;
-				 // Loop for each pixel in each HSV plane
+				 int saturation = tempValueSaturation;								// Saturation Slider value
+				 // Loop for each pixel in Saturation plane
 				 for (int y = 0; y<img.cols; y++)
 				 {
 					 for (int x = 0; x<img.rows; x++)
 					 {
-						 int cur1 = img.at<cv::Vec3b>(cv::Point(y, x))[0];			// Hue Plane
 						 int cur2 = img.at<cv::Vec3b>(cv::Point(y, x))[1];			// Saturation Plane
-						 int cur3 = img.at<cv::Vec3b>(cv::Point(y, x))[2];			// Value Plane
-						 cur1 += hue;
-						 cur2 += saturation;
-						 cur3 += value;
-
-						 if (cur1 < 0) cur1 = 0; else if (cur1 > 255) cur1 = 255;
-						 if (cur2 < 0) cur2 = 0; else if (cur2 > 255) cur2 = 255;
-						 if (cur3 < 0) cur3 = 0; else if (cur3 > 255) cur3 = 255;
-
-						 img.at<cv::Vec3b>(cv::Point(y, x))[0] = cur1;
-						 img.at<cv::Vec3b>(cv::Point(y, x))[1] = cur2;
-						 img.at<cv::Vec3b>(cv::Point(y, x))[2] = cur3;
+						 cur2 += saturation;			
+						 if (cur2 < 0) cur2 = 0; else if (cur2 > 255) cur2 = 255;	// Check thresholds
+						 img.at<cv::Vec3b>(cv::Point(y, x))[1] = cur2;				// Adjust pixel Saturation
 					 }
 				 }
-				 cvtColor(img, tempAdjusted, CV_HSV2BGR);			// Convert HSV to BGR
-				 //	imshow("image", tempAdjusted);						// Dispay adjusted image
-				 refreshPicBox(tempAdjusted);
+				 cvtColor(img, tempAdjusted, CV_HSV2BGR);							// Convert HSV to BGR
+				 //	imshow("image", tempAdjusted);									// Dispay adjusted image
+				 refreshPicBox(tempAdjusted);										// Update picture displayed
 			 }
 			 
 
-			 void Value(cv::Mat *mainImage, int tempValueHue, int tempValueSaturation, int tempValueValue)
+			 void Value(cv::Mat *mainImageVal, int tempValueHue, int tempValueSaturation, int tempValueValue)
 			 {
 				 cv::Mat img;
-				 cvtColor(editedImage, img, CV_BGR2HSV);		//Convert from BGR to HSV
+				 cvtColor(*mainImageVal, img, CV_BGR2HSV);							//Convert from BGR to HSV
 				 //Initialize
-				 int hue = tempValueHue;
-				 int saturation = tempValueSaturation;
-				 int value = tempValueValue;
-				 // Loop for each pixel in each HSV plane
+				 int value = tempValueValue;										// Value Slider Value
+				 // Loop for each pixel in Value plane
 				 for (int y = 0; y<img.cols; y++)
 				 {
 					 for (int x = 0; x<img.rows; x++)
 					 {
-						 int cur1 = img.at<cv::Vec3b>(cv::Point(y, x))[0];			// Hue Plane
-						 int cur2 = img.at<cv::Vec3b>(cv::Point(y, x))[1];			// Saturation Plane
 						 int cur3 = img.at<cv::Vec3b>(cv::Point(y, x))[2];			// Value Plane
-						 cur1 += hue;
-						 cur2 += saturation;
 						 cur3 += value;
-
-						 if (cur1 < 0) cur1 = 0; else if (cur1 > 255) cur1 = 255;
-						 if (cur2 < 0) cur2 = 0; else if (cur2 > 255) cur2 = 255;
-						 if (cur3 < 0) cur3 = 0; else if (cur3 > 255) cur3 = 255;
-
-						 img.at<cv::Vec3b>(cv::Point(y, x))[0] = cur1;
-						 img.at<cv::Vec3b>(cv::Point(y, x))[1] = cur2;
-						 img.at<cv::Vec3b>(cv::Point(y, x))[2] = cur3;
+						 if (cur3 < 0) cur3 = 0; else if (cur3 > 255) cur3 = 255;	// Check Threshholds
+						 img.at<cv::Vec3b>(cv::Point(y, x))[2] = cur3;				// Adjust pixel Value 
 					 }
 				 }
-				 cvtColor(img, tempAdjusted, CV_HSV2BGR);			// Convert HSV to BGR
-				 //			 imshow("image", tempAdjusted);						// Dispay adjusted image
-				 refreshPicBox(tempAdjusted);
+				 cvtColor(img, tempAdjusted, CV_HSV2BGR);							// Convert HSV to BGR
+				 refreshPicBox(tempAdjusted);										// Update Picture displayed
 			 }
 			 
-
 			 int refreshPicBox(cv::Mat displayImage)
 			 {
 				 System::Drawing::Graphics^ graphics = pictureBox1->CreateGraphics();
@@ -1282,14 +1096,8 @@ namespace MyGUI {
 				 return 0;
 			 }
 
-
-
 private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 }
 
-
-
-
 };
-
 }
