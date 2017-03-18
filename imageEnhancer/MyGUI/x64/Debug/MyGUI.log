@@ -1,0 +1,48 @@
+﻿Build started 2017-03-18 ප.ව. 3.13.36.
+     1>Project "D:\ImageEnhancing\imageEnhancer\MyGUI\MyGUI.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /IC:\opencv\build\install\include /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\\" /AI"C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral" /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\Facades\\" /Zi /clr /nologo /W3 /WX- /Od /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\mscorlib.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Drawing.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Windows.Forms.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Xml.dll" /errorReport:prompt /clr:nostdlib MyForm.cpp
+         MyForm.cpp
+     1>d:\imageenhancing\imageenhancer\mygui\spline.h(58): warning C4267: 'return' : conversion from 'size_t' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\spline.h(62): warning C4267: 'return' : conversion from 'size_t' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\spline.h(147): warning C4267: 'return' : conversion from 'size_t' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\spline.h(291): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\MyForm.h(779): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\MyForm.h(780): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\MyForm.h(1084): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\MyForm.h(1089): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\MyForm.h(1096): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\MyForm.h(1102): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\MyForm.h(1109): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\MyForm.h(1114): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\MyForm.h(1171): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\MyForm.h(1176): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\MyForm.h(1183): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\MyForm.h(1189): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\MyForm.h(1196): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>d:\imageenhancing\imageenhancer\mygui\MyForm.h(1201): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>c:\opencv\build\install\include\opencv2\core\cvstd.hpp(599): warning C4793: 'cv::String::String' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\build\install\include\opencv2\core\mat.inl.hpp(392): warning C4793: 'cv::Mat::Mat' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\build\install\include\opencv2\core\mat.inl.hpp(681): warning C4793: 'cv::Mat::release' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\build\install\include\opencv2\core\mat.inl.hpp(1872): warning C4793: 'cv::SparseMat::addref' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\build\install\include\opencv2\core\mat.inl.hpp(3473): warning C4793: 'cv::UMat::addref' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\build\install\include\opencv2\core\mat.inl.hpp(580): warning C4793: 'cv::Mat::operator=' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\build\install\include\opencv2\core\ptr.inl.hpp(67): warning C4793: 'cv::detail::PtrOwner::incRef' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+     1>c:\opencv\build\install\include\opencv2\core\ptr.inl.hpp(72): warning C4793: 'cv::detail::PtrOwner::decRef' : function compiled as native :
+         	Found an intrinsic not supported in managed code
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\ImageEnhancing\imageEnhancer\x64\Debug\MyGUI.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\opencv\build\install\x64\vc12\lib opencv_core310d.lib opencv_highgui310d.lib opencv_imgcodecs310d.lib opencv_imgproc310d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /ASSEMBLYRESOURCE:x64\Debug\MyGUI.MyForm.resources /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"D:\ImageEnhancing\imageEnhancer\x64\Debug\MyGUI.pdb" /ASSEMBLYDEBUG /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"main" /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X64 x64\Debug\MyForm.obj
+         "x64\Debug\.NETFramework,Version=v4.6.2.AssemblyAttributes.obj"
+         MyGUI.vcxproj -> D:\ImageEnhancing\imageEnhancer\x64\Debug\MyGUI.exe
+     1>Done Building Project "D:\ImageEnhancing\imageEnhancer\MyGUI\MyGUI.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.59
