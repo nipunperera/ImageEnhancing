@@ -9,8 +9,9 @@
 #include <msclr\marshal_cppstd.h>
 #include"exif.h"
 #include"exif.cpp"
+#include<stdio.h>
 
-//#include "pcdushantha.cpp"
+
 
 cv::Mat editedImage;
 cv::Mat tempAdjusted;
@@ -18,7 +19,22 @@ cv::Mat tempAdjusted;
 int Sharpsigma = 0;
 int Sharpweight = 0;
 
+std::string cameraMake = "";
+std::string cameraModel = "";
+std::string imageWidth = "";
+std::string imageHeight = "";
+std::string imageDate = "";
+std::string imageExposure= "";
+std::string imageIso = "";
+
+
+
+
+
+
 std::string sharpningType;
+
+
 
 namespace MyGUI {
 
@@ -81,7 +97,8 @@ namespace MyGUI {
 	private: System::Windows::Forms::Label^  label8;
 	private: System::Windows::Forms::Label^  label7;
 	private: System::Windows::Forms::Label^  label6;
-	private: System::Windows::Forms::ComboBox^  comboBox1;
+	private: System::Windows::Forms::ComboBox^  sharpningSelect;
+
 
 	private: System::Windows::Forms::Button^  EXIF;
 
@@ -120,7 +137,7 @@ namespace MyGUI {
 			this->RGBHist = (gcnew System::Windows::Forms::PictureBox());
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->shapning = (gcnew System::Windows::Forms::Panel());
-			this->comboBox1 = (gcnew System::Windows::Forms::ComboBox());
+			this->sharpningSelect = (gcnew System::Windows::Forms::ComboBox());
 			this->label9 = (gcnew System::Windows::Forms::Label());
 			this->label8 = (gcnew System::Windows::Forms::Label());
 			this->label7 = (gcnew System::Windows::Forms::Label());
@@ -293,7 +310,7 @@ namespace MyGUI {
 			// 
 			// shapning
 			// 
-			this->shapning->Controls->Add(this->comboBox1);
+			this->shapning->Controls->Add(this->sharpningSelect);
 			this->shapning->Controls->Add(this->label9);
 			this->shapning->Controls->Add(this->label8);
 			this->shapning->Controls->Add(this->label7);
@@ -308,16 +325,16 @@ namespace MyGUI {
 			this->shapning->Size = System::Drawing::Size(510, 312);
 			this->shapning->TabIndex = 11;
 			// 
-			// comboBox1
+			// sharpningSelect
 			// 
-			this->comboBox1->BackColor = System::Drawing::SystemColors::ScrollBar;
-			this->comboBox1->FormattingEnabled = true;
-			this->comboBox1->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Gaussian", L"Luminance" });
-			this->comboBox1->Location = System::Drawing::Point(194, 9);
-			this->comboBox1->Name = L"comboBox1";
-			this->comboBox1->Size = System::Drawing::Size(306, 33);
-			this->comboBox1->TabIndex = 12;
-			this->comboBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::comboBox1_SelectedIndexChanged);
+			this->sharpningSelect->BackColor = System::Drawing::SystemColors::ScrollBar;
+			this->sharpningSelect->FormattingEnabled = true;
+			this->sharpningSelect->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Gaussian", L"Luminance" });
+			this->sharpningSelect->Location = System::Drawing::Point(194, 9);
+			this->sharpningSelect->Name = L"sharpningSelect";
+			this->sharpningSelect->Size = System::Drawing::Size(306, 33);
+			this->sharpningSelect->TabIndex = 12;
+			this->sharpningSelect->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::sharpningSelect_SelectedIndexChanged);
 			// 
 			// label9
 			// 
@@ -407,7 +424,7 @@ namespace MyGUI {
 			// 
 			// EXIF
 			// 
-			this->EXIF->Location = System::Drawing::Point(2020, 508);
+			this->EXIF->Location = System::Drawing::Point(509, 984);
 			this->EXIF->Name = L"EXIF";
 			this->EXIF->Size = System::Drawing::Size(238, 48);
 			this->EXIF->TabIndex = 13;
@@ -469,6 +486,43 @@ namespace MyGUI {
 			pictureBox1->Load(openFileDialog1->FileName);
 			pictureBox1->Image->Save("cache.jpg", System::Drawing::Imaging::ImageFormat::Jpeg);
 			editedImage = cv::imread("cache.jpg", cv::IMREAD_COLOR);
+
+			FILE *fp = fopen("cache.jpg", "rb");
+
+			//MessageBox::Show("EXIF");
+			if (!fp) {
+				MessageBox::Show("Can't open file");
+				
+			}
+			fseek(fp, 0, SEEK_END);
+			unsigned long fsize = ftell(fp);
+			rewind(fp);
+			unsigned char *buf = new unsigned char[fsize];
+			if (fread(buf, 1, fsize, fp) != fsize) {
+				MessageBox::Show("Can't read file");
+				delete[] buf;
+				
+			}
+			fclose(fp);
+
+			// Parse EXIF
+			easyexif::EXIFInfo result;
+			int code = result.parseFrom(buf, fsize);
+			delete[] buf;
+			if (code) {
+				MessageBox::Show("Error parsing EXIF");
+				
+			}
+
+			cameraMake=result.Make.c_str();
+			cameraModel = result.Model.c_str();
+			imageWidth =std::to_string( result.ImageWidth);
+			imageHeight = std::to_string(result.ImageHeight);
+			imageDate = result.DateTime.c_str();
+			imageExposure = std::to_string((unsigned)(1.0 / result.ExposureTime));
+			imageIso = std::to_string(result.ISOSpeedRatings);
+
+
 			refreshHistBox(Histogram(&editedImage));
 		}
 	}
@@ -506,6 +560,8 @@ namespace MyGUI {
 		refreshHistBox(Histogram(&mainImage));
 		
 			 }
+	
+
 	private: System::Void weightTrack_Scroll(System::Object^  sender, System::EventArgs^  e ) {
 
 		// Acquire track bar value
@@ -759,9 +815,7 @@ namespace MyGUI {
 
 				 cv::Mat b_hist, g_hist, r_hist, hist, shadowHist, highlightHist;
 
-				// b_hist.setTo(cv::Scalar::all(0));
-				// g_hist.setTo(cv::Scalar::all(0));
-				// r_hist.setTo(cv::Scalar::all(0));
+				
 
 				 /// Compute the histograms:
 				 calcHist(&bgr_planes[0], 1, 0, cv::Mat(), b_hist, 1, &histSize, &histRange, uniform, accumulate);
@@ -778,7 +832,7 @@ namespace MyGUI {
 				 int bin_Sw = cvRound((double)hist_w / ShadowHistSize);
 				 int bin_Hw = cvRound((double)hist_w / HighlightHistSize);
 
-				 cv::Mat histImage(hist_h, hist_w, CV_8UC3, cv::Scalar(255, 255, 255));
+				 cv::Mat histImage(hist_h, hist_w, CV_8UC3, cv::Scalar(200, 200, 200));
 
 				 cv::Mat histnew(hist_h, hist_w, CV_8UC3, cv::Scalar(255, 255, 255));
 
@@ -841,39 +895,8 @@ namespace MyGUI {
 				
 
 			 }
-
-			 int metadata() {
-				 MessageBox::Show("META DATA");
-				 FILE *fp = fopen("cache.jpg", "rb");
-				 if (!fp) {
-					 MessageBox::Show("Can't open file");
-					 return -1;
-				 }
-				 fseek(fp, 0, SEEK_END);
-				 unsigned long fsize = ftell(fp);
-				 rewind(fp);
-				 unsigned char *buf = new unsigned char[fsize];
-				 if (fread(buf, 1, fsize, fp) != fsize) {
-					 MessageBox::Show("Can't read file");
-					 delete[] buf;
-					 return -2;
-				 }
-				 fclose(fp);
-
-				 // Parse EXIF
-				 easyexif::EXIFInfo result;
-				 int code = result.parseFrom(buf, fsize);
-				 delete[] buf;
-				 if (code) {
-					 MessageBox::Show("Error parsing EXIF");
-					 return -3;
-				 }
-				 
-				 MessageBox::Show("Camera Make  " );
-				 return 0;
-
-
-			 }
+			
+			 
 
 
 
@@ -910,15 +933,28 @@ private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e
 private: System::Void RGBHist_Click(System::Object^  sender, System::EventArgs^  e) {
 }
 
-private: System::Void comboBox1_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+private: System::Void sharpningSelect_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
 
 	msclr::interop::marshal_context context;
-	sharpningType = context.marshal_as<std::string>(comboBox1->SelectedItem->ToString());
+	sharpningType = context.marshal_as<std::string>(sharpningSelect->SelectedItem->ToString());
 }
 
 private: System::Void EXIF_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 	
-	int metadata();
+	//void displaydata();
+	MessageBox::Show(
+		"Camera Make     :"+gcnew String(cameraMake.c_str())+ "\n"+		
+		"Camera Model   :"+ gcnew String(cameraModel.c_str())+ "\n"+
+		"Image Width       :"+gcnew String(imageWidth.c_str())+ "\n"+
+		"Image Height     :"+ gcnew String(imageHeight.c_str())+ "\n"+
+		"Date                      :"+ gcnew String(imageDate.c_str())+ "\n"+
+		"Exposure              :"+ gcnew String(imageExposure.c_str())+ "\n"+
+		"ISO                       :"+ gcnew String(imageIso.c_str())
+	);
+
+
+	
+	
 
 
 }
