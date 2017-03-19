@@ -1003,9 +1003,19 @@ namespace MyGUI {
 			 {
 				 int exposure = tempValueExposure - 50;
 				 double ContrastNew = tempValueContrast / 50.0;						// Or divide by smaller no. to increase range
+				 double ContrastFactor = 259 * (tempValueContrast + 255) / (255 * (259 - tempValueContrast));
 				 cv::Mat temp = *mainImageCon;
-				 temp.convertTo(tempAdjusted, -1, ContrastNew, exposure);			//Linear Transform - per pixel - contrast*im+brightness
-	//			 imshow("image", tempAdjusted);
+				 temp.convertTo(tempAdjusted, -1, ContrastNew, 0);			//Linear Transform - per pixel - contrast*im+brightness
+
+			//	 for (int j = 0; j < temp.rows; j++) {			// Loop rows
+			//		 for (int i = 0; i < temp.cols; i++) {		// Loop columns
+			//			 for (int c = 0; c < 3; c++) {				// Loop 3 BGR (0,1,2) colour planes
+			//				 tempAdjusted.at<cv::Vec3b>(j, i)[c] = cv::saturate_cast<uchar>(ContrastFactor * (temp.at<cv::Vec3b>(j, i)[c] - 128) + 128);	//Converts type 
+			//			 }
+			//		 }
+			//	 }
+
+			//	 imshow("image", tempAdjusted);
 				 refreshPicBox(tempAdjusted);										// Update picture displayed
 			 }
 
