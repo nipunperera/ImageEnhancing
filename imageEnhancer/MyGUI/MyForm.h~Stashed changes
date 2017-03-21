@@ -1,0 +1,3528 @@
+#pragma once
+
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include "spline.h"
+#include "math.h"
+#include <msclr\marshal_cppstd.h>
+#include <stdio.h>
+#include "exif.h"
+#include "exif.cpp"
+#include <string>
+
+cv::Mat editedImage;
+cv::Mat tempAdjusted;
+cv::Mat bgrAdjusted;
+cv::Mat adjRchan, adjGchan, adjBchan;
+
+int Sharpsigma = 0;
+int Sharpweight = 0;
+
+std::string cameraMake = "";
+std::string cameraModel = "";
+std::string imageWidth = "";
+std::string imageHeight = "";
+std::string imageDate = "";
+std::string imageExposure = "";
+std::string imageIso = "";
+
+std::string sharpningType;
+std::string filterType;
+
+
+namespace MyGUI {
+
+	using namespace System;
+	using namespace System::ComponentModel;
+	using namespace System::Collections;
+	using namespace System::Windows::Forms;
+	using namespace System::Data;
+	using namespace System::Drawing;
+
+	bool imageImport = false;
+	bool cropSelected = false;
+	bool cropStarted = false;
+	bool vignetteSelected = false;
+
+	int rectSX = 0;
+	int rectSY = 0;
+	int rectWidth = 0;
+	int rectHeight = 0;
+	int vignetteCenterX = 0, vignetteCenterY = 0;
+
+	cv::Mat cropVigImage, croppedImage, vignetteImage, cropImage;
+
+	/// <summary>
+	/// Summary for MyForm
+	/// </summary>
+	private ref class MyForm : public System::Windows::Forms::Form
+	{
+	public:
+		MyForm(void)
+		{
+			InitializeComponent();
+			//
+			//TODO: Add the constructor code here
+			//
+		}
+
+	protected:
+		/// <summary>
+		/// Clean up any resources being used.
+		/// </summary>
+		~MyForm()
+		{
+			if (components)
+			{
+				delete components;
+			}
+		}
+	private: System::Windows::Forms::MenuStrip^  menuStrip1;
+	protected:
+	private: System::Windows::Forms::ToolStripMenuItem^  fileToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  importToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  exportToolStripMenuItem;
+
+
+	private: System::Windows::Forms::NotifyIcon^  notifyIcon1;
+	private: System::Windows::Forms::Button^  loadColourAdj;
+	private: System::Windows::Forms::Button^  loadTempAdj;
+	private: System::Windows::Forms::Button^  loadLuminance;
+	private: System::Windows::Forms::Button^  loadContrast;
+	private: System::Windows::Forms::Button^  loadExposure;
+	private: System::Windows::Forms::Button^  loadHueSat;
+	private: System::Windows::Forms::TrackBar^  trackBarLuminance;
+	private: System::Windows::Forms::Label^  label10;
+	private: System::Windows::Forms::Button^  luminanceApply;
+	private: System::Windows::Forms::Panel^  luminancePanel;
+	private: System::Windows::Forms::Label^  label8;
+	private: System::Windows::Forms::TrackBar^  trackBarContrast;
+	private: System::Windows::Forms::Button^  contrastAutoAdjust;
+	private: System::Windows::Forms::Button^  contrastApply;
+	private: System::Windows::Forms::Panel^  contrastPanel;
+	private: System::Windows::Forms::TrackBar^  trackBar1;
+	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::Button^  tempApply;
+	private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::Label^  label4;
+	private: System::Windows::Forms::Panel^  tempPanel;
+	private: System::Windows::Forms::TrackBar^  trackBarExposure;
+	private: System::Windows::Forms::Button^  exposureAutoAdjust;
+	private: System::Windows::Forms::Label^  label9;
+	private: System::Windows::Forms::Button^  exposureApply;
+	private: System::Windows::Forms::Panel^  exposurePanel;
+	private: System::Windows::Forms::Button^  rgbApply;
+	private: System::Windows::Forms::Label^  label5;
+	private: System::Windows::Forms::Label^  label6;
+	private: System::Windows::Forms::Label^  label7;
+	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::TrackBar^  redTrackBar;
+	private: System::Windows::Forms::TrackBar^  greenTrackBar;
+	private: System::Windows::Forms::TrackBar^  blueTrackBar;
+	private: System::Windows::Forms::Panel^  rgbPanel;
+	private: System::Windows::Forms::Label^  label11;
+	private: System::Windows::Forms::TrackBar^  trackBarHue;
+	private: System::Windows::Forms::Label^  label12;
+	private: System::Windows::Forms::TrackBar^  trackBarSaturation;
+	private: System::Windows::Forms::TrackBar^  trackBarValue;
+	private: System::Windows::Forms::Label^  label13;
+	private: System::Windows::Forms::Label^  label14;
+	private: System::Windows::Forms::Button^  valueApply;
+	private: System::Windows::Forms::Button^  saturationApply;
+	private: System::Windows::Forms::Button^  hueApply;
+	private: System::Windows::Forms::Panel^  hueSatPanel;
+	private: System::Windows::Forms::PictureBox^  RGBHist;
+	private: System::Windows::Forms::Label^  label15;
+	private: System::Windows::Forms::Button^  loadSharpen;
+	private: System::Windows::Forms::Panel^  sharpeningPanel;
+	private: System::Windows::Forms::ComboBox^  sharpeningSelect;
+
+
+	private: System::Windows::Forms::Label^  label16;
+	private: System::Windows::Forms::Label^  label17;
+	private: System::Windows::Forms::Label^  label18;
+	private: System::Windows::Forms::Label^  label19;
+	private: System::Windows::Forms::Label^  sharpninglabel;
+	private: System::Windows::Forms::Label^  weight;
+	private: System::Windows::Forms::Label^  sigmaValue;
+	private: System::Windows::Forms::TrackBar^  weightTrack;
+	private: System::Windows::Forms::TrackBar^  sigmatrack;
+	private: System::Windows::Forms::Button^  sharpenApply;
+	private: System::Windows::Forms::ToolStripMenuItem^  exitToolStripMenuItem;
+
+	private: System::Windows::Forms::ToolStripMenuItem^  viewToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  imageMetadataToolStripMenuItem;
+	private: System::Windows::Forms::PictureBox^  pictureBox1;
+	private: System::Windows::Forms::Panel^  vignettePanel;
+	private: System::Windows::Forms::Label^  label20;
+	private: System::Windows::Forms::Button^  vignetteCancelButton;
+	private: System::Windows::Forms::Button^  vignetteResetButton;
+	private: System::Windows::Forms::Button^  vignetteApplyButton;
+
+private: System::Windows::Forms::Button^  loadVignette;
+private: System::Windows::Forms::Button^  loadCrop;
+private: System::Windows::Forms::TrackBar^  vignetteTrackBar;
+private: System::Windows::Forms::Panel^  cropPanel;
+private: System::Windows::Forms::Label^  label21;
+private: System::Windows::Forms::Button^  cropApplyButton;
+private: System::Windows::Forms::Button^  cropCancelButton;
+private: System::Windows::Forms::Button^  cropResetButton;
+private: System::Windows::Forms::Panel^  pnlFiltering;
+private: System::Windows::Forms::Label^  lblhindredColor;
+private: System::Windows::Forms::Label^  lblhundredLuma;
+private: System::Windows::Forms::Label^  lblzeroColor;
+private: System::Windows::Forms::Label^  lblzeroLumina;
+private: System::Windows::Forms::Label^  lblColor;
+private: System::Windows::Forms::Label^  lblLuminance;
+private: System::Windows::Forms::Label^  lblFilterType;
+private: System::Windows::Forms::Label^  lblNoiseReduction;
+private: System::Windows::Forms::Button^  btnColorApply;
+private: System::Windows::Forms::TrackBar^  trkBarColor;
+private: System::Windows::Forms::Button^  btnLuminaApply;
+private: System::Windows::Forms::TrackBar^  trkBarLumina;
+private: System::Windows::Forms::ComboBox^  cmboxNoiseReduction;
+private: System::Windows::Forms::Button^  loadNoiseRed;
+private: System::Windows::Forms::Panel^  pnlShadowHighlights;
+private: System::Windows::Forms::Label^  lblMaxHighlights;
+private: System::Windows::Forms::Label^  lblMaxShadow;
+private: System::Windows::Forms::Label^  lblMinHighlights;
+private: System::Windows::Forms::Label^  lblMinShadow;
+private: System::Windows::Forms::Label^  lblHIghlights;
+private: System::Windows::Forms::Label^  lblShadow;
+private: System::Windows::Forms::Label^  lblShadowHighlights;
+private: System::Windows::Forms::TrackBar^  trkBarHighlights;
+private: System::Windows::Forms::TrackBar^  trkBarShadow;
+private: System::Windows::Forms::Button^  btnHighLightsApply;
+private: System::Windows::Forms::Button^  btnShadowApply;
+private: System::Windows::Forms::Button^  loadShadHighlts;
+private: System::Windows::Forms::Button^  resetTemp;
+private: System::Windows::Forms::Button^  autoWhiteBal;
+
+
+
+
+	private: System::ComponentModel::IContainer^  components;
+
+	private:
+		/// <summary>
+		/// Required designer variable.
+		/// </summary>
+
+#pragma region Windows Form Designer generated code
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		void InitializeComponent(void)
+		{
+			this->components = (gcnew System::ComponentModel::Container());
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
+			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
+			this->fileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->importToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->exportToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->viewToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->imageMetadataToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->notifyIcon1 = (gcnew System::Windows::Forms::NotifyIcon(this->components));
+			this->loadColourAdj = (gcnew System::Windows::Forms::Button());
+			this->loadTempAdj = (gcnew System::Windows::Forms::Button());
+			this->loadLuminance = (gcnew System::Windows::Forms::Button());
+			this->loadContrast = (gcnew System::Windows::Forms::Button());
+			this->loadExposure = (gcnew System::Windows::Forms::Button());
+			this->loadHueSat = (gcnew System::Windows::Forms::Button());
+			this->trackBarLuminance = (gcnew System::Windows::Forms::TrackBar());
+			this->label10 = (gcnew System::Windows::Forms::Label());
+			this->luminanceApply = (gcnew System::Windows::Forms::Button());
+			this->luminancePanel = (gcnew System::Windows::Forms::Panel());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->trackBarContrast = (gcnew System::Windows::Forms::TrackBar());
+			this->contrastAutoAdjust = (gcnew System::Windows::Forms::Button());
+			this->contrastApply = (gcnew System::Windows::Forms::Button());
+			this->contrastPanel = (gcnew System::Windows::Forms::Panel());
+			this->trackBar1 = (gcnew System::Windows::Forms::TrackBar());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->tempApply = (gcnew System::Windows::Forms::Button());
+			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->tempPanel = (gcnew System::Windows::Forms::Panel());
+			this->resetTemp = (gcnew System::Windows::Forms::Button());
+			this->autoWhiteBal = (gcnew System::Windows::Forms::Button());
+			this->trackBarExposure = (gcnew System::Windows::Forms::TrackBar());
+			this->exposureAutoAdjust = (gcnew System::Windows::Forms::Button());
+			this->label9 = (gcnew System::Windows::Forms::Label());
+			this->exposureApply = (gcnew System::Windows::Forms::Button());
+			this->exposurePanel = (gcnew System::Windows::Forms::Panel());
+			this->rgbApply = (gcnew System::Windows::Forms::Button());
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->redTrackBar = (gcnew System::Windows::Forms::TrackBar());
+			this->greenTrackBar = (gcnew System::Windows::Forms::TrackBar());
+			this->blueTrackBar = (gcnew System::Windows::Forms::TrackBar());
+			this->rgbPanel = (gcnew System::Windows::Forms::Panel());
+			this->label11 = (gcnew System::Windows::Forms::Label());
+			this->trackBarHue = (gcnew System::Windows::Forms::TrackBar());
+			this->label12 = (gcnew System::Windows::Forms::Label());
+			this->trackBarSaturation = (gcnew System::Windows::Forms::TrackBar());
+			this->trackBarValue = (gcnew System::Windows::Forms::TrackBar());
+			this->label13 = (gcnew System::Windows::Forms::Label());
+			this->label14 = (gcnew System::Windows::Forms::Label());
+			this->valueApply = (gcnew System::Windows::Forms::Button());
+			this->saturationApply = (gcnew System::Windows::Forms::Button());
+			this->hueApply = (gcnew System::Windows::Forms::Button());
+			this->hueSatPanel = (gcnew System::Windows::Forms::Panel());
+			this->RGBHist = (gcnew System::Windows::Forms::PictureBox());
+			this->label15 = (gcnew System::Windows::Forms::Label());
+			this->loadSharpen = (gcnew System::Windows::Forms::Button());
+			this->sharpeningPanel = (gcnew System::Windows::Forms::Panel());
+			this->sharpenApply = (gcnew System::Windows::Forms::Button());
+			this->sharpeningSelect = (gcnew System::Windows::Forms::ComboBox());
+			this->label16 = (gcnew System::Windows::Forms::Label());
+			this->label17 = (gcnew System::Windows::Forms::Label());
+			this->label18 = (gcnew System::Windows::Forms::Label());
+			this->label19 = (gcnew System::Windows::Forms::Label());
+			this->sharpninglabel = (gcnew System::Windows::Forms::Label());
+			this->weight = (gcnew System::Windows::Forms::Label());
+			this->sigmaValue = (gcnew System::Windows::Forms::Label());
+			this->weightTrack = (gcnew System::Windows::Forms::TrackBar());
+			this->sigmatrack = (gcnew System::Windows::Forms::TrackBar());
+			this->vignettePanel = (gcnew System::Windows::Forms::Panel());
+			this->vignetteTrackBar = (gcnew System::Windows::Forms::TrackBar());
+			this->label20 = (gcnew System::Windows::Forms::Label());
+			this->vignetteCancelButton = (gcnew System::Windows::Forms::Button());
+			this->vignetteResetButton = (gcnew System::Windows::Forms::Button());
+			this->vignetteApplyButton = (gcnew System::Windows::Forms::Button());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->loadVignette = (gcnew System::Windows::Forms::Button());
+			this->loadCrop = (gcnew System::Windows::Forms::Button());
+			this->cropPanel = (gcnew System::Windows::Forms::Panel());
+			this->label21 = (gcnew System::Windows::Forms::Label());
+			this->cropApplyButton = (gcnew System::Windows::Forms::Button());
+			this->cropCancelButton = (gcnew System::Windows::Forms::Button());
+			this->cropResetButton = (gcnew System::Windows::Forms::Button());
+			this->pnlFiltering = (gcnew System::Windows::Forms::Panel());
+			this->lblhindredColor = (gcnew System::Windows::Forms::Label());
+			this->lblhundredLuma = (gcnew System::Windows::Forms::Label());
+			this->lblzeroColor = (gcnew System::Windows::Forms::Label());
+			this->lblzeroLumina = (gcnew System::Windows::Forms::Label());
+			this->lblColor = (gcnew System::Windows::Forms::Label());
+			this->lblLuminance = (gcnew System::Windows::Forms::Label());
+			this->lblFilterType = (gcnew System::Windows::Forms::Label());
+			this->lblNoiseReduction = (gcnew System::Windows::Forms::Label());
+			this->btnColorApply = (gcnew System::Windows::Forms::Button());
+			this->trkBarColor = (gcnew System::Windows::Forms::TrackBar());
+			this->btnLuminaApply = (gcnew System::Windows::Forms::Button());
+			this->trkBarLumina = (gcnew System::Windows::Forms::TrackBar());
+			this->cmboxNoiseReduction = (gcnew System::Windows::Forms::ComboBox());
+			this->loadNoiseRed = (gcnew System::Windows::Forms::Button());
+			this->pnlShadowHighlights = (gcnew System::Windows::Forms::Panel());
+			this->lblMaxHighlights = (gcnew System::Windows::Forms::Label());
+			this->lblMaxShadow = (gcnew System::Windows::Forms::Label());
+			this->lblMinHighlights = (gcnew System::Windows::Forms::Label());
+			this->lblMinShadow = (gcnew System::Windows::Forms::Label());
+			this->lblHIghlights = (gcnew System::Windows::Forms::Label());
+			this->lblShadow = (gcnew System::Windows::Forms::Label());
+			this->lblShadowHighlights = (gcnew System::Windows::Forms::Label());
+			this->trkBarHighlights = (gcnew System::Windows::Forms::TrackBar());
+			this->trkBarShadow = (gcnew System::Windows::Forms::TrackBar());
+			this->btnHighLightsApply = (gcnew System::Windows::Forms::Button());
+			this->btnShadowApply = (gcnew System::Windows::Forms::Button());
+			this->loadShadHighlts = (gcnew System::Windows::Forms::Button());
+			this->menuStrip1->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarLuminance))->BeginInit();
+			this->luminancePanel->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarContrast))->BeginInit();
+			this->contrastPanel->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
+			this->tempPanel->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarExposure))->BeginInit();
+			this->exposurePanel->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->redTrackBar))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->greenTrackBar))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->blueTrackBar))->BeginInit();
+			this->rgbPanel->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarHue))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarSaturation))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarValue))->BeginInit();
+			this->hueSatPanel->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->RGBHist))->BeginInit();
+			this->sharpeningPanel->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->weightTrack))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->sigmatrack))->BeginInit();
+			this->vignettePanel->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->vignetteTrackBar))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
+			this->cropPanel->SuspendLayout();
+			this->pnlFiltering->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trkBarColor))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trkBarLumina))->BeginInit();
+			this->pnlShadowHighlights->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trkBarHighlights))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trkBarShadow))->BeginInit();
+			this->SuspendLayout();
+			// 
+			// menuStrip1
+			// 
+			this->menuStrip1->BackColor = System::Drawing::Color::SkyBlue;
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->fileToolStripMenuItem,
+					this->viewToolStripMenuItem
+			});
+			this->menuStrip1->Location = System::Drawing::Point(0, 0);
+			this->menuStrip1->Name = L"menuStrip1";
+			this->menuStrip1->Size = System::Drawing::Size(1350, 24);
+			this->menuStrip1->TabIndex = 0;
+			this->menuStrip1->Text = L"menuStrip1";
+			// 
+			// fileToolStripMenuItem
+			// 
+			this->fileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+				this->importToolStripMenuItem,
+					this->exportToolStripMenuItem, this->exitToolStripMenuItem
+			});
+			this->fileToolStripMenuItem->Name = L"fileToolStripMenuItem";
+			this->fileToolStripMenuItem->Size = System::Drawing::Size(37, 20);
+			this->fileToolStripMenuItem->Text = L"File";
+			// 
+			// importToolStripMenuItem
+			// 
+			this->importToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"importToolStripMenuItem.Image")));
+			this->importToolStripMenuItem->Name = L"importToolStripMenuItem";
+			this->importToolStripMenuItem->Size = System::Drawing::Size(110, 22);
+			this->importToolStripMenuItem->Text = L"Import";
+			this->importToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::importToolStripMenuItem_Click);
+			// 
+			// exportToolStripMenuItem
+			// 
+			this->exportToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"exportToolStripMenuItem.Image")));
+			this->exportToolStripMenuItem->Name = L"exportToolStripMenuItem";
+			this->exportToolStripMenuItem->Size = System::Drawing::Size(110, 22);
+			this->exportToolStripMenuItem->Text = L"Export";
+			this->exportToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::exportToolStripMenuItem_Click);
+			// 
+			// exitToolStripMenuItem
+			// 
+			this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
+			this->exitToolStripMenuItem->Size = System::Drawing::Size(110, 22);
+			this->exitToolStripMenuItem->Text = L"Exit";
+			// 
+			// viewToolStripMenuItem
+			// 
+			this->viewToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->imageMetadataToolStripMenuItem });
+			this->viewToolStripMenuItem->Name = L"viewToolStripMenuItem";
+			this->viewToolStripMenuItem->Size = System::Drawing::Size(44, 20);
+			this->viewToolStripMenuItem->Text = L"View";
+			// 
+			// imageMetadataToolStripMenuItem
+			// 
+			this->imageMetadataToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"imageMetadataToolStripMenuItem.Image")));
+			this->imageMetadataToolStripMenuItem->Name = L"imageMetadataToolStripMenuItem";
+			this->imageMetadataToolStripMenuItem->Size = System::Drawing::Size(160, 22);
+			this->imageMetadataToolStripMenuItem->Text = L"Image Metadata";
+			this->imageMetadataToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::imageMetadataToolStripMenuItem_Click);
+			// 
+			// notifyIcon1
+			// 
+			this->notifyIcon1->Text = L"notifyIcon1";
+			this->notifyIcon1->Visible = true;
+			// 
+			// loadColourAdj
+			// 
+			this->loadColourAdj->BackColor = System::Drawing::Color::DimGray;
+			this->loadColourAdj->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"loadColourAdj.BackgroundImage")));
+			this->loadColourAdj->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->loadColourAdj->Location = System::Drawing::Point(28, 37);
+			this->loadColourAdj->Name = L"loadColourAdj";
+			this->loadColourAdj->Size = System::Drawing::Size(64, 64);
+			this->loadColourAdj->TabIndex = 9;
+			this->loadColourAdj->UseVisualStyleBackColor = false;
+			this->loadColourAdj->Click += gcnew System::EventHandler(this, &MyForm::loadColourAdj_Click);
+			this->loadColourAdj->MouseHover += gcnew System::EventHandler(this, &MyForm::loadColourAdj_MouseHover);
+			// 
+			// loadTempAdj
+			// 
+			this->loadTempAdj->BackColor = System::Drawing::Color::Yellow;
+			this->loadTempAdj->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"loadTempAdj.BackgroundImage")));
+			this->loadTempAdj->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->loadTempAdj->Location = System::Drawing::Point(98, 37);
+			this->loadTempAdj->Name = L"loadTempAdj";
+			this->loadTempAdj->Size = System::Drawing::Size(64, 64);
+			this->loadTempAdj->TabIndex = 10;
+			this->loadTempAdj->UseVisualStyleBackColor = false;
+			this->loadTempAdj->Click += gcnew System::EventHandler(this, &MyForm::loadTempAdj_Click);
+			this->loadTempAdj->MouseHover += gcnew System::EventHandler(this, &MyForm::loadTempAdj_MouseHover);
+			// 
+			// loadLuminance
+			// 
+			this->loadLuminance->BackColor = System::Drawing::Color::CadetBlue;
+			this->loadLuminance->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"loadLuminance.BackgroundImage")));
+			this->loadLuminance->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->loadLuminance->Location = System::Drawing::Point(308, 37);
+			this->loadLuminance->Name = L"loadLuminance";
+			this->loadLuminance->Size = System::Drawing::Size(64, 64);
+			this->loadLuminance->TabIndex = 12;
+			this->loadLuminance->UseVisualStyleBackColor = false;
+			this->loadLuminance->Click += gcnew System::EventHandler(this, &MyForm::loadLuminance_Click);
+			this->loadLuminance->MouseHover += gcnew System::EventHandler(this, &MyForm::loadLuminance_MouseHover);
+			// 
+			// loadContrast
+			// 
+			this->loadContrast->BackColor = System::Drawing::Color::White;
+			this->loadContrast->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"loadContrast.BackgroundImage")));
+			this->loadContrast->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->loadContrast->Location = System::Drawing::Point(168, 36);
+			this->loadContrast->Name = L"loadContrast";
+			this->loadContrast->Size = System::Drawing::Size(64, 64);
+			this->loadContrast->TabIndex = 13;
+			this->loadContrast->UseVisualStyleBackColor = false;
+			this->loadContrast->Click += gcnew System::EventHandler(this, &MyForm::loadContrast_Click);
+			this->loadContrast->MouseHover += gcnew System::EventHandler(this, &MyForm::loadContrast_MouseHover);
+			// 
+			// loadExposure
+			// 
+			this->loadExposure->BackColor = System::Drawing::Color::SandyBrown;
+			this->loadExposure->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"loadExposure.BackgroundImage")));
+			this->loadExposure->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->loadExposure->Location = System::Drawing::Point(238, 37);
+			this->loadExposure->Name = L"loadExposure";
+			this->loadExposure->Size = System::Drawing::Size(64, 64);
+			this->loadExposure->TabIndex = 15;
+			this->loadExposure->UseVisualStyleBackColor = false;
+			this->loadExposure->Click += gcnew System::EventHandler(this, &MyForm::loadExposure_Click);
+			this->loadExposure->MouseHover += gcnew System::EventHandler(this, &MyForm::loadExposure_MouseHover);
+			// 
+			// loadHueSat
+			// 
+			this->loadHueSat->BackColor = System::Drawing::Color::Crimson;
+			this->loadHueSat->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"loadHueSat.BackgroundImage")));
+			this->loadHueSat->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->loadHueSat->Location = System::Drawing::Point(378, 37);
+			this->loadHueSat->Name = L"loadHueSat";
+			this->loadHueSat->Size = System::Drawing::Size(64, 64);
+			this->loadHueSat->TabIndex = 24;
+			this->loadHueSat->UseVisualStyleBackColor = false;
+			this->loadHueSat->Click += gcnew System::EventHandler(this, &MyForm::loadHueSat_Click);
+			this->loadHueSat->MouseHover += gcnew System::EventHandler(this, &MyForm::loadHueSat_MouseHover);
+			// 
+			// trackBarLuminance
+			// 
+			this->trackBarLuminance->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->trackBarLuminance->Location = System::Drawing::Point(39, 34);
+			this->trackBarLuminance->Maximum = 255;
+			this->trackBarLuminance->Minimum = -255;
+			this->trackBarLuminance->Name = L"trackBarLuminance";
+			this->trackBarLuminance->Size = System::Drawing::Size(166, 45);
+			this->trackBarLuminance->TabIndex = 10;
+			this->trackBarLuminance->TickFrequency = 0;
+			this->trackBarLuminance->Scroll += gcnew System::EventHandler(this, &MyForm::trackBarLuminance_Scroll);
+			// 
+			// label10
+			// 
+			this->label10->AutoSize = true;
+			this->label10->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label10->Location = System::Drawing::Point(79, 9);
+			this->label10->Name = L"label10";
+			this->label10->Size = System::Drawing::Size(86, 20);
+			this->label10->TabIndex = 11;
+			this->label10->Text = L"Luminance";
+			// 
+			// luminanceApply
+			// 
+			this->luminanceApply->Location = System::Drawing::Point(82, 66);
+			this->luminanceApply->Name = L"luminanceApply";
+			this->luminanceApply->Size = System::Drawing::Size(80, 24);
+			this->luminanceApply->TabIndex = 18;
+			this->luminanceApply->Text = L"Apply";
+			this->luminanceApply->UseVisualStyleBackColor = true;
+			this->luminanceApply->Click += gcnew System::EventHandler(this, &MyForm::luminanceApply_Click);
+			// 
+			// luminancePanel
+			// 
+			this->luminancePanel->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->luminancePanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->luminancePanel->Controls->Add(this->luminanceApply);
+			this->luminancePanel->Controls->Add(this->label10);
+			this->luminancePanel->Controls->Add(this->trackBarLuminance);
+			this->luminancePanel->Location = System::Drawing::Point(1030, 401);
+			this->luminancePanel->Name = L"luminancePanel";
+			this->luminancePanel->Size = System::Drawing::Size(240, 108);
+			this->luminancePanel->TabIndex = 24;
+			this->luminancePanel->Visible = false;
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label8->Location = System::Drawing::Point(85, 14);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(67, 20);
+			this->label8->TabIndex = 5;
+			this->label8->Text = L"Contrast";
+			// 
+			// trackBarContrast
+			// 
+			this->trackBarContrast->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->trackBarContrast->Location = System::Drawing::Point(38, 39);
+			this->trackBarContrast->Maximum = 100;
+			this->trackBarContrast->Name = L"trackBarContrast";
+			this->trackBarContrast->Size = System::Drawing::Size(166, 45);
+			this->trackBarContrast->TabIndex = 22;
+			this->trackBarContrast->TickFrequency = 0;
+			this->trackBarContrast->Value = 50;
+			this->trackBarContrast->Scroll += gcnew System::EventHandler(this, &MyForm::trackBarContrast_Scroll);
+			// 
+			// contrastAutoAdjust
+			// 
+			this->contrastAutoAdjust->Location = System::Drawing::Point(33, 71);
+			this->contrastAutoAdjust->Name = L"contrastAutoAdjust";
+			this->contrastAutoAdjust->Size = System::Drawing::Size(80, 24);
+			this->contrastAutoAdjust->TabIndex = 20;
+			this->contrastAutoAdjust->Text = L"Auto-Adjust";
+			this->contrastAutoAdjust->UseVisualStyleBackColor = true;
+			this->contrastAutoAdjust->Click += gcnew System::EventHandler(this, &MyForm::contrastAutoAdjust_Click);
+			// 
+			// contrastApply
+			// 
+			this->contrastApply->Location = System::Drawing::Point(138, 71);
+			this->contrastApply->Name = L"contrastApply";
+			this->contrastApply->Size = System::Drawing::Size(80, 24);
+			this->contrastApply->TabIndex = 17;
+			this->contrastApply->Text = L"Apply";
+			this->contrastApply->UseVisualStyleBackColor = true;
+			this->contrastApply->Click += gcnew System::EventHandler(this, &MyForm::contrastApply_Click);
+			// 
+			// contrastPanel
+			// 
+			this->contrastPanel->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->contrastPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->contrastPanel->Controls->Add(this->contrastApply);
+			this->contrastPanel->Controls->Add(this->contrastAutoAdjust);
+			this->contrastPanel->Controls->Add(this->trackBarContrast);
+			this->contrastPanel->Controls->Add(this->label8);
+			this->contrastPanel->Location = System::Drawing::Point(1027, 294);
+			this->contrastPanel->Name = L"contrastPanel";
+			this->contrastPanel->Size = System::Drawing::Size(240, 106);
+			this->contrastPanel->TabIndex = 23;
+			this->contrastPanel->Visible = false;
+			// 
+			// trackBar1
+			// 
+			this->trackBar1->Location = System::Drawing::Point(32, 43);
+			this->trackBar1->Maximum = 5;
+			this->trackBar1->Minimum = -5;
+			this->trackBar1->Name = L"trackBar1";
+			this->trackBar1->Size = System::Drawing::Size(166, 45);
+			this->trackBar1->TabIndex = 2;
+			this->trackBar1->TickFrequency = 0;
+			this->trackBar1->Scroll += gcnew System::EventHandler(this, &MyForm::tempTrackBar_Scroll);
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label1->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->label1->Location = System::Drawing::Point(72, 16);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(105, 20);
+			this->label1->TabIndex = 3;
+			this->label1->Text = L"Temperature ";
+			// 
+			// tempApply
+			// 
+			this->tempApply->Location = System::Drawing::Point(143, 126);
+			this->tempApply->Name = L"tempApply";
+			this->tempApply->Size = System::Drawing::Size(80, 24);
+			this->tempApply->TabIndex = 0;
+			this->tempApply->Text = L"Apply";
+			this->tempApply->UseVisualStyleBackColor = true;
+			this->tempApply->Click += gcnew System::EventHandler(this, &MyForm::tempApply_Click);
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label3->ForeColor = System::Drawing::Color::Blue;
+			this->label3->Location = System::Drawing::Point(3, 43);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(31, 16);
+			this->label3->TabIndex = 5;
+			this->label3->Text = L"Cold";
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 8.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label4->ForeColor = System::Drawing::Color::Red;
+			this->label4->Location = System::Drawing::Point(196, 43);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(37, 16);
+			this->label4->TabIndex = 6;
+			this->label4->Text = L"Warm";
+			// 
+			// tempPanel
+			// 
+			this->tempPanel->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->tempPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->tempPanel->Controls->Add(this->tempApply);
+			this->tempPanel->Controls->Add(this->resetTemp);
+			this->tempPanel->Controls->Add(this->autoWhiteBal);
+			this->tempPanel->Controls->Add(this->label4);
+			this->tempPanel->Controls->Add(this->trackBar1);
+			this->tempPanel->Controls->Add(this->label3);
+			this->tempPanel->Controls->Add(this->label1);
+			this->tempPanel->Location = System::Drawing::Point(747, 293);
+			this->tempPanel->Name = L"tempPanel";
+			this->tempPanel->Size = System::Drawing::Size(240, 166);
+			this->tempPanel->TabIndex = 8;
+			this->tempPanel->Visible = false;
+			// 
+			// resetTemp
+			// 
+			this->resetTemp->Location = System::Drawing::Point(32, 126);
+			this->resetTemp->Name = L"resetTemp";
+			this->resetTemp->Size = System::Drawing::Size(80, 24);
+			this->resetTemp->TabIndex = 8;
+			this->resetTemp->Text = L"Reset";
+			this->resetTemp->UseVisualStyleBackColor = true;
+			this->resetTemp->Click += gcnew System::EventHandler(this, &MyForm::resetTemp_Click);
+			// 
+			// autoWhiteBal
+			// 
+			this->autoWhiteBal->Location = System::Drawing::Point(76, 72);
+			this->autoWhiteBal->Name = L"autoWhiteBal";
+			this->autoWhiteBal->Size = System::Drawing::Size(80, 37);
+			this->autoWhiteBal->TabIndex = 7;
+			this->autoWhiteBal->Text = L"Auto-White Balance";
+			this->autoWhiteBal->UseVisualStyleBackColor = true;
+			this->autoWhiteBal->Click += gcnew System::EventHandler(this, &MyForm::autoWhiteBal_Click);
+			// 
+			// trackBarExposure
+			// 
+			this->trackBarExposure->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->trackBarExposure->Location = System::Drawing::Point(38, 39);
+			this->trackBarExposure->Maximum = 100;
+			this->trackBarExposure->Name = L"trackBarExposure";
+			this->trackBarExposure->Size = System::Drawing::Size(166, 45);
+			this->trackBarExposure->TabIndex = 21;
+			this->trackBarExposure->TickFrequency = 0;
+			this->trackBarExposure->Value = 50;
+			this->trackBarExposure->Scroll += gcnew System::EventHandler(this, &MyForm::trackBarExposure_Scroll);
+			// 
+			// exposureAutoAdjust
+			// 
+			this->exposureAutoAdjust->Location = System::Drawing::Point(33, 71);
+			this->exposureAutoAdjust->Name = L"exposureAutoAdjust";
+			this->exposureAutoAdjust->Size = System::Drawing::Size(80, 24);
+			this->exposureAutoAdjust->TabIndex = 20;
+			this->exposureAutoAdjust->Text = L"Auto-Adjust";
+			this->exposureAutoAdjust->UseVisualStyleBackColor = true;
+			this->exposureAutoAdjust->Click += gcnew System::EventHandler(this, &MyForm::exposureAutoAdjust_Click);
+			// 
+			// label9
+			// 
+			this->label9->AutoSize = true;
+			this->label9->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label9->Location = System::Drawing::Point(78, 14);
+			this->label9->Name = L"label9";
+			this->label9->Size = System::Drawing::Size(73, 20);
+			this->label9->TabIndex = 5;
+			this->label9->Text = L"Exposure";
+			// 
+			// exposureApply
+			// 
+			this->exposureApply->Location = System::Drawing::Point(138, 71);
+			this->exposureApply->Name = L"exposureApply";
+			this->exposureApply->Size = System::Drawing::Size(80, 24);
+			this->exposureApply->TabIndex = 17;
+			this->exposureApply->Text = L"Apply";
+			this->exposureApply->UseVisualStyleBackColor = true;
+			this->exposureApply->Click += gcnew System::EventHandler(this, &MyForm::exposureApply_Click);
+			// 
+			// exposurePanel
+			// 
+			this->exposurePanel->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->exposurePanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->exposurePanel->Controls->Add(this->exposureApply);
+			this->exposurePanel->Controls->Add(this->label9);
+			this->exposurePanel->Controls->Add(this->exposureAutoAdjust);
+			this->exposurePanel->Controls->Add(this->trackBarExposure);
+			this->exposurePanel->Location = System::Drawing::Point(1027, 294);
+			this->exposurePanel->Name = L"exposurePanel";
+			this->exposurePanel->Size = System::Drawing::Size(240, 106);
+			this->exposurePanel->TabIndex = 22;
+			this->exposurePanel->Visible = false;
+			// 
+			// rgbApply
+			// 
+			this->rgbApply->Location = System::Drawing::Point(81, 164);
+			this->rgbApply->Name = L"rgbApply";
+			this->rgbApply->Size = System::Drawing::Size(80, 24);
+			this->rgbApply->TabIndex = 16;
+			this->rgbApply->Text = L"Apply";
+			this->rgbApply->UseVisualStyleBackColor = true;
+			this->rgbApply->Click += gcnew System::EventHandler(this, &MyForm::rgbApply_Click);
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label5->ForeColor = System::Drawing::Color::Red;
+			this->label5->Location = System::Drawing::Point(199, 39);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(18, 20);
+			this->label5->TabIndex = 17;
+			this->label5->Text = L"R";
+			// 
+			// label6
+			// 
+			this->label6->AutoSize = true;
+			this->label6->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label6->ForeColor = System::Drawing::Color::Green;
+			this->label6->Location = System::Drawing::Point(198, 75);
+			this->label6->Name = L"label6";
+			this->label6->Size = System::Drawing::Size(19, 20);
+			this->label6->TabIndex = 18;
+			this->label6->Text = L"G";
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label7->ForeColor = System::Drawing::Color::Blue;
+			this->label7->Location = System::Drawing::Point(198, 113);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(18, 20);
+			this->label7->TabIndex = 19;
+			this->label7->Text = L"B";
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label2->Location = System::Drawing::Point(88, 8);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(53, 20);
+			this->label2->TabIndex = 4;
+			this->label2->Text = L"Colour";
+			// 
+			// redTrackBar
+			// 
+			this->redTrackBar->Location = System::Drawing::Point(27, 39);
+			this->redTrackBar->Maximum = 20;
+			this->redTrackBar->Minimum = 1;
+			this->redTrackBar->Name = L"redTrackBar";
+			this->redTrackBar->Size = System::Drawing::Size(166, 45);
+			this->redTrackBar->TabIndex = 13;
+			this->redTrackBar->TickFrequency = 0;
+			this->redTrackBar->Value = 10;
+			this->redTrackBar->Scroll += gcnew System::EventHandler(this, &MyForm::redTrackBar_Scroll);
+			// 
+			// greenTrackBar
+			// 
+			this->greenTrackBar->Location = System::Drawing::Point(27, 74);
+			this->greenTrackBar->Maximum = 20;
+			this->greenTrackBar->Minimum = 1;
+			this->greenTrackBar->Name = L"greenTrackBar";
+			this->greenTrackBar->Size = System::Drawing::Size(166, 45);
+			this->greenTrackBar->TabIndex = 14;
+			this->greenTrackBar->TickFrequency = 0;
+			this->greenTrackBar->Value = 10;
+			this->greenTrackBar->Scroll += gcnew System::EventHandler(this, &MyForm::greenTrackBar_Scroll);
+			// 
+			// blueTrackBar
+			// 
+			this->blueTrackBar->Location = System::Drawing::Point(27, 113);
+			this->blueTrackBar->Maximum = 20;
+			this->blueTrackBar->Minimum = 1;
+			this->blueTrackBar->Name = L"blueTrackBar";
+			this->blueTrackBar->Size = System::Drawing::Size(166, 45);
+			this->blueTrackBar->TabIndex = 15;
+			this->blueTrackBar->TickFrequency = 0;
+			this->blueTrackBar->Value = 10;
+			this->blueTrackBar->Scroll += gcnew System::EventHandler(this, &MyForm::blueTrackBar_Scroll);
+			// 
+			// rgbPanel
+			// 
+			this->rgbPanel->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->rgbPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->rgbPanel->Controls->Add(this->blueTrackBar);
+			this->rgbPanel->Controls->Add(this->greenTrackBar);
+			this->rgbPanel->Controls->Add(this->redTrackBar);
+			this->rgbPanel->Controls->Add(this->label2);
+			this->rgbPanel->Controls->Add(this->label7);
+			this->rgbPanel->Controls->Add(this->label6);
+			this->rgbPanel->Controls->Add(this->label5);
+			this->rgbPanel->Controls->Add(this->rgbApply);
+			this->rgbPanel->Location = System::Drawing::Point(747, 293);
+			this->rgbPanel->Name = L"rgbPanel";
+			this->rgbPanel->Size = System::Drawing::Size(240, 216);
+			this->rgbPanel->TabIndex = 11;
+			this->rgbPanel->Visible = false;
+			// 
+			// label11
+			// 
+			this->label11->AutoSize = true;
+			this->label11->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label11->Location = System::Drawing::Point(99, 16);
+			this->label11->Name = L"label11";
+			this->label11->Size = System::Drawing::Size(115, 20);
+			this->label11->TabIndex = 4;
+			this->label11->Text = L"Hue/Saturation";
+			// 
+			// trackBarHue
+			// 
+			this->trackBarHue->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->trackBarHue->Location = System::Drawing::Point(40, 47);
+			this->trackBarHue->Maximum = 360;
+			this->trackBarHue->Minimum = -360;
+			this->trackBarHue->Name = L"trackBarHue";
+			this->trackBarHue->Size = System::Drawing::Size(166, 45);
+			this->trackBarHue->TabIndex = 31;
+			this->trackBarHue->TickFrequency = 0;
+			this->trackBarHue->Scroll += gcnew System::EventHandler(this, &MyForm::trackBarHue_Scroll);
+			// 
+			// label12
+			// 
+			this->label12->AutoSize = true;
+			this->label12->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label12->Location = System::Drawing::Point(212, 47);
+			this->label12->Name = L"label12";
+			this->label12->Size = System::Drawing::Size(31, 18);
+			this->label12->TabIndex = 32;
+			this->label12->Text = L"Hue";
+			this->label12->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// trackBarSaturation
+			// 
+			this->trackBarSaturation->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->trackBarSaturation->Location = System::Drawing::Point(40, 124);
+			this->trackBarSaturation->Maximum = 255;
+			this->trackBarSaturation->Minimum = -255;
+			this->trackBarSaturation->Name = L"trackBarSaturation";
+			this->trackBarSaturation->Size = System::Drawing::Size(166, 45);
+			this->trackBarSaturation->TabIndex = 37;
+			this->trackBarSaturation->TickFrequency = 0;
+			this->trackBarSaturation->Scroll += gcnew System::EventHandler(this, &MyForm::trackBarSaturation_Scroll);
+			// 
+			// trackBarValue
+			// 
+			this->trackBarValue->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->trackBarValue->Location = System::Drawing::Point(40, 205);
+			this->trackBarValue->Maximum = 255;
+			this->trackBarValue->Minimum = -255;
+			this->trackBarValue->Name = L"trackBarValue";
+			this->trackBarValue->Size = System::Drawing::Size(166, 45);
+			this->trackBarValue->TabIndex = 38;
+			this->trackBarValue->TickFrequency = 0;
+			this->trackBarValue->Scroll += gcnew System::EventHandler(this, &MyForm::trackBarValue_Scroll);
+			// 
+			// label13
+			// 
+			this->label13->AutoSize = true;
+			this->label13->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label13->Location = System::Drawing::Point(212, 124);
+			this->label13->Name = L"label13";
+			this->label13->Size = System::Drawing::Size(69, 18);
+			this->label13->TabIndex = 39;
+			this->label13->Text = L"Saturation";
+			this->label13->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// label14
+			// 
+			this->label14->AutoSize = true;
+			this->label14->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label14->Location = System::Drawing::Point(212, 204);
+			this->label14->Name = L"label14";
+			this->label14->Size = System::Drawing::Size(38, 18);
+			this->label14->TabIndex = 40;
+			this->label14->Text = L"Value";
+			this->label14->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// valueApply
+			// 
+			this->valueApply->Location = System::Drawing::Point(86, 245);
+			this->valueApply->Name = L"valueApply";
+			this->valueApply->Size = System::Drawing::Size(80, 24);
+			this->valueApply->TabIndex = 16;
+			this->valueApply->Text = L"Apply";
+			this->valueApply->UseVisualStyleBackColor = true;
+			this->valueApply->Click += gcnew System::EventHandler(this, &MyForm::valueApply_Click);
+			// 
+			// saturationApply
+			// 
+			this->saturationApply->Location = System::Drawing::Point(86, 161);
+			this->saturationApply->Name = L"saturationApply";
+			this->saturationApply->Size = System::Drawing::Size(80, 24);
+			this->saturationApply->TabIndex = 41;
+			this->saturationApply->Text = L"Apply";
+			this->saturationApply->UseVisualStyleBackColor = true;
+			this->saturationApply->Click += gcnew System::EventHandler(this, &MyForm::saturationApply_Click);
+			// 
+			// hueApply
+			// 
+			this->hueApply->Location = System::Drawing::Point(86, 78);
+			this->hueApply->Name = L"hueApply";
+			this->hueApply->Size = System::Drawing::Size(80, 24);
+			this->hueApply->TabIndex = 42;
+			this->hueApply->Text = L"Apply";
+			this->hueApply->UseVisualStyleBackColor = true;
+			this->hueApply->Click += gcnew System::EventHandler(this, &MyForm::hueApply_Click);
+			// 
+			// hueSatPanel
+			// 
+			this->hueSatPanel->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->hueSatPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->hueSatPanel->Controls->Add(this->hueApply);
+			this->hueSatPanel->Controls->Add(this->saturationApply);
+			this->hueSatPanel->Controls->Add(this->valueApply);
+			this->hueSatPanel->Controls->Add(this->label14);
+			this->hueSatPanel->Controls->Add(this->label13);
+			this->hueSatPanel->Controls->Add(this->trackBarValue);
+			this->hueSatPanel->Controls->Add(this->trackBarSaturation);
+			this->hueSatPanel->Controls->Add(this->label12);
+			this->hueSatPanel->Controls->Add(this->trackBarHue);
+			this->hueSatPanel->Controls->Add(this->label11);
+			this->hueSatPanel->Location = System::Drawing::Point(719, 293);
+			this->hueSatPanel->Name = L"hueSatPanel";
+			this->hueSatPanel->Size = System::Drawing::Size(309, 287);
+			this->hueSatPanel->TabIndex = 25;
+			this->hueSatPanel->Visible = false;
+			// 
+			// RGBHist
+			// 
+			this->RGBHist->BackColor = System::Drawing::Color::White;
+			this->RGBHist->Location = System::Drawing::Point(904, 75);
+			this->RGBHist->Margin = System::Windows::Forms::Padding(2);
+			this->RGBHist->Name = L"RGBHist";
+			this->RGBHist->Size = System::Drawing::Size(400, 156);
+			this->RGBHist->TabIndex = 26;
+			this->RGBHist->TabStop = false;
+			// 
+			// label15
+			// 
+			this->label15->AutoSize = true;
+			this->label15->Cursor = System::Windows::Forms::Cursors::Default;
+			this->label15->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label15->Location = System::Drawing::Point(1066, 49);
+			this->label15->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label15->Name = L"label15";
+			this->label15->Size = System::Drawing::Size(78, 20);
+			this->label15->TabIndex = 27;
+			this->label15->Text = L"Histogram";
+			// 
+			// loadSharpen
+			// 
+			this->loadSharpen->BackColor = System::Drawing::Color::LimeGreen;
+			this->loadSharpen->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"loadSharpen.BackgroundImage")));
+			this->loadSharpen->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->loadSharpen->Location = System::Drawing::Point(448, 37);
+			this->loadSharpen->Name = L"loadSharpen";
+			this->loadSharpen->Size = System::Drawing::Size(64, 64);
+			this->loadSharpen->TabIndex = 28;
+			this->loadSharpen->UseVisualStyleBackColor = false;
+			this->loadSharpen->Click += gcnew System::EventHandler(this, &MyForm::loadSharpen_Click);
+			this->loadSharpen->MouseHover += gcnew System::EventHandler(this, &MyForm::loadSharpen_MouseHover);
+			// 
+			// sharpeningPanel
+			// 
+			this->sharpeningPanel->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->sharpeningPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->sharpeningPanel->Controls->Add(this->sharpenApply);
+			this->sharpeningPanel->Controls->Add(this->sharpeningSelect);
+			this->sharpeningPanel->Controls->Add(this->label16);
+			this->sharpeningPanel->Controls->Add(this->label17);
+			this->sharpeningPanel->Controls->Add(this->label18);
+			this->sharpeningPanel->Controls->Add(this->label19);
+			this->sharpeningPanel->Controls->Add(this->sharpninglabel);
+			this->sharpeningPanel->Controls->Add(this->weight);
+			this->sharpeningPanel->Controls->Add(this->sigmaValue);
+			this->sharpeningPanel->Controls->Add(this->weightTrack);
+			this->sharpeningPanel->Controls->Add(this->sigmatrack);
+			this->sharpeningPanel->Location = System::Drawing::Point(1031, 293);
+			this->sharpeningPanel->Margin = System::Windows::Forms::Padding(2);
+			this->sharpeningPanel->Name = L"sharpeningPanel";
+			this->sharpeningPanel->Size = System::Drawing::Size(273, 221);
+			this->sharpeningPanel->TabIndex = 29;
+			this->sharpeningPanel->Visible = false;
+			// 
+			// sharpenApply
+			// 
+			this->sharpenApply->Location = System::Drawing::Point(98, 183);
+			this->sharpenApply->Name = L"sharpenApply";
+			this->sharpenApply->Size = System::Drawing::Size(80, 24);
+			this->sharpenApply->TabIndex = 7;
+			this->sharpenApply->Text = L"Apply";
+			this->sharpenApply->UseVisualStyleBackColor = true;
+			this->sharpenApply->Click += gcnew System::EventHandler(this, &MyForm::sharpenApply_Click);
+			// 
+			// sharpeningSelect
+			// 
+			this->sharpeningSelect->BackColor = System::Drawing::SystemColors::ScrollBar;
+			this->sharpeningSelect->FormattingEnabled = true;
+			this->sharpeningSelect->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Gaussian", L"Luminance" });
+			this->sharpeningSelect->Location = System::Drawing::Point(59, 37);
+			this->sharpeningSelect->Margin = System::Windows::Forms::Padding(2);
+			this->sharpeningSelect->Name = L"sharpeningSelect";
+			this->sharpeningSelect->Size = System::Drawing::Size(155, 21);
+			this->sharpeningSelect->TabIndex = 12;
+			this->sharpeningSelect->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::sharpeningSelect_SelectedIndexChanged);
+			// 
+			// label16
+			// 
+			this->label16->AutoSize = true;
+			this->label16->Location = System::Drawing::Point(195, 167);
+			this->label16->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label16->Name = L"label16";
+			this->label16->Size = System::Drawing::Size(19, 13);
+			this->label16->TabIndex = 8;
+			this->label16->Text = L"10";
+			// 
+			// label17
+			// 
+			this->label17->AutoSize = true;
+			this->label17->Location = System::Drawing::Point(195, 107);
+			this->label17->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label17->Name = L"label17";
+			this->label17->Size = System::Drawing::Size(19, 13);
+			this->label17->TabIndex = 7;
+			this->label17->Text = L"16";
+			// 
+			// label18
+			// 
+			this->label18->AutoSize = true;
+			this->label18->Location = System::Drawing::Point(52, 167);
+			this->label18->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label18->Name = L"label18";
+			this->label18->Size = System::Drawing::Size(13, 13);
+			this->label18->TabIndex = 6;
+			this->label18->Text = L"0";
+			// 
+			// label19
+			// 
+			this->label19->AutoSize = true;
+			this->label19->Location = System::Drawing::Point(52, 107);
+			this->label19->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label19->Name = L"label19";
+			this->label19->Size = System::Drawing::Size(13, 13);
+			this->label19->TabIndex = 5;
+			this->label19->Text = L"0";
+			// 
+			// sharpninglabel
+			// 
+			this->sharpninglabel->AutoSize = true;
+			this->sharpninglabel->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->sharpninglabel->Location = System::Drawing::Point(103, 7);
+			this->sharpninglabel->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->sharpninglabel->Name = L"sharpninglabel";
+			this->sharpninglabel->Size = System::Drawing::Size(79, 20);
+			this->sharpninglabel->TabIndex = 4;
+			this->sharpninglabel->Text = L"Sharpness";
+			// 
+			// weight
+			// 
+			this->weight->AutoSize = true;
+			this->weight->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->weight->Location = System::Drawing::Point(117, 122);
+			this->weight->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->weight->Name = L"weight";
+			this->weight->Size = System::Drawing::Size(49, 18);
+			this->weight->TabIndex = 3;
+			this->weight->Text = L"Weight";
+			// 
+			// sigmaValue
+			// 
+			this->sigmaValue->AutoSize = true;
+			this->sigmaValue->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->sigmaValue->Location = System::Drawing::Point(120, 69);
+			this->sigmaValue->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->sigmaValue->Name = L"sigmaValue";
+			this->sigmaValue->Size = System::Drawing::Size(44, 18);
+			this->sigmaValue->TabIndex = 2;
+			this->sigmaValue->Text = L"Sigma";
+			// 
+			// weightTrack
+			// 
+			this->weightTrack->Location = System::Drawing::Point(55, 142);
+			this->weightTrack->Margin = System::Windows::Forms::Padding(2);
+			this->weightTrack->Name = L"weightTrack";
+			this->weightTrack->Size = System::Drawing::Size(166, 45);
+			this->weightTrack->TabIndex = 1;
+			this->weightTrack->TickFrequency = 0;
+			this->weightTrack->Scroll += gcnew System::EventHandler(this, &MyForm::weightTrack_Scroll);
+			// 
+			// sigmatrack
+			// 
+			this->sigmatrack->Location = System::Drawing::Point(55, 85);
+			this->sigmatrack->Margin = System::Windows::Forms::Padding(2);
+			this->sigmatrack->Maximum = 16;
+			this->sigmatrack->Name = L"sigmatrack";
+			this->sigmatrack->Size = System::Drawing::Size(166, 45);
+			this->sigmatrack->TabIndex = 0;
+			this->sigmatrack->TickFrequency = 0;
+			this->sigmatrack->Scroll += gcnew System::EventHandler(this, &MyForm::sigmatrack_Scroll);
+			// 
+			// vignettePanel
+			// 
+			this->vignettePanel->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->vignettePanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->vignettePanel->Controls->Add(this->vignetteTrackBar);
+			this->vignettePanel->Controls->Add(this->label20);
+			this->vignettePanel->Controls->Add(this->vignetteCancelButton);
+			this->vignettePanel->Controls->Add(this->vignetteResetButton);
+			this->vignettePanel->Controls->Add(this->vignetteApplyButton);
+			this->vignettePanel->Location = System::Drawing::Point(735, 293);
+			this->vignettePanel->Name = L"vignettePanel";
+			this->vignettePanel->Size = System::Drawing::Size(264, 149);
+			this->vignettePanel->TabIndex = 30;
+			this->vignettePanel->Tag = L"Vignette ";
+			this->vignettePanel->Visible = false;
+			// 
+			// vignetteTrackBar
+			// 
+			this->vignetteTrackBar->LargeChange = 1;
+			this->vignetteTrackBar->Location = System::Drawing::Point(27, 47);
+			this->vignetteTrackBar->Maximum = 100;
+			this->vignetteTrackBar->Name = L"vignetteTrackBar";
+			this->vignetteTrackBar->Size = System::Drawing::Size(209, 45);
+			this->vignetteTrackBar->TabIndex = 200;
+			this->vignetteTrackBar->TickFrequency = 0;
+			this->vignetteTrackBar->Value = 50;
+			this->vignetteTrackBar->ValueChanged += gcnew System::EventHandler(this, &MyForm::vignetteTrackBar_ValueChanged);
+			// 
+			// label20
+			// 
+			this->label20->AutoSize = true;
+			this->label20->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label20->Location = System::Drawing::Point(95, 14);
+			this->label20->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label20->Name = L"label20";
+			this->label20->Size = System::Drawing::Size(69, 20);
+			this->label20->TabIndex = 203;
+			this->label20->Text = L"Vignette";
+			// 
+			// vignetteCancelButton
+			// 
+			this->vignetteCancelButton->Location = System::Drawing::Point(14, 104);
+			this->vignetteCancelButton->Name = L"vignetteCancelButton";
+			this->vignetteCancelButton->Size = System::Drawing::Size(71, 23);
+			this->vignetteCancelButton->TabIndex = 202;
+			this->vignetteCancelButton->Text = L"Cancel";
+			this->vignetteCancelButton->UseVisualStyleBackColor = true;
+			this->vignetteCancelButton->Click += gcnew System::EventHandler(this, &MyForm::vignetteCancelButton_Click);
+			// 
+			// vignetteResetButton
+			// 
+			this->vignetteResetButton->Location = System::Drawing::Point(95, 104);
+			this->vignetteResetButton->Name = L"vignetteResetButton";
+			this->vignetteResetButton->Size = System::Drawing::Size(75, 23);
+			this->vignetteResetButton->TabIndex = 201;
+			this->vignetteResetButton->Text = L"Reset";
+			this->vignetteResetButton->UseVisualStyleBackColor = true;
+			this->vignetteResetButton->Click += gcnew System::EventHandler(this, &MyForm::vignetteResetButton_Click);
+			// 
+			// vignetteApplyButton
+			// 
+			this->vignetteApplyButton->Location = System::Drawing::Point(176, 104);
+			this->vignetteApplyButton->Name = L"vignetteApplyButton";
+			this->vignetteApplyButton->Size = System::Drawing::Size(75, 23);
+			this->vignetteApplyButton->TabIndex = 1;
+			this->vignetteApplyButton->Text = L"Apply";
+			this->vignetteApplyButton->UseVisualStyleBackColor = true;
+			this->vignetteApplyButton->Click += gcnew System::EventHandler(this, &MyForm::vignetteApplyButton_Click);
+			// 
+			// pictureBox1
+			// 
+			this->pictureBox1->BackColor = System::Drawing::SystemColors::ControlLightLight;
+			this->pictureBox1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Center;
+			this->pictureBox1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->pictureBox1->Location = System::Drawing::Point(28, 119);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(640, 480);
+			this->pictureBox1->TabIndex = 1;
+			this->pictureBox1->TabStop = false;
+			this->pictureBox1->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::pictureBox1_MouseClick);
+			this->pictureBox1->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::pictureBox1_MouseDown);
+			this->pictureBox1->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::pictureBox1_MouseMove);
+			this->pictureBox1->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::pictureBox1_MouseUp);
+			// 
+			// loadVignette
+			// 
+			this->loadVignette->BackColor = System::Drawing::Color::Orange;
+			this->loadVignette->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"loadVignette.BackgroundImage")));
+			this->loadVignette->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->loadVignette->Location = System::Drawing::Point(518, 38);
+			this->loadVignette->Name = L"loadVignette";
+			this->loadVignette->Size = System::Drawing::Size(64, 64);
+			this->loadVignette->TabIndex = 30;
+			this->loadVignette->UseVisualStyleBackColor = false;
+			this->loadVignette->Click += gcnew System::EventHandler(this, &MyForm::loadVignette_Click);
+			this->loadVignette->MouseHover += gcnew System::EventHandler(this, &MyForm::loadVignette_MouseHover);
+			// 
+			// loadCrop
+			// 
+			this->loadCrop->BackColor = System::Drawing::Color::Orange;
+			this->loadCrop->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"loadCrop.BackgroundImage")));
+			this->loadCrop->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->loadCrop->Location = System::Drawing::Point(588, 37);
+			this->loadCrop->Name = L"loadCrop";
+			this->loadCrop->Size = System::Drawing::Size(64, 64);
+			this->loadCrop->TabIndex = 31;
+			this->loadCrop->UseVisualStyleBackColor = false;
+			this->loadCrop->Click += gcnew System::EventHandler(this, &MyForm::loadCrop_Click);
+			this->loadCrop->MouseHover += gcnew System::EventHandler(this, &MyForm::loadCrop_MouseHover);
+			// 
+			// cropPanel
+			// 
+			this->cropPanel->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->cropPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->cropPanel->Controls->Add(this->label21);
+			this->cropPanel->Controls->Add(this->cropApplyButton);
+			this->cropPanel->Controls->Add(this->cropCancelButton);
+			this->cropPanel->Controls->Add(this->cropResetButton);
+			this->cropPanel->Cursor = System::Windows::Forms::Cursors::Arrow;
+			this->cropPanel->Location = System::Drawing::Point(89, 616);
+			this->cropPanel->Name = L"cropPanel";
+			this->cropPanel->Size = System::Drawing::Size(264, 80);
+			this->cropPanel->TabIndex = 32;
+			this->cropPanel->Visible = false;
+			// 
+			// label21
+			// 
+			this->label21->AutoSize = true;
+			this->label21->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label21->Location = System::Drawing::Point(93, 10);
+			this->label21->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label21->Name = L"label21";
+			this->label21->Size = System::Drawing::Size(88, 20);
+			this->label21->TabIndex = 7;
+			this->label21->Text = L"Crop Image";
+			// 
+			// cropApplyButton
+			// 
+			this->cropApplyButton->Location = System::Drawing::Point(178, 40);
+			this->cropApplyButton->Name = L"cropApplyButton";
+			this->cropApplyButton->Size = System::Drawing::Size(75, 23);
+			this->cropApplyButton->TabIndex = 6;
+			this->cropApplyButton->Text = L"Apply";
+			this->cropApplyButton->UseVisualStyleBackColor = true;
+			this->cropApplyButton->Click += gcnew System::EventHandler(this, &MyForm::cropApplyButton_Click);
+			// 
+			// cropCancelButton
+			// 
+			this->cropCancelButton->Location = System::Drawing::Point(16, 40);
+			this->cropCancelButton->Name = L"cropCancelButton";
+			this->cropCancelButton->Size = System::Drawing::Size(75, 23);
+			this->cropCancelButton->TabIndex = 5;
+			this->cropCancelButton->Text = L"Cancel";
+			this->cropCancelButton->UseVisualStyleBackColor = true;
+			this->cropCancelButton->Click += gcnew System::EventHandler(this, &MyForm::cropCancelButton_Click);
+			// 
+			// cropResetButton
+			// 
+			this->cropResetButton->Location = System::Drawing::Point(97, 40);
+			this->cropResetButton->Name = L"cropResetButton";
+			this->cropResetButton->Size = System::Drawing::Size(75, 23);
+			this->cropResetButton->TabIndex = 4;
+			this->cropResetButton->Text = L"Reset";
+			this->cropResetButton->UseVisualStyleBackColor = true;
+			this->cropResetButton->Click += gcnew System::EventHandler(this, &MyForm::cropResetButton_Click);
+			// 
+			// pnlFiltering
+			// 
+			this->pnlFiltering->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->pnlFiltering->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->pnlFiltering->Controls->Add(this->lblzeroColor);
+			this->pnlFiltering->Controls->Add(this->lblzeroLumina);
+			this->pnlFiltering->Controls->Add(this->lblColor);
+			this->pnlFiltering->Controls->Add(this->lblLuminance);
+			this->pnlFiltering->Controls->Add(this->lblFilterType);
+			this->pnlFiltering->Controls->Add(this->lblNoiseReduction);
+			this->pnlFiltering->Controls->Add(this->btnColorApply);
+			this->pnlFiltering->Controls->Add(this->trkBarColor);
+			this->pnlFiltering->Controls->Add(this->btnLuminaApply);
+			this->pnlFiltering->Controls->Add(this->trkBarLumina);
+			this->pnlFiltering->Controls->Add(this->cmboxNoiseReduction);
+			this->pnlFiltering->Controls->Add(this->lblhundredLuma);
+			this->pnlFiltering->Controls->Add(this->lblhindredColor);
+			this->pnlFiltering->Location = System::Drawing::Point(738, 294);
+			this->pnlFiltering->Name = L"pnlFiltering";
+			this->pnlFiltering->Size = System::Drawing::Size(258, 259);
+			this->pnlFiltering->TabIndex = 33;
+			this->pnlFiltering->Visible = false;
+			// 
+			// lblhindredColor
+			// 
+			this->lblhindredColor->AutoSize = true;
+			this->lblhindredColor->Location = System::Drawing::Point(228, 202);
+			this->lblhindredColor->Name = L"lblhindredColor";
+			this->lblhindredColor->Size = System::Drawing::Size(25, 13);
+			this->lblhindredColor->TabIndex = 19;
+			this->lblhindredColor->Text = L"100";
+			// 
+			// lblhundredLuma
+			// 
+			this->lblhundredLuma->AutoSize = true;
+			this->lblhundredLuma->Location = System::Drawing::Point(228, 99);
+			this->lblhundredLuma->Name = L"lblhundredLuma";
+			this->lblhundredLuma->Size = System::Drawing::Size(25, 13);
+			this->lblhundredLuma->TabIndex = 18;
+			this->lblhundredLuma->Text = L"100";
+			// 
+			// lblzeroColor
+			// 
+			this->lblzeroColor->AutoSize = true;
+			this->lblzeroColor->Location = System::Drawing::Point(6, 197);
+			this->lblzeroColor->Name = L"lblzeroColor";
+			this->lblzeroColor->Size = System::Drawing::Size(13, 13);
+			this->lblzeroColor->TabIndex = 17;
+			this->lblzeroColor->Text = L"0";
+			// 
+			// lblzeroLumina
+			// 
+			this->lblzeroLumina->AutoSize = true;
+			this->lblzeroLumina->Location = System::Drawing::Point(6, 99);
+			this->lblzeroLumina->Name = L"lblzeroLumina";
+			this->lblzeroLumina->Size = System::Drawing::Size(13, 13);
+			this->lblzeroLumina->TabIndex = 14;
+			this->lblzeroLumina->Text = L"0";
+			// 
+			// lblColor
+			// 
+			this->lblColor->AutoSize = true;
+			this->lblColor->Location = System::Drawing::Point(112, 176);
+			this->lblColor->Name = L"lblColor";
+			this->lblColor->Size = System::Drawing::Size(31, 13);
+			this->lblColor->TabIndex = 16;
+			this->lblColor->Text = L"Color";
+			// 
+			// lblLuminance
+			// 
+			this->lblLuminance->AutoSize = true;
+			this->lblLuminance->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblLuminance->Location = System::Drawing::Point(98, 80);
+			this->lblLuminance->Name = L"lblLuminance";
+			this->lblLuminance->Size = System::Drawing::Size(67, 18);
+			this->lblLuminance->TabIndex = 15;
+			this->lblLuminance->Text = L"Luminance";
+			// 
+			// lblFilterType
+			// 
+			this->lblFilterType->AutoSize = true;
+			this->lblFilterType->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblFilterType->Location = System::Drawing::Point(13, 30);
+			this->lblFilterType->Name = L"lblFilterType";
+			this->lblFilterType->Size = System::Drawing::Size(67, 18);
+			this->lblFilterType->TabIndex = 14;
+			this->lblFilterType->Text = L"Filter Type";
+			// 
+			// lblNoiseReduction
+			// 
+			this->lblNoiseReduction->AutoSize = true;
+			this->lblNoiseReduction->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblNoiseReduction->Location = System::Drawing::Point(72, 9);
+			this->lblNoiseReduction->Name = L"lblNoiseReduction";
+			this->lblNoiseReduction->Size = System::Drawing::Size(122, 20);
+			this->lblNoiseReduction->TabIndex = 13;
+			this->lblNoiseReduction->Text = L"Noise Reduction";
+			// 
+			// btnColorApply
+			// 
+			this->btnColorApply->Location = System::Drawing::Point(91, 218);
+			this->btnColorApply->Name = L"btnColorApply";
+			this->btnColorApply->Size = System::Drawing::Size(80, 24);
+			this->btnColorApply->TabIndex = 12;
+			this->btnColorApply->Text = L"Apply";
+			this->btnColorApply->UseVisualStyleBackColor = true;
+			this->btnColorApply->Click += gcnew System::EventHandler(this, &MyForm::btnColorApply_Click);
+			// 
+			// trkBarColor
+			// 
+			this->trkBarColor->Location = System::Drawing::Point(19, 197);
+			this->trkBarColor->Name = L"trkBarColor";
+			this->trkBarColor->Size = System::Drawing::Size(208, 45);
+			this->trkBarColor->TabIndex = 11;
+			this->trkBarColor->TickFrequency = 0;
+			this->trkBarColor->Scroll += gcnew System::EventHandler(this, &MyForm::trkBarColor_Scroll);
+			// 
+			// btnLuminaApply
+			// 
+			this->btnLuminaApply->Location = System::Drawing::Point(91, 120);
+			this->btnLuminaApply->Name = L"btnLuminaApply";
+			this->btnLuminaApply->Size = System::Drawing::Size(80, 24);
+			this->btnLuminaApply->TabIndex = 1;
+			this->btnLuminaApply->Text = L"Apply";
+			this->btnLuminaApply->UseVisualStyleBackColor = true;
+			this->btnLuminaApply->Click += gcnew System::EventHandler(this, &MyForm::btnLuminaApply_Click);
+			// 
+			// trkBarLumina
+			// 
+			this->trkBarLumina->Location = System::Drawing::Point(19, 99);
+			this->trkBarLumina->Name = L"trkBarLumina";
+			this->trkBarLumina->Size = System::Drawing::Size(208, 45);
+			this->trkBarLumina->TabIndex = 10;
+			this->trkBarLumina->TickFrequency = 0;
+			this->trkBarLumina->Scroll += gcnew System::EventHandler(this, &MyForm::trkBarLumina_Scroll);
+			// 
+			// cmboxNoiseReduction
+			// 
+			this->cmboxNoiseReduction->FormattingEnabled = true;
+			this->cmboxNoiseReduction->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"Box", L"Gaussian", L"Median", L"" });
+			this->cmboxNoiseReduction->Location = System::Drawing::Point(9, 50);
+			this->cmboxNoiseReduction->Name = L"cmboxNoiseReduction";
+			this->cmboxNoiseReduction->Size = System::Drawing::Size(218, 21);
+			this->cmboxNoiseReduction->TabIndex = 0;
+			this->cmboxNoiseReduction->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::cmboxNoiseReduction_SelectedIndexChanged);
+			// 
+			// loadNoiseRed
+			// 
+			this->loadNoiseRed->BackColor = System::Drawing::Color::Orange;
+			this->loadNoiseRed->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"loadNoiseRed.BackgroundImage")));
+			this->loadNoiseRed->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->loadNoiseRed->Location = System::Drawing::Point(658, 37);
+			this->loadNoiseRed->Name = L"loadNoiseRed";
+			this->loadNoiseRed->Size = System::Drawing::Size(64, 64);
+			this->loadNoiseRed->TabIndex = 34;
+			this->loadNoiseRed->UseVisualStyleBackColor = false;
+			this->loadNoiseRed->Click += gcnew System::EventHandler(this, &MyForm::loadNoiseRed_Click);
+			this->loadNoiseRed->MouseHover += gcnew System::EventHandler(this, &MyForm::loadNoiseRed_MouseHover);
+			// 
+			// pnlShadowHighlights
+			// 
+			this->pnlShadowHighlights->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->pnlShadowHighlights->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->pnlShadowHighlights->Controls->Add(this->btnHighLightsApply);
+			this->pnlShadowHighlights->Controls->Add(this->lblMaxShadow);
+			this->pnlShadowHighlights->Controls->Add(this->btnShadowApply);
+			this->pnlShadowHighlights->Controls->Add(this->trkBarShadow);
+			this->pnlShadowHighlights->Controls->Add(this->lblMinHighlights);
+			this->pnlShadowHighlights->Controls->Add(this->lblMinShadow);
+			this->pnlShadowHighlights->Controls->Add(this->lblHIghlights);
+			this->pnlShadowHighlights->Controls->Add(this->lblShadow);
+			this->pnlShadowHighlights->Controls->Add(this->lblShadowHighlights);
+			this->pnlShadowHighlights->Controls->Add(this->trkBarHighlights);
+			this->pnlShadowHighlights->Controls->Add(this->lblMaxHighlights);
+			this->pnlShadowHighlights->Location = System::Drawing::Point(741, 293);
+			this->pnlShadowHighlights->Name = L"pnlShadowHighlights";
+			this->pnlShadowHighlights->Size = System::Drawing::Size(251, 256);
+			this->pnlShadowHighlights->TabIndex = 35;
+			this->pnlShadowHighlights->Visible = false;
+			// 
+			// lblMaxHighlights
+			// 
+			this->lblMaxHighlights->AutoSize = true;
+			this->lblMaxHighlights->Location = System::Drawing::Point(223, 163);
+			this->lblMaxHighlights->Name = L"lblMaxHighlights";
+			this->lblMaxHighlights->Size = System::Drawing::Size(19, 13);
+			this->lblMaxHighlights->TabIndex = 23;
+			this->lblMaxHighlights->Text = L"50";
+			// 
+			// lblMaxShadow
+			// 
+			this->lblMaxShadow->AutoSize = true;
+			this->lblMaxShadow->Location = System::Drawing::Point(221, 64);
+			this->lblMaxShadow->Name = L"lblMaxShadow";
+			this->lblMaxShadow->Size = System::Drawing::Size(19, 13);
+			this->lblMaxShadow->TabIndex = 22;
+			this->lblMaxShadow->Text = L"50";
+			// 
+			// lblMinHighlights
+			// 
+			this->lblMinHighlights->AutoSize = true;
+			this->lblMinHighlights->Location = System::Drawing::Point(3, 163);
+			this->lblMinHighlights->Name = L"lblMinHighlights";
+			this->lblMinHighlights->Size = System::Drawing::Size(22, 13);
+			this->lblMinHighlights->TabIndex = 21;
+			this->lblMinHighlights->Text = L"-50";
+			// 
+			// lblMinShadow
+			// 
+			this->lblMinShadow->AutoSize = true;
+			this->lblMinShadow->Location = System::Drawing::Point(0, 64);
+			this->lblMinShadow->Name = L"lblMinShadow";
+			this->lblMinShadow->Size = System::Drawing::Size(22, 13);
+			this->lblMinShadow->TabIndex = 20;
+			this->lblMinShadow->Text = L"-50";
+			// 
+			// lblHIghlights
+			// 
+			this->lblHIghlights->AutoSize = true;
+			this->lblHIghlights->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblHIghlights->Location = System::Drawing::Point(94, 145);
+			this->lblHIghlights->Name = L"lblHIghlights";
+			this->lblHIghlights->Size = System::Drawing::Size(61, 18);
+			this->lblHIghlights->TabIndex = 18;
+			this->lblHIghlights->Text = L"Highlights";
+			// 
+			// lblShadow
+			// 
+			this->lblShadow->AutoSize = true;
+			this->lblShadow->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblShadow->Location = System::Drawing::Point(99, 48);
+			this->lblShadow->Name = L"lblShadow";
+			this->lblShadow->Size = System::Drawing::Size(50, 18);
+			this->lblShadow->TabIndex = 17;
+			this->lblShadow->Text = L"Shadow";
+			// 
+			// lblShadowHighlights
+			// 
+			this->lblShadowHighlights->AutoSize = true;
+			this->lblShadowHighlights->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblShadowHighlights->Location = System::Drawing::Point(57, 15);
+			this->lblShadowHighlights->Name = L"lblShadowHighlights";
+			this->lblShadowHighlights->Size = System::Drawing::Size(137, 20);
+			this->lblShadowHighlights->TabIndex = 17;
+			this->lblShadowHighlights->Text = L"Shadow/Highlights";
+			// 
+			// trkBarHighlights
+			// 
+			this->trkBarHighlights->Location = System::Drawing::Point(19, 163);
+			this->trkBarHighlights->Maximum = 50;
+			this->trkBarHighlights->Minimum = -50;
+			this->trkBarHighlights->Name = L"trkBarHighlights";
+			this->trkBarHighlights->Size = System::Drawing::Size(208, 45);
+			this->trkBarHighlights->TabIndex = 5;
+			this->trkBarHighlights->TickFrequency = 0;
+			this->trkBarHighlights->Scroll += gcnew System::EventHandler(this, &MyForm::trkBarHighlights_Scroll);
+			// 
+			// trkBarShadow
+			// 
+			this->trkBarShadow->Location = System::Drawing::Point(19, 64);
+			this->trkBarShadow->Maximum = 50;
+			this->trkBarShadow->Minimum = -50;
+			this->trkBarShadow->Name = L"trkBarShadow";
+			this->trkBarShadow->Size = System::Drawing::Size(208, 45);
+			this->trkBarShadow->TabIndex = 4;
+			this->trkBarShadow->TickFrequency = 0;
+			this->trkBarShadow->Scroll += gcnew System::EventHandler(this, &MyForm::trkBarShadow_Scroll);
+			// 
+			// btnHighLightsApply
+			// 
+			this->btnHighLightsApply->Location = System::Drawing::Point(86, 196);
+			this->btnHighLightsApply->Name = L"btnHighLightsApply";
+			this->btnHighLightsApply->Size = System::Drawing::Size(77, 26);
+			this->btnHighLightsApply->TabIndex = 3;
+			this->btnHighLightsApply->Text = L"Apply";
+			this->btnHighLightsApply->UseVisualStyleBackColor = true;
+			this->btnHighLightsApply->Click += gcnew System::EventHandler(this, &MyForm::btnHighLightsApply_Click);
+			// 
+			// btnShadowApply
+			// 
+			this->btnShadowApply->Location = System::Drawing::Point(84, 95);
+			this->btnShadowApply->Name = L"btnShadowApply";
+			this->btnShadowApply->Size = System::Drawing::Size(79, 26);
+			this->btnShadowApply->TabIndex = 2;
+			this->btnShadowApply->Text = L"Apply";
+			this->btnShadowApply->UseVisualStyleBackColor = true;
+			this->btnShadowApply->Click += gcnew System::EventHandler(this, &MyForm::btnShadowApply_Click);
+			// 
+			// loadShadHighlts
+			// 
+			this->loadShadHighlts->BackColor = System::Drawing::Color::DodgerBlue;
+			this->loadShadHighlts->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"loadShadHighlts.BackgroundImage")));
+			this->loadShadHighlts->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->loadShadHighlts->Location = System::Drawing::Point(728, 38);
+			this->loadShadHighlts->Name = L"loadShadHighlts";
+			this->loadShadHighlts->Size = System::Drawing::Size(64, 64);
+			this->loadShadHighlts->TabIndex = 36;
+			this->loadShadHighlts->UseVisualStyleBackColor = false;
+			this->loadShadHighlts->Click += gcnew System::EventHandler(this, &MyForm::loadShadHighlts_Click);
+			this->loadShadHighlts->MouseHover += gcnew System::EventHandler(this, &MyForm::loadShadHighlts_MouseHover);
+			// 
+			// MyForm
+			// 
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->ClientSize = System::Drawing::Size(1350, 729);
+			this->Controls->Add(this->loadShadHighlts);
+			this->Controls->Add(this->vignettePanel);
+			this->Controls->Add(this->pnlShadowHighlights);
+			this->Controls->Add(this->tempPanel);
+			this->Controls->Add(this->loadNoiseRed);
+			this->Controls->Add(this->sharpeningPanel);
+			this->Controls->Add(this->pnlFiltering);
+			this->Controls->Add(this->cropPanel);
+			this->Controls->Add(this->luminancePanel);
+			this->Controls->Add(this->loadCrop);
+			this->Controls->Add(this->loadVignette);
+			this->Controls->Add(this->loadSharpen);
+			this->Controls->Add(this->label15);
+			this->Controls->Add(this->RGBHist);
+			this->Controls->Add(this->hueSatPanel);
+			this->Controls->Add(this->loadHueSat);
+			this->Controls->Add(this->contrastPanel);
+			this->Controls->Add(this->exposurePanel);
+			this->Controls->Add(this->loadExposure);
+			this->Controls->Add(this->loadContrast);
+			this->Controls->Add(this->loadLuminance);
+			this->Controls->Add(this->loadTempAdj);
+			this->Controls->Add(this->rgbPanel);
+			this->Controls->Add(this->loadColourAdj);
+			this->Controls->Add(this->pictureBox1);
+			this->Controls->Add(this->menuStrip1);
+			this->MainMenuStrip = this->menuStrip1;
+			this->Name = L"MyForm";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
+			this->Text = L"Image Enhancer v1.0";
+			this->WindowState = System::Windows::Forms::FormWindowState::Maximized;
+			this->menuStrip1->ResumeLayout(false);
+			this->menuStrip1->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarLuminance))->EndInit();
+			this->luminancePanel->ResumeLayout(false);
+			this->luminancePanel->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarContrast))->EndInit();
+			this->contrastPanel->ResumeLayout(false);
+			this->contrastPanel->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->EndInit();
+			this->tempPanel->ResumeLayout(false);
+			this->tempPanel->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarExposure))->EndInit();
+			this->exposurePanel->ResumeLayout(false);
+			this->exposurePanel->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->redTrackBar))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->greenTrackBar))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->blueTrackBar))->EndInit();
+			this->rgbPanel->ResumeLayout(false);
+			this->rgbPanel->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarHue))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarSaturation))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarValue))->EndInit();
+			this->hueSatPanel->ResumeLayout(false);
+			this->hueSatPanel->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->RGBHist))->EndInit();
+			this->sharpeningPanel->ResumeLayout(false);
+			this->sharpeningPanel->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->weightTrack))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->sigmatrack))->EndInit();
+			this->vignettePanel->ResumeLayout(false);
+			this->vignettePanel->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->vignetteTrackBar))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
+			this->cropPanel->ResumeLayout(false);
+			this->cropPanel->PerformLayout();
+			this->pnlFiltering->ResumeLayout(false);
+			this->pnlFiltering->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trkBarColor))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trkBarLumina))->EndInit();
+			this->pnlShadowHighlights->ResumeLayout(false);
+			this->pnlShadowHighlights->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trkBarHighlights))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trkBarShadow))->EndInit();
+			this->ResumeLayout(false);
+			this->PerformLayout();
+
+		}
+#pragma endregion
+		// Import image menubar item
+
+	private: System::Void importToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+		
+		// Displays an OpenFileDialog so the user can select an image file.  
+		OpenFileDialog ^ openFileDialog1 = gcnew OpenFileDialog();
+		openFileDialog1->Filter = "All Graphics Types|*.bmp;*.jpg;*.jpeg;*.png;*.tif;*.tiff";
+		openFileDialog1->Title = "Select an Image File";
+
+		// Show the Dialog.  
+		// If the user clicked OK in the dialog and  
+		if (openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+		{
+		// Assign the cursor in the Stream to  
+		// the Form's Cursor property. 
+		// cache.jpg is the copy of the original image used for editing
+			pictureBox1->Load(openFileDialog1->FileName);
+			pictureBox1->Image->Save("cache.jpg", System::Drawing::Imaging::ImageFormat::Jpeg);
+			editedImage = cv::imread("cache.jpg", cv::IMREAD_COLOR);
+
+			vignetteSelected = false;
+			FILE *fp = fopen("cache.jpg", "rb");
+
+			//MessageBox::Show("EXIF");
+			if (!fp) {
+				MessageBox::Show("Can't open file");
+
+			}
+			fseek(fp, 0, SEEK_END);
+			unsigned long fsize = ftell(fp);
+			rewind(fp);
+			unsigned char *buf = new unsigned char[fsize];
+			if (fread(buf, 1, fsize, fp) != fsize) {
+				MessageBox::Show("Can't read file");
+				delete[] buf;
+
+			}
+			fclose(fp);
+
+			// Parse EXIF
+			easyexif::EXIFInfo result;
+			int code = result.parseFrom(buf, fsize);
+			delete[] buf;
+			if (code) {
+				MessageBox::Show("Error parsing EXIF");
+
+			}
+
+			cameraMake = result.Make.c_str();
+			cameraModel = result.Model.c_str();
+			imageWidth = std::to_string(result.ImageWidth);
+			imageHeight = std::to_string(result.ImageHeight);
+			imageDate = result.DateTime.c_str();
+			imageExposure = std::to_string((unsigned)(1.0 / result.ExposureTime));
+			imageIso = std::to_string(result.ISOSpeedRatings);
+
+
+			refreshHistBox(Histogram(&editedImage));
+		}
+	}
+
+		// Mouse hover 
+
+	private: System::Void loadColourAdj_MouseHover(System::Object^  sender, System::EventArgs^  e) {
+		System::Windows::Forms::ToolTip^ ToolTip1 = gcnew System::Windows::Forms::ToolTip;
+		ToolTip1->SetToolTip(loadColourAdj, "RGB");
+	}
+
+	private: System::Void loadTempAdj_MouseHover(System::Object^  sender, System::EventArgs^  e) {
+		System::Windows::Forms::ToolTip^ ToolTip1 = gcnew System::Windows::Forms::ToolTip;
+		ToolTip1->SetToolTip(loadTempAdj, "Colour Temperature");
+	}
+
+	private: System::Void loadContrast_MouseHover(System::Object^  sender, System::EventArgs^  e) {
+		System::Windows::Forms::ToolTip^ ToolTip1 = gcnew System::Windows::Forms::ToolTip;
+		ToolTip1->SetToolTip(loadContrast, "Contrast");
+			 }
+
+	private: System::Void loadLuminance_MouseHover(System::Object^  sender, System::EventArgs^  e) {
+		System::Windows::Forms::ToolTip^ ToolTip1 = gcnew System::Windows::Forms::ToolTip;
+		ToolTip1->SetToolTip(loadLuminance, "Luminance");
+	}
+
+	private: System::Void loadExposure_MouseHover(System::Object^  sender, System::EventArgs^  e) {
+		System::Windows::Forms::ToolTip^ ToolTip1 = gcnew System::Windows::Forms::ToolTip;
+		ToolTip1->SetToolTip(loadExposure, "Exposure");
+	}
+
+	private: System::Void loadHueSat_MouseHover(System::Object^  sender, System::EventArgs^  e) {
+		System::Windows::Forms::ToolTip^ ToolTip1 = gcnew System::Windows::Forms::ToolTip;
+		ToolTip1->SetToolTip(loadHueSat, "Hue/Saturation");
+	}
+
+	private: System::Void loadSharpen_MouseHover(System::Object^  sender, System::EventArgs^  e) {
+		System::Windows::Forms::ToolTip^ ToolTip1 = gcnew System::Windows::Forms::ToolTip;
+		ToolTip1->SetToolTip(loadSharpen, "Sharpening");
+	}
+
+	private: System::Void loadVignette_MouseHover(System::Object^  sender, System::EventArgs^  e) {
+		System::Windows::Forms::ToolTip^ ToolTip1 = gcnew System::Windows::Forms::ToolTip;
+		ToolTip1->SetToolTip(loadVignette, "Vignette");
+	}
+
+	private: System::Void loadCrop_MouseHover(System::Object^  sender, System::EventArgs^  e) {
+		System::Windows::Forms::ToolTip^ ToolTip1 = gcnew System::Windows::Forms::ToolTip;
+		ToolTip1->SetToolTip(loadCrop, "Crop Image");
+	}
+
+	private: System::Void loadNoiseRed_MouseHover(System::Object^  sender, System::EventArgs^  e) {
+		System::Windows::Forms::ToolTip^ ToolTip1 = gcnew System::Windows::Forms::ToolTip;
+		ToolTip1->SetToolTip(loadNoiseRed, "Noise Reduction");
+	}
+
+	private: System::Void loadShadHighlts_MouseHover(System::Object^  sender, System::EventArgs^  e) {
+		System::Windows::Forms::ToolTip^ ToolTip1 = gcnew System::Windows::Forms::ToolTip;
+		ToolTip1->SetToolTip(loadShadHighlts, "Shadow/Highlights");
+	}
+
+		// Temperature adjustment controls
+
+	private: System::Void loadTempAdj_Click(System::Object^  sender, System::EventArgs^  e) {
+		// Controlling panels
+		rgbPanel->Visible = false;
+		tempPanel->Visible = true;
+		contrastPanel->Visible = false;
+		exposurePanel->Visible = false;
+		luminancePanel->Visible = false;
+		hueSatPanel->Visible = false;
+		sharpeningPanel->Visible = false;
+		vignettePanel->Visible = false;
+		cropPanel->Visible = false;
+		pnlFiltering->Visible = false;
+		pnlShadowHighlights->Visible = false;
+
+		vignetteSelected = false;
+		cropSelected = false;
+
+		refreshPicBox(editedImage);
+		refreshHistBox(Histogram(&editedImage));
+	}
+
+	private: System::Void tempTrackBar_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		// Acquire track bar value
+		int trackBarValue = trackBar1->Value;
+
+		// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage.clone();
+		colourTempAdjustment(&mainImage, trackBarValue);
+	}
+
+	private: System::Void tempApply_Click(System::Object^  sender, System::EventArgs^  e) {
+		editedImage = tempAdjusted.clone();
+		trackBar1->Value = 0;
+	}
+
+	private: System::Void autoWhiteBal_Click(System::Object^  sender, System::EventArgs^  e) {
+		whiteBalance(&editedImage);
+	}
+
+	private: System::Void resetTemp_Click(System::Object^  sender, System::EventArgs^  e) {
+		autoWhiteBal->Enabled = true;
+		refreshHistBox(Histogram(&editedImage));
+		refreshPicBox(editedImage);
+		trackBar1->Value = 0;
+	}
+
+		// RGB adjustment controls
+
+	private: System::Void loadColourAdj_Click(System::Object^  sender, System::EventArgs^  e) {
+		// Updating global RGB channels 
+		cv::Mat edited2[3], cacheImage;
+		cacheImage = editedImage.clone();
+		split(cacheImage, edited2);
+		adjRchan = edited2[2];
+		adjGchan = edited2[1];
+		adjBchan = edited2[0];
+
+		// Controlling panels
+		rgbPanel->Visible = true;
+		tempPanel->Visible = false;
+		contrastPanel->Visible = false;
+		exposurePanel->Visible = false;
+		luminancePanel->Visible = false;
+		hueSatPanel->Visible = false;
+		sharpeningPanel->Visible = false;
+		vignettePanel->Visible = false;
+		cropPanel->Visible = false;
+		pnlFiltering->Visible = false;
+		pnlShadowHighlights->Visible = false;
+
+		refreshPicBox(editedImage);
+		refreshHistBox(Histogram(&editedImage));
+
+		vignetteSelected = false;
+		cropSelected = false;
+	}
+
+	private: System::Void redTrackBar_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		cv::Mat edited2[3], redChan, greenChan, blueChan;
+		split(editedImage, edited2);
+		redChan = edited2[2];
+		greenChan = edited2[1];
+		blueChan = edited2[0];
+
+		float fGamma = redTrackBar->Value / 10.0;
+		unsigned char lut[256];
+
+		for (int i = 0; i < 256; i++)
+		{
+			lut[i] = cv::saturate_cast<uchar>(pow((float)(i / 255.0), fGamma) * 255.0f);
+		}
+
+		cv::MatIterator_<uchar> it, end;
+		for (it = redChan.begin<uchar>(), end = redChan.end<uchar>(); it != end; it++)
+		*it = lut[(*it)];
+
+		adjRchan = redChan;
+
+		// Merging the BGR channels 
+		std::vector < cv::Mat > arrayToMerge;
+		arrayToMerge.push_back(adjBchan);
+		arrayToMerge.push_back(adjGchan);
+		arrayToMerge.push_back(adjRchan);
+
+		// Image with altered red abd blue channels
+		merge(arrayToMerge, bgrAdjusted);
+		refreshPicBox(bgrAdjusted);
+		refreshHistBox(Histogram(&bgrAdjusted));
+		}
+
+	private: System::Void greenTrackBar_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		cv::Mat edited2[3], redChan, greenChan, blueChan;
+		split(editedImage, edited2);
+		redChan = edited2[2];
+		greenChan = edited2[1];
+		blueChan = edited2[0];
+		float fGamma = greenTrackBar->Value / 10.0;
+		unsigned char lut[256];
+
+		for (int i = 0; i < 256; i++)
+		{
+			lut[i] = cv::saturate_cast<uchar>(pow((float)(i / 255.0), fGamma) * 255.0f);
+		}
+
+		cv::MatIterator_<uchar> it, end;
+		for (it = greenChan.begin<uchar>(), end = greenChan.end<uchar>(); it != end; it++)
+		*it = lut[(*it)];
+
+		adjGchan = greenChan;
+		// Merging the BGR channels 
+		std::vector < cv::Mat > arrayToMerge;
+		arrayToMerge.push_back(adjBchan);
+		arrayToMerge.push_back(adjGchan);
+		arrayToMerge.push_back(adjRchan);
+
+		// Image with altered red abd blue channels
+		merge(arrayToMerge, bgrAdjusted);
+		refreshPicBox(bgrAdjusted);
+		refreshHistBox(Histogram(&bgrAdjusted));
+		}
+
+	private: System::Void blueTrackBar_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		cv::Mat edited2[3], redChan, greenChan, blueChan;
+		split(editedImage, edited2);
+		redChan = edited2[2];
+		greenChan = edited2[1];
+		blueChan = edited2[0];
+		float fGamma = blueTrackBar->Value / 10.0;
+		unsigned char lut[256];
+
+		for (int i = 0; i < 256; i++)
+		{
+			lut[i] = cv::saturate_cast<uchar>(pow((float)(i / 255.0), fGamma) * 255.0f);
+		}
+
+		cv::MatIterator_<uchar> it, end;
+		for (it = blueChan.begin<uchar>(), end = blueChan.end<uchar>(); it != end; it++)
+		*it = lut[(*it)];
+
+		adjBchan = blueChan;
+		// Merging the BGR channels 
+		std::vector < cv::Mat > arrayToMerge;
+		arrayToMerge.push_back(adjBchan);
+		arrayToMerge.push_back(adjGchan);
+		arrayToMerge.push_back(adjRchan);
+			
+		// Image with altered red abd blue channels
+		merge(arrayToMerge, bgrAdjusted);
+		refreshPicBox(bgrAdjusted);
+		refreshHistBox(Histogram(&bgrAdjusted));
+		}	
+
+	private: System::Void rgbApply_Click(System::Object^  sender, System::EventArgs^  e) {
+		editedImage = bgrAdjusted.clone();
+		redTrackBar->Value = 10;
+		blueTrackBar->Value = 10;
+		greenTrackBar->Value = 10;
+	}
+
+
+		// Contrast Adjustment
+
+	private: System::Void loadContrast_Click(System::Object^  sender, System::EventArgs^  e) {
+		rgbPanel->Visible = false;
+		tempPanel->Visible = false;
+		contrastPanel->Visible = true;
+		exposurePanel->Visible = false;
+		luminancePanel->Visible = false;
+		hueSatPanel->Visible = false;
+		sharpeningPanel->Visible = false;
+		vignettePanel->Visible = false;
+		cropPanel->Visible = false;
+		pnlFiltering->Visible = false;
+		pnlShadowHighlights->Visible = false;
+
+		vignetteSelected = false;
+		cropSelected = false;
+
+		refreshPicBox(editedImage);
+		refreshHistBox(Histogram(&editedImage));
+	}
+
+	private: System::Void trackBarContrast_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		// Acquire track bar value
+		int trackBarValueExposure = trackBarExposure->Value;				// Get Exposure slider value
+		int trackBarValueContrast = trackBarContrast->Value;				// Get Contrast slider value
+
+		// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage.clone();
+		Contrast(&mainImage, trackBarValueExposure, trackBarValueContrast);	//Call Contrast function
+		contrastApply->Enabled = true;
+	}
+
+	private: System::Void contrastApply_Click(System::Object^  sender, System::EventArgs^  e) {
+		editedImage = tempAdjusted.clone();								// Contrast changes made permanent
+		contrastApply->Enabled = false;
+		trackBarContrast->Value = 50;										// Center slider
+	}
+
+	private: System::Void contrastAutoAdjust_Click(System::Object^  sender, System::EventArgs^  e) {
+		cv::Mat img;
+		std::vector<cv::Mat> channels;
+		cvtColor(editedImage, img, CV_BGR2YCrCb);							// Change the color image from BGR to YCrCb format
+		cv::split(img, channels);											// Split the image into channels
+		cv::equalizeHist(channels[0], channels[0]);						// Equalize histogram on the 1st channel (Y)
+		cv::merge(channels, img);											// Merge the 3 channels 
+		cvtColor(img, tempAdjusted, CV_YCrCb2BGR);							// Back to BGR
+																			//imshow("Histogram Equalized Image", img);						// Shows image
+		refreshPicBox(tempAdjusted);										// Update picture displayed
+		refreshHistBox(Histogram(&tempAdjusted));
+		editedImage = tempAdjusted.clone();
+	}
+
+		// Exposure Adjustment
+
+	private: System::Void loadExposure_Click(System::Object^  sender, System::EventArgs^  e) {
+		rgbPanel->Visible = false;
+		tempPanel->Visible = false;
+		contrastPanel->Visible = false;
+		exposurePanel->Visible = true;
+		luminancePanel->Visible = false;
+		hueSatPanel->Visible = false;
+		sharpeningPanel->Visible = false;
+		vignettePanel->Visible = false;
+		cropPanel->Visible = false;
+		pnlFiltering->Visible = false;
+		pnlShadowHighlights->Visible = false;
+
+		vignetteSelected = false;
+		cropSelected = false;
+
+		refreshPicBox(editedImage);
+		refreshHistBox(Histogram(&editedImage));
+	}
+
+	private: System::Void trackBarExposure_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		// Acquire track bar value
+		int trackBarValueExposure = trackBarExposure->Value;				// Get Exposure slider value
+		int trackBarValueContrast = trackBarContrast->Value;				// Get Contrast slider value
+
+																			// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage.clone();
+		Exposure(&mainImage, trackBarValueExposure, trackBarValueContrast);	//Call Exposure function
+		exposureApply->Enabled = true;
+	}
+
+	private: System::Void exposureApply_Click(System::Object^  sender, System::EventArgs^  e) {
+		editedImage = tempAdjusted.clone();								// Exposure changes made permanent
+		exposureApply->Enabled = false;
+		trackBarExposure->Value = 50;
+	}
+
+	private: System::Void exposureAutoAdjust_Click(System::Object^  sender, System::EventArgs^  e) {
+		double min, max, alpha, beta;
+		cv::Mat tempIm = editedImage.clone();
+		cv::minMaxLoc(tempIm, &min, &max);
+		alpha = 255 / (max - min);
+		beta = - min * alpha;
+		tempIm.convertTo(tempAdjusted, -1, alpha, beta);					//Linear Transform per pixel
+		refreshHistBox(Histogram(&tempAdjusted));
+		refreshPicBox(tempAdjusted);										// Update picture displayed
+		editedImage = tempAdjusted.clone();
+
+	}
+
+		// Luminance Adjustment
+
+	private: System::Void loadLuminance_Click(System::Object^  sender, System::EventArgs^  e) {
+		rgbPanel->Visible = false;
+		tempPanel->Visible = false;
+		contrastPanel->Visible = false;
+		exposurePanel->Visible = false;
+		luminancePanel->Visible = true;
+		hueSatPanel->Visible = false;
+		sharpeningPanel->Visible = false;
+		vignettePanel->Visible = false;
+		cropPanel->Visible = false;
+		pnlFiltering->Visible = false;
+		pnlShadowHighlights->Visible = false;
+
+		vignetteSelected = false;
+		cropSelected = false;
+
+		refreshPicBox(editedImage);
+		refreshHistBox(Histogram(&editedImage));
+	}
+
+	private: System::Void trackBarLuminance_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		// Acquire track bar value
+		int trackBarValueLuminance = trackBarLuminance->Value;				// Get Luminance slider value
+
+		// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage.clone();
+		Luminance(&mainImage, trackBarValueLuminance);						// Call Luminance function
+		luminanceApply->Enabled = true;
+	}	
+
+	private: System::Void luminanceApply_Click(System::Object^  sender, System::EventArgs^  e) {
+		editedImage = tempAdjusted.clone();								// Luminance changes made permanent
+		luminanceApply->Enabled = false;
+		trackBarLuminance->Value = 0;										// Center slider
+	}
+
+		//HSV Adjustment
+
+	private: System::Void loadHueSat_Click(System::Object^  sender, System::EventArgs^  e) {
+		rgbPanel->Visible = false;
+		tempPanel->Visible = false;
+		contrastPanel->Visible = false;
+		exposurePanel->Visible = false;
+		luminancePanel->Visible = false;
+		hueSatPanel->Visible = true;
+		sharpeningPanel->Visible = false;
+		vignettePanel->Visible = false;
+		cropPanel->Visible = false;
+		pnlFiltering->Visible = false;
+		pnlShadowHighlights->Visible = false;
+
+		vignetteSelected = false;
+		cropSelected = false;
+
+		refreshPicBox(editedImage);
+		refreshHistBox(Histogram(&editedImage));
+	}
+
+		// Hue Adjustment
+
+	private: System::Void trackBarHue_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		// Acquire track bar value
+		int trackBarValueHue = trackBarHue->Value;
+		int trackBarValueSaturation = trackBarSaturation->Value;
+		int trackBarValueValue = trackBarValue->Value;
+
+		// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage.clone();
+		Hue(&mainImage, trackBarValueHue, trackBarValueSaturation, trackBarValueValue); //Call Hue function
+		hueApply->Enabled = true;
+	}
+
+	private: System::Void hueApply_Click(System::Object^  sender, System::EventArgs^  e) {
+		editedImage = tempAdjusted.clone();								// Hue changes made permanent
+		hueApply->Enabled = false;
+		trackBarHue->Value = 0;											// Center slider
+	}
+
+		// Saturation adjustment
+
+	private: System::Void trackBarSaturation_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		// Acquire track bar value
+		int trackBarValueHue = trackBarHue->Value;
+		int trackBarValueSaturation = trackBarSaturation->Value;
+		int trackBarValueValue = trackBarValue->Value;
+
+		// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage.clone();
+		Saturation(&mainImage, trackBarValueHue, trackBarValueSaturation, trackBarValueValue);	// Call Saturation function
+		saturationApply->Enabled = true;
+	}
+
+	private: System::Void saturationApply_Click(System::Object^  sender, System::EventArgs^  e) {
+		editedImage = tempAdjusted.clone();								// Saturation changes made permanent
+		saturationApply->Enabled = false;
+		trackBarSaturation->Value = 0;										// Center slider
+	}
+
+		// Value adjustment
+
+	private: System::Void trackBarValue_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		// Acquire track bar value
+		int trackBarValueHue = trackBarHue->Value;
+		int trackBarValueSaturation = trackBarSaturation->Value;
+		int trackBarValueValue = trackBarValue->Value;
+
+		// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage.clone();
+		Value(&mainImage, trackBarValueHue, trackBarValueSaturation, trackBarValueValue);	//Call Value function
+		valueApply->Enabled = true;
+	}
+
+	private: System::Void valueApply_Click(System::Object^  sender, System::EventArgs^  e) {
+		editedImage = tempAdjusted.clone();								// Value changes made permanent
+		valueApply->Enabled = false;
+		trackBarValue->Value = 0;										// Center slider
+	}
+
+		// Sharpening 
+
+	private: System::Void loadSharpen_Click(System::Object^  sender, System::EventArgs^  e) {
+		rgbPanel->Visible = false;
+		tempPanel->Visible = false;
+		contrastPanel->Visible = false;
+		exposurePanel->Visible = false;
+		luminancePanel->Visible = false;
+		hueSatPanel->Visible = false;
+		sharpeningPanel->Visible = true;
+		vignettePanel->Visible = false;
+		cropPanel->Visible = false;
+		pnlFiltering->Visible = false;
+		pnlShadowHighlights->Visible = false;
+
+		vignetteSelected = false;
+		cropSelected = false;
+
+		refreshPicBox(editedImage);
+		refreshHistBox(Histogram(&editedImage));
+	}
+
+	private: System::Void sharpeningSelect_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+		msclr::interop::marshal_context context;
+		sharpningType = context.marshal_as<std::string>(sharpeningSelect->SelectedItem->ToString());
+	}
+
+	private: System::Void sigmatrack_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		// Acquire track bar value
+		Sharpsigma = sigmatrack->Value;
+
+		// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage;
+
+		if (sharpningType == "Gaussian")
+		{
+			GaussianSharpning(&mainImage, &editedImage, Sharpsigma, Sharpweight);
+		}
+
+		else if (sharpningType == "Luminance")
+		{
+			LuminanceSharpning(&mainImage, &editedImage, Sharpsigma, Sharpweight);
+		}
+		refreshHistBox(Histogram(&mainImage));
+	}
+
+	private: System::Void weightTrack_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		// Acquire track bar value
+		Sharpweight = weightTrack->Value;
+
+		// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage;
+
+		if (sharpningType == "Gaussian")
+		{
+			GaussianSharpning(&mainImage, &editedImage, Sharpsigma, Sharpweight);
+		}
+
+		else if (sharpningType == "Luminance")
+		{
+			LuminanceSharpning(&mainImage, &editedImage, Sharpsigma, Sharpweight);
+		}
+		refreshHistBox(Histogram(&mainImage));
+	}
+
+	private: System::Void sharpenApply_Click(System::Object^  sender, System::EventArgs^  e) {
+		editedImage = tempAdjusted.clone();
+	}
+
+	// View image metadata
+
+	private: System::Void imageMetadataToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+		//void displaydata();
+		MessageBox::Show(
+			"Camera Make   :	" + gcnew String(cameraMake.c_str()) + "\n" +
+			"Camera Model  :	" + gcnew String(cameraModel.c_str()) + "\n" +
+			"Image Width   :	" + gcnew String(imageWidth.c_str()) + "\n" +
+			"Image Height  :	" + gcnew String(imageHeight.c_str()) + "\n" +
+			"Date :	" + gcnew String(imageDate.c_str()) + "\n" +
+			"Exposure :		" + gcnew String(imageExposure.c_str()) + "\n" +
+			"ISO :		" + gcnew String(imageIso.c_str()), TEXT("Image Metadata")
+		);
+
+	}
+
+	// Vignette
+
+	private: System::Void loadVignette_Click(System::Object^  sender, System::EventArgs^  e) {
+		cropVigImage = editedImage.clone();
+
+		cropStarted = false;
+		cropSelected = false;
+		vignetteSelected = true;
+		vignettePanel->Visible = true;
+		vignetteCenterX = cropVigImage.cols / 2;
+		vignetteCenterY = cropVigImage.rows / 2;
+		int tabValue = vignetteTrackBar->Value;
+		int sigma = cropVigImage.cols * tabValue / 100;
+		vignetteImage = vignetteFilterOffset(&cropVigImage, sigma, vignetteCenterX, vignetteCenterY);
+
+		refreshPicBox(vignetteImage);
+		refreshHistBox(Histogram(&vignetteImage));
+
+		rgbPanel->Visible = false;
+		tempPanel->Visible = false;
+		contrastPanel->Visible = false;
+		exposurePanel->Visible = false;
+		luminancePanel->Visible = false;
+		hueSatPanel->Visible = false;
+		sharpeningPanel->Visible = false;
+		vignettePanel->Visible = true;
+		cropPanel->Visible = false;
+		pnlFiltering->Visible = false;
+		pnlShadowHighlights->Visible = false;
+	}
+
+	private: System::Void vignetteCancelButton_Click(System::Object^  sender, System::EventArgs^  e) {
+		refreshPicBox(editedImage);
+		refreshHistBox(Histogram(&editedImage));
+		vignetteSelected = false;
+		vignettePanel->Visible = false;
+	}
+
+	private: System::Void vignetteTrackBar_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
+		int tabValue = vignetteTrackBar->Value;
+		if (vignetteSelected) {
+
+			int sigma = cropVigImage.cols * tabValue / 100;
+			vignetteImage = vignetteFilterOffset(&cropVigImage, sigma, vignetteCenterX, vignetteCenterY);
+			refreshPicBox(vignetteImage);
+			refreshHistBox(Histogram(&vignetteImage));
+		}
+	}
+
+	private: System::Void vignetteApplyButton_Click(System::Object^  sender, System::EventArgs^  e) {
+		cropVigImage = vignetteImage;
+		System::IntPtr ptr(cropVigImage.ptr());
+		System::Drawing::Bitmap^ b = gcnew System::Drawing::Bitmap(cropVigImage.cols, cropVigImage.rows, cropVigImage.step, System::Drawing::Imaging::PixelFormat::Format24bppRgb, ptr);
+		pictureBox1->Image = b;
+		vignetteSelected = false;
+		vignettePanel->Visible = false;
+		editedImage = cropVigImage;
+	}
+
+	private: System::Void vignetteResetButton_Click(System::Object^  sender, System::EventArgs^  e) {
+		cropVigImage = editedImage;
+		vignetteTrackBar->Value = 50;
+		vignetteSelected = true;
+		vignetteCenterX = cropVigImage.cols / 2;
+		vignetteCenterY = cropVigImage.rows / 2;
+		int tabValue = vignetteTrackBar->Value;
+		int sigma = cropVigImage.cols * tabValue / 100;
+		vignetteImage = vignetteFilterOffset(&cropVigImage, sigma, vignetteCenterX, vignetteCenterY);
+		refreshPicBox(vignetteImage);
+	}
+
+	private: System::Void pictureBox1_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+		if (vignetteSelected) {
+
+			vignetteCenterX = e->X;
+			vignetteCenterY = e->Y;
+
+			int tabValue = vignetteTrackBar->Value;
+			int sigma = cropVigImage.cols * tabValue / 100;
+			vignetteImage = vignetteFilterOffset(&cropVigImage, sigma, vignetteCenterX, vignetteCenterY);
+			refreshPicBox(vignetteImage);
+		}
+	}
+
+	// Cropping
+
+	private: System::Void loadCrop_Click(System::Object^  sender, System::EventArgs^  e) {
+		cropSelected = true;
+		rgbPanel->Visible = false;
+		tempPanel->Visible = false;
+		contrastPanel->Visible = false;
+		exposurePanel->Visible = false;
+		luminancePanel->Visible = false;
+		hueSatPanel->Visible = false;
+		sharpeningPanel->Visible = false;
+		vignettePanel->Visible = false;
+		cropPanel->Visible = true;
+		pnlFiltering->Visible = false;
+		pnlShadowHighlights->Visible = false;
+
+		vignetteSelected = false;
+		cropImage = editedImage;
+		refreshPicBox(editedImage);
+		refreshHistBox(Histogram(&editedImage));
+	}
+
+	private: System::Void cropCancelButton_Click(System::Object^  sender, System::EventArgs^  e) {
+		//cropImage = editedImage;
+		cropSelected = false;
+		cropStarted = false;
+		cropPanel->Visible = false;
+		//refreshPicBox(editedImage);
+		//refreshHistBox(Histogram(&editedImage));
+	}
+
+	private: System::Void cropResetButton_Click(System::Object^  sender, System::EventArgs^  e) {
+	pictureBox1->Refresh();
+	cropStarted = false;
+	cropSelected = true;
+	refreshPicBox(cropImage);
+	refreshHistBox(Histogram(&cropImage));
+}
+	
+	private: System::Void cropApplyButton_Click(System::Object^  sender, System::EventArgs^  e) {
+	cropSelected = false;
+	cropStarted = false;
+	editedImage = croppedImage;
+	cropPanel->Visible = false;
+	refreshPicBox(editedImage);
+	refreshHistBox(Histogram(&editedImage));
+}
+
+	private: System::Void pictureBox1_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+	if (cropSelected && cropStarted) {
+
+		cropStarted = false;
+		// rectWidth = cropVigImage.cols * rectWidth/ 600 ;  // 600- width of the picture box
+		//rectHeight = cropVigImage.rows * rectHeight/ 500 ; // 400- height of the picture box
+		cv::Rect cropRectangle(rectSX, rectSY, rectWidth, rectHeight);
+		croppedImage = cropImage(cropRectangle);
+		pictureBox1->Refresh();
+		refreshPicBox(croppedImage);
+		refreshHistBox(Histogram(&croppedImage));
+
+		}
+	}
+
+	private: System::Void pictureBox1_MouseDown(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+	if (cropSelected) {
+
+		rectSX = e->X;
+		rectSY = e->Y;
+		cropStarted = true;
+	}
+}
+
+	private: System::Void pictureBox1_MouseMove(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+	if (cropSelected && cropStarted) {
+
+		//pictureBox1->Refresh();
+		System::Drawing::Pen^ myBrush = gcnew System::Drawing::Pen(System::Drawing::Color::Red);
+		System::Drawing::Graphics^ formGraphics;
+
+		formGraphics = pictureBox1->CreateGraphics();
+
+		System::IntPtr ptr(cropImage.ptr());
+		System::Drawing::Bitmap^ b = gcnew System::Drawing::Bitmap(cropImage.cols, cropImage.rows, cropImage.step, System::Drawing::Imaging::PixelFormat::Format24bppRgb, ptr);
+		formGraphics->DrawImage(b, 0, 0, cropImage.cols, cropImage.rows);
+
+		rectWidth = e->X - rectSX;
+		rectHeight = e->Y - rectSY;
+		formGraphics->DrawRectangle(myBrush, System::Drawing::Rectangle(rectSX, rectSY, rectWidth, rectHeight));
+
+		delete myBrush;
+		delete formGraphics;
+
+	}
+}
+
+	// Saving image
+
+	private: System::Void exportToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+		char  savePath[200];
+		SaveFileDialog ^ saveFileDialog1 = gcnew SaveFileDialog();
+		saveFileDialog1->Filter =
+			"JPEG Image|*.jpg|Bitmap Image|*.bmp|GIF Image|*.gif|PNG Image|*.png";
+		saveFileDialog1->Title = "Save an Image File";
+		saveFileDialog1->ShowDialog();
+
+		if (saveFileDialog1->FileName)
+		{
+			std::string filePath = msclr::interop::marshal_as<std::string>(saveFileDialog1->FileName);
+			sprintf(savePath, "%s", filePath.c_str());
+			cv::imwrite(savePath, editedImage);
+		}
+	}
+
+	// Noise Reduction
+
+	private: System::Void loadNoiseRed_Click(System::Object^  sender, System::EventArgs^  e) {
+		rgbPanel->Visible = false;
+		tempPanel->Visible = false;
+		contrastPanel->Visible = false;
+		exposurePanel->Visible = false;
+		luminancePanel->Visible = false;
+		hueSatPanel->Visible = false;
+		sharpeningPanel->Visible = false;
+		vignettePanel->Visible = false;
+		cropPanel->Visible = false;
+		pnlFiltering->Visible = true;
+		pnlShadowHighlights->Visible = false;
+		
+		vignetteSelected = false;
+		cropSelected = false;
+
+		refreshPicBox(editedImage);
+		refreshHistBox(Histogram(&editedImage));
+	}
+
+	private: System::Void cmboxNoiseReduction_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+		msclr::interop::marshal_context context;
+		filterType = context.marshal_as<std::string>(cmboxNoiseReduction->SelectedItem->ToString());
+	}
+
+	private: System::Void trkBarLumina_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		// Acquire track bar value
+		int trackBarValue = (trkBarLumina->Value);
+		trackBarValue = trackBarValue * 2 + 1;
+		// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage;
+		//colourTempAdjustment(&mainImage, trackBarValue);
+		lumaNoiseFiltering(&mainImage, trackBarValue);
+		btnLuminaApply->Enabled = true;
+	}
+
+	private: System::Void trkBarColor_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		// Acquire track bar value
+		int trackBarValue = (trkBarColor->Value);
+		trackBarValue = trackBarValue * 2 + 1;
+		// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage;
+		//colourTempAdjustment(&mainImage, trackBarValue);
+		colorNoiseFiltering(&mainImage, trackBarValue);
+		btnColorApply->Enabled = true;
+	}
+
+	private: System::Void btnLuminaApply_Click(System::Object^  sender, System::EventArgs^  e) {
+		editedImage = tempAdjusted;
+		btnLuminaApply->Enabled = false;
+	}
+
+	private: System::Void btnColorApply_Click(System::Object^  sender, System::EventArgs^  e) {
+		editedImage = tempAdjusted;
+		btnColorApply->Enabled = false;
+	}	
+
+	// Highlights and shadow recovery
+
+	private: System::Void loadShadHighlts_Click(System::Object^  sender, System::EventArgs^  e) {
+		rgbPanel->Visible = false;
+		tempPanel->Visible = false;
+		contrastPanel->Visible = false;
+		exposurePanel->Visible = false;
+		luminancePanel->Visible = false;
+		hueSatPanel->Visible = false;
+		sharpeningPanel->Visible = false;
+		vignettePanel->Visible = false;
+		cropPanel->Visible = false;
+		pnlFiltering->Visible = false;
+		pnlShadowHighlights->Visible = true;
+
+		cropSelected = false;
+		vignetteSelected = false;
+
+		refreshPicBox(editedImage);
+		refreshHistBox(Histogram(&editedImage));
+	}
+
+	// Highlights 
+
+	private: System::Void trkBarHighlights_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		int trackBarValue = (trkBarHighlights->Value);
+
+		// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage;
+		highlightsRecovery(&mainImage, trackBarValue);
+		btnHighLightsApply->Enabled = true;
+	}
+
+	private: System::Void btnHighLightsApply_Click(System::Object^  sender, System::EventArgs^  e) {
+		editedImage = tempAdjusted;
+		btnHighLightsApply->Enabled = false;
+	}
+
+	// Shadow recovery
+
+	private: System::Void trkBarShadow_Scroll(System::Object^  sender, System::EventArgs^  e) {
+		// Acquire track bar value
+		int trackBarValue = (trkBarShadow->Value);
+
+		// Initiate a Mat to save the cache.jpg image
+		cv::Mat mainImage;
+		mainImage = editedImage;
+		shadowRecovery(&mainImage, trackBarValue);
+		btnShadowApply->Enabled = true;
+	}
+
+	private: System::Void btnShadowApply_Click(System::Object^  sender, System::EventArgs^  e) {
+		editedImage = tempAdjusted;
+		btnShadowApply->Enabled = false;
+	}
+
+
+		//************************ Functions defined in opencv**************************************
+
+		// Display image
+		int displayImage(cv::Mat *mainImage, cv::String imageDes)
+			 {
+				 cv::Mat tempImage;
+				 tempImage = *mainImage;
+				 if (tempImage.empty())                      // Check for invalid input
+				 {
+					 return -1;
+				 }
+				 namedWindow(imageDes, cv::WINDOW_AUTOSIZE);		// Create a window for display.
+				 imshow(imageDes, tempImage);                // Show our image inside it.
+				 cv::waitKey(0);									// Wait for a keystroke in the window
+				 return 0;
+			 }
+
+		// Colour temperature adjustment function
+		int colourTempAdjustment(cv::Mat *mainImage, int tempValue)
+		{
+				int absTemp = abs(tempValue);
+				 cv::Mat resolvedImage[3];
+				 cv::Mat blueChannel, greenChannel, redChannel;
+				 split(*mainImage, resolvedImage);	// Splitting the BGR channels
+
+				// Create warmer image
+				// Done by increasing the red channel and decreasing the blue channel 
+				// and increasing saturation of the image in HSV colour space
+
+				// Create a cooler image
+				// Done by decreasing the red channel and increasing blue channel
+				// and decreasing the saturation of the image in the HSV colour image
+
+				// Spline interpolation 
+				 std::vector<double> X(5), Y(5), Z(5);
+				 X[0] = 0; X[1] = 64; X[2] = 128; X[3] = 192; X[4] = 255;
+
+				 Y[0] = 5 * absTemp;  Y[1] = 64 + (7 * absTemp); Y[2] = 128 + (8 * absTemp);
+				 Y[3] = 192 + (10 * absTemp); Y[4] = 255;
+
+				 Z[0] = 0; Z[1] = 64 - (5 * absTemp); Z[2] = 128 - (7 * absTemp);
+				 Z[3] = 192 - (8 * absTemp); Z[4] = 255 - (10 * absTemp);
+
+				 // Creating spline functions
+				 tk::spline incIntensity, decIntensity;
+				 incIntensity.set_points(X, Y);    
+				 decIntensity.set_points(X, Z);
+
+				 redChannel = resolvedImage[2]; //+ (10 * tempValue); 
+				 blueChannel = resolvedImage[0]; //- (10 * tempValue);
+				 greenChannel = resolvedImage[1];
+
+				 int width = redChannel.cols;
+				 int height = redChannel.rows;
+				 int nElements = width*height;
+
+				 // Calculating interpolated value for each matrix element
+				 uchar* p1 = redChannel.data;
+				 uchar* p2 = blueChannel.data;
+
+				 for (int i = 0; i < nElements; ++i)
+				 {
+					 if (tempValue >= 0)
+					 {
+						 p1[i] = (uchar)(incIntensity(p1[i]));
+						 p2[i] = (uchar)(decIntensity(p2[i]));
+					 }
+					 else
+					 {
+						 p1[i] = (uchar)(decIntensity(p1[i]));
+						 p2[i] = (uchar)(incIntensity(p2[i]));
+					 }
+				 }
+
+				 // Merging the BGR channels 
+				 std::vector < cv::Mat > arrayToMerge;
+				 arrayToMerge.push_back(blueChannel);
+				 arrayToMerge.push_back(greenChannel);
+				 arrayToMerge.push_back(redChannel);
+
+				 // Image with altered red abd blue channels
+				 cv::Mat bgrAdjusted;
+				 merge(arrayToMerge, bgrAdjusted);
+
+				 // Convert image to HSV colour space and splitting layers for saturation adjustment
+				 cv::Mat hsvImage;
+				 cv::Mat hsvResolved[3];
+				 cvtColor(bgrAdjusted, hsvImage, CV_BGR2HSV);
+				 split(hsvImage, hsvResolved);
+
+				 // Adjusting saturation
+				 cv::Mat hNew, sNew, vNew;
+				 hNew = hsvResolved[0];
+				 sNew = hsvResolved[1]; // +(10 * tempValue);
+				 vNew = hsvResolved[2];
+
+				 // Calculate interpolated value for saturation layer
+				 uchar* p3 = sNew.data;
+
+				 for (int i = 0; i < nElements; ++i)
+				 {
+					 if (tempValue >= 0)
+					 {
+						 p3[i] = (uchar)(incIntensity(p3[i]));
+					 }
+					 else
+					 {
+						 p3[i] = (uchar)(decIntensity(p3[i]));
+					 }	 
+				 }
+
+				 // Merging the HSV channels 
+				 std::vector < cv::Mat > arrayToMergeHSV;
+				 arrayToMergeHSV.push_back(hNew);
+				 arrayToMergeHSV.push_back(sNew);
+				 arrayToMergeHSV.push_back(vNew);
+
+				 // Converting the image back to BGR
+				 cv::Mat hsvAdjusted;			// Image with altered saturation channel
+				 merge(arrayToMergeHSV, hsvAdjusted);
+				 cvtColor(hsvAdjusted, tempAdjusted, CV_HSV2BGR);
+				 refreshPicBox(tempAdjusted);
+				 refreshHistBox(Histogram(&tempAdjusted));
+				 return 0;
+			 }
+		
+		// Auto white balance
+		int whiteBalance(cv::Mat *mainImage)
+		{
+			cv::Mat resolvedImage[3];				// Matrix for splitting BGR channels
+			cv::Mat grayImage;						// Convert to grayscale image
+			cvtColor(*mainImage, grayImage, CV_BGR2GRAY);
+			split(*mainImage, resolvedImage);	// Splitting the BGR channels
+
+			double meanGray, meanBlue, meanGreen, meanRed;	// Declare variables to store mean channel values
+			meanGray = mean(grayImage)[0];					// Mean grayscale intensity
+			meanBlue = mean(resolvedImage[0])[0];			// Mean blue intensity
+			meanGreen = mean(resolvedImage[1])[0];			// Mean green intensity
+			meanRed = mean(resolvedImage[2])[0];			// Mean red intensity
+
+			// Calculating each channel so that the mean is equal in all three
+			// Contains BGR channels with mean intensity equal to the mean grayscale intensity
+			cv::Mat equalizedImage[3];
+			equalizedImage[0] = resolvedImage[0] * meanGray / meanBlue;
+			equalizedImage[1] = resolvedImage[1] * meanGray / meanGreen;
+			equalizedImage[2] = resolvedImage[2] * meanGray / meanRed;
+
+			// Merging the BGR channels and obtaining the white balanced image
+			std::vector < cv::Mat > arrayToMerge;
+			arrayToMerge.push_back(equalizedImage[0]);
+			arrayToMerge.push_back(equalizedImage[1]);
+			arrayToMerge.push_back(equalizedImage[2]);
+
+			cv::Mat finalImage;
+			merge(arrayToMerge, finalImage);
+			tempAdjusted = finalImage;
+			refreshPicBox(tempAdjusted);
+			refreshHistBox(Histogram(&tempAdjusted));
+			return 0;
+		}
+
+		// Exposure Adjustment function
+		void Exposure(cv::Mat *mainImageEx, int tempValueExposure, int tempValueContrast)
+		{
+			int exposure = tempValueExposure - 50;
+			double ContrastNew = tempValueContrast / 50.0;						// Or divide by smaller no. to increase range
+			cv::Mat temp = *mainImageEx;
+			temp.convertTo(tempAdjusted, -1, ContrastNew, exposure);			//Linear Transform - per pixel
+																					//imshow("image", tempAdjusted);
+			refreshPicBox(tempAdjusted);										// Update picture displayed
+			refreshHistBox(Histogram(&tempAdjusted));
+		}
+
+		// Contrast adjustment function
+		void Contrast(cv::Mat *mainImageCon, int tempValueExposure, int tempValueContrast)
+		{
+			int exposure = tempValueExposure - 50;
+			double ContrastNew = tempValueContrast / 50.0;						// Or divide by smaller no. to increase range
+			cv::Mat temp = *mainImageCon;
+			temp.convertTo(tempAdjusted, -1, ContrastNew, exposure);			//Linear Transform - per pixel - contrast*im+brightness
+																					//			 imshow("image", tempAdjusted);
+			refreshPicBox(tempAdjusted);										// Update picture displayed
+			refreshHistBox(Histogram(&tempAdjusted));
+		}
+
+		// Luminance adjustment function
+		void Luminance(cv::Mat *mainImageLum, int tempValue)
+		{
+			cv::Mat img;
+			cvtColor(*mainImageLum, img, CV_BGR2YCrCb);		// Change the color image from BGR to YCrCb format
+
+			//Initialize
+			int luminosity = tempValue;						// Slider Value
+			//int luminosity = elem4 - 255;
+
+			// Loop for each pixel in Y plane
+			for (int y = 0; y<img.cols; y++)
+			{
+				for (int x = 0; x<img.rows; x++)
+				{
+					int cur1 = img.at<cv::Vec3b>(cv::Point(y, x))[0];			// Y-Luminosity Plane
+					cur1 += luminosity;											// Change 
+					if (cur1 < 0) cur1 = 0; else if (cur1 > 255) cur1 = 255;	// Check thresholds
+					img.at<cv::Vec3b>(cv::Point(y, x))[0] = cur1;				// Adjust pixel
+				}
+			}
+			cvtColor(img, tempAdjusted, CV_YCrCb2BGR);							// Back to BGR
+			refreshPicBox(tempAdjusted);										// Update picture displayed
+			refreshHistBox(Histogram(&tempAdjusted));
+		}
+
+		// Hue Adjustment
+		void Hue(cv::Mat *mainImageHue, int tempValueHue, int tempValueSaturation, int tempValueValue)
+		{
+			cv::Mat img;
+			cvtColor(*mainImageHue, img, CV_BGR2HSV);						//Convert from BGR to HSV
+
+			//Initialize
+			int hue = tempValueHue;											// Hue slider value
+
+			// Loop for each pixel in Hue plane
+			for (int y = 0; y<img.cols; y++)
+			{
+				for (int x = 0; x<img.rows; x++)
+				{
+					int cur1 = img.at<cv::Vec3b>(cv::Point(y, x))[0];			// Hue Plane
+					cur1 += hue;
+					if (cur1 < 0) cur1 = 0; else if (cur1 > 255) cur1 = 255;	// Check thresholds
+					img.at<cv::Vec3b>(cv::Point(y, x))[0] = cur1;				// Adjust pixel Hue
+				}
+			}
+			cvtColor(img, tempAdjusted, CV_HSV2BGR);							// Convert HSV to BGR
+			refreshPicBox(tempAdjusted);										// Update picture displayed
+			refreshHistBox(Histogram(&tempAdjusted));
+		}
+
+		// Saturation adjustment
+		void Saturation(cv::Mat *mainImageSat, int tempValueHue, int tempValueSaturation, int tempValueValue)
+		{
+			cv::Mat img;
+			cvtColor(*mainImageSat, img, CV_BGR2HSV);							//Convert from BGR to HSV
+			//Initialize
+			int saturation = tempValueSaturation;								// Saturation Slider value
+																				// Loop for each pixel in Saturation plane
+			for (int y = 0; y<img.cols; y++)
+			{
+				for (int x = 0; x<img.rows; x++)
+				{
+					int cur2 = img.at<cv::Vec3b>(cv::Point(y, x))[1];			// Saturation Plane
+					cur2 += saturation;
+					if (cur2 < 0) cur2 = 0; else if (cur2 > 255) cur2 = 255;	// Check thresholds
+					img.at<cv::Vec3b>(cv::Point(y, x))[1] = cur2;				// Adjust pixel Saturation
+				}
+			}
+			cvtColor(img, tempAdjusted, CV_HSV2BGR);							// Convert HSV to BGR
+																				//	imshow("image", tempAdjusted);									// Dispay adjusted image
+			refreshPicBox(tempAdjusted);										// Update picture displayed
+			refreshHistBox(Histogram(&tempAdjusted));
+		}
+
+		// Value Adjustment
+		void Value(cv::Mat *mainImageVal, int tempValueHue, int tempValueSaturation, int tempValueValue)
+		{
+			cv::Mat img;
+			cvtColor(*mainImageVal, img, CV_BGR2HSV);						//Convert from BGR to HSV
+			//Initialize
+			int value = tempValueValue;										// Value Slider Value
+																			// Loop for each pixel in Value plane
+			for (int y = 0; y<img.cols; y++)
+			{
+				for (int x = 0; x<img.rows; x++)
+				{
+					int cur3 = img.at<cv::Vec3b>(cv::Point(y, x))[2];			// Value Plane
+					cur3 += value;
+					if (cur3 < 0) cur3 = 0; else if (cur3 > 255) cur3 = 255;	// Check Threshholds
+					img.at<cv::Vec3b>(cv::Point(y, x))[2] = cur3;				// Adjust pixel Value 
+				}
+			}
+			cvtColor(img, tempAdjusted, CV_HSV2BGR);							// Convert HSV to BGR
+			refreshPicBox(tempAdjusted);										// Update Picture displayed
+			refreshHistBox(Histogram(&tempAdjusted));
+		}
+
+		// Histogram Drawing Funtion
+		cv::Mat Histogram(cv::Mat* editedImage) 
+		{
+			cv::Mat dst;
+			cvtColor(*editedImage, dst, cv::COLOR_BGR2GRAY);
+
+			/// Separate the image in 3 places ( B, G and R )
+			std::vector<cv::Mat> bgr_planes;
+			split(*editedImage, bgr_planes);
+
+			/// Establish the number of bins
+			int histSize = 254;
+			int ShadowHistSize = 2.55 * 25;
+			int HighlightHistSize = 2.55 * 25;
+
+			/// Set the ranges ( for B,G,R) )
+			float range[] = { 1, 255 };
+			const float* histRange = { range };
+
+			float ShadowRange[] = { 0, 2.55 * 25 };
+			const float* ShadowHistRange = { ShadowRange };
+
+			float HighlightRange[] = { 2.55 * 75, 255 };
+			const float* HighlightHistRange = { HighlightRange };
+
+			bool uniform = true; bool accumulate = false;
+
+			cv::Mat b_hist, g_hist, r_hist, hist, shadowHist, highlightHist;
+
+			/// Compute the histograms:
+			calcHist(&bgr_planes[0], 1, 0, cv::Mat(), b_hist, 1, &histSize, &histRange, uniform, accumulate);
+			calcHist(&bgr_planes[1], 1, 0, cv::Mat(), g_hist, 1, &histSize, &histRange, uniform, accumulate);
+			calcHist(&bgr_planes[2], 1, 0, cv::Mat(), r_hist, 1, &histSize, &histRange, uniform, accumulate);
+			calcHist(&dst, 1, 0, cv::Mat(), hist, 1, &histSize, &histRange, uniform, accumulate);
+			calcHist(&dst, 1, 0, cv::Mat(), shadowHist, 1, &ShadowHistSize, &ShadowHistRange, uniform, accumulate);
+			calcHist(&dst, 1, 0, cv::Mat(), highlightHist, 1, &HighlightHistSize, &HighlightHistRange, uniform, accumulate);
+
+			// Draw the histograms for B, G and R
+			int hist_w = 800; int hist_h = 300;
+			int bin_w = cvRound((double)hist_w / histSize);
+			int bin_Sw = cvRound((double)hist_w / ShadowHistSize);
+			int bin_Hw = cvRound((double)hist_w / HighlightHistSize);
+
+			cv::Mat histImage(hist_h, hist_w, CV_8UC3, cv::Scalar(200, 200, 200));
+			cv::Mat histnew(hist_h, hist_w, CV_8UC3, cv::Scalar(255, 255, 255));
+			cv::Mat ShadowHist(hist_h, hist_w, CV_8UC3, cv::Scalar(255, 255, 255));
+			cv::Mat HighlightHist(hist_h, hist_w, CV_8UC3, cv::Scalar(255, 255, 255));
+
+			/// Normalize the result to [ 0, histImage.rows ]
+			normalize(b_hist, b_hist, 0, histImage.rows, cv::NORM_MINMAX, -1, cv::Mat());
+			normalize(g_hist, g_hist, 0, histImage.rows, cv::NORM_MINMAX, -1, cv::Mat());
+			normalize(r_hist, r_hist, 0, histImage.rows, cv::NORM_MINMAX, -1, cv::Mat());
+			normalize(hist, hist, 0, histnew.rows, cv::NORM_MINMAX, -1, cv::Mat());
+			normalize(shadowHist, shadowHist, 0, ShadowHist.rows, cv::NORM_MINMAX, -1, cv::Mat());
+			normalize(highlightHist, highlightHist, 0, HighlightHist.rows, cv::NORM_MINMAX, -1, cv::Mat());
+
+			/// Draw for each channel
+			for (int i = 1; i < histSize; i++)
+			{
+				line(histImage, cv::Point(bin_w*(i - 1), hist_h - cvRound(b_hist.at<float>(i - 1))),
+					cv::Point(bin_w*(i), hist_h - cvRound(b_hist.at<float>(i))),
+					cv::Scalar(255, 0, 0), 2, cv::LINE_AA, 0);
+				line(histImage, cv::Point(bin_w*(i - 1), hist_h - cvRound(g_hist.at<float>(i - 1))),
+					cv::Point(bin_w*(i), hist_h - cvRound(g_hist.at<float>(i))),
+					cv::Scalar(80, 200, 80), 2, cv::LINE_AA, 0);
+				line(histImage, cv::Point(bin_w*(i - 1), hist_h - cvRound(r_hist.at<float>(i - 1))),
+					cv::Point(bin_w*(i), hist_h - cvRound(r_hist.at<float>(i))),
+					cv::Scalar(0, 0, 255), 2, cv::LINE_AA, 0);
+
+
+				line(histnew, cv::Point(bin_w*(i - 1), hist_h - cvRound(hist.at<float>(i - 1))),
+					cv::Point(bin_w*(i), hist_h - cvRound(hist.at<float>(i))),
+					cv::Scalar(0, 0, 0), 1, cv::LINE_AA, 0);
+			}
+
+			for (int i = 1; i < ShadowHistSize; i++)
+			{
+				line(ShadowHist, cv::Point(bin_Sw*(i - 1), hist_h - cvRound(shadowHist.at<float>(i - 1))),
+					cv::Point(bin_Sw*(i), hist_h - cvRound(shadowHist.at<float>(i))),
+					cv::Scalar(0, 0, 0), 1, cv::LINE_AA, 0);
+			}
+
+			for (int i = 1; i < HighlightHistSize; i++)
+			{
+				line(HighlightHist, cv::Point(bin_Sw*(i - 1), hist_h - cvRound(highlightHist.at<float>(i - 1))),
+					cv::Point(bin_Sw*(i), hist_h - cvRound(highlightHist.at<float>(i))),
+					cv::Scalar(0, 0, 0), 1, cv::LINE_AA, 0);
+			}
+			return histImage;
+		}
+
+		// Gaussian Sharpening
+		int GaussianSharpning(cv::Mat* mainImage, cv::Mat* editedImage, int Gvalue, int Wvalue) {
+
+			cv::Mat Gimage, Simage;
+			if (Gvalue == 0 || Wvalue == 0) { *mainImage = *editedImage; refreshPicBox(*mainImage); return 0; }
+			else {
+				GaussianBlur(*editedImage, Gimage, cv::Size(0, 0), Gvalue);
+				addWeighted(*editedImage, (Wvalue + 1), Gimage, -Wvalue, 0, Simage);
+				*mainImage = Simage;
+				tempAdjusted = Simage;
+				refreshPicBox(*mainImage);
+				return  0;
+			}
+		}
+
+		// Luminance Sharpening
+		int LuminanceSharpning(cv::Mat* mainImage, cv::Mat* editedImage, int Gvalue, int Wvalue) {
+			if (Gvalue == 0 || Wvalue == 0) { *mainImage = *editedImage; refreshPicBox(*mainImage); return 0; }
+			else {
+				cv::Mat dst, Limage;
+				cvtColor(*editedImage, dst, cv::COLOR_BGR2YUV);
+				/// Separate the image in 3 places ( B, G and R )
+				std::vector<cv::Mat> yuv_planes;
+				split(dst, yuv_planes);
+				cv::Mat Y0;
+				GaussianBlur(yuv_planes[0], Limage, cv::Size(0, 0), Gvalue);
+				addWeighted(yuv_planes[0], (Wvalue + 1), Limage, -Wvalue, 0, Y0);
+				yuv_planes[0] = Y0;
+				merge(yuv_planes, dst);
+				cvtColor(dst, Limage, cv::COLOR_YUV2BGR);
+				*mainImage = Limage;
+				tempAdjusted = Limage;
+				refreshPicBox(*mainImage);
+				return  0;
+			}
+		}
+
+		// Vignette
+		cv::Mat vignetteFilterOffset(cv::Mat *image, int sigma, int offset_x, int offset_y) {
+
+			cv::Mat imageTemp = *image;
+			std::vector<cv::Mat> channels(3), filtChannel;
+			cv::Mat filteredChannel[3];
+
+			int im_height = imageTemp.rows;
+			int im_width = imageTemp.cols;
+
+			int xLen = 0, yLen = 0;
+			bool xFlag = false, yFlag = false;
+			if ((im_height - offset_y) <  im_height / 2) 
+			{
+				yLen = offset_y;
+			}
+			else
+			{
+				yLen = im_height - offset_y;
+				yFlag = true;
+			}
+
+			if ((im_width - offset_x) <  im_width / 2) 
+			{
+				xLen = offset_x;
+			}
+			else
+			{
+				xLen = im_width - offset_x;
+				xFlag = true;
+			}
+
+			int cropX = 0, cropY = 0;
+			if (xFlag | yFlag) 
+			{
+				cropY = yFlag ? yLen - offset_y : 0;
+				cropX = xFlag ? xLen - offset_x : 0;
+			}
+
+			cv::Mat kernel_x = cv::getGaussianKernel(yLen * 2, sigma);
+			cv::Mat kernel_y = cv::getGaussianKernel(xLen * 2, sigma);
+			cv::Mat filter = kernel_x * kernel_y.t();
+			cv::Mat mask(imageTemp.rows, imageTemp.cols, CV_8UC1);
+
+			cv::Rect cropRect(cropX, cropY, imageTemp.cols, imageTemp.rows);
+
+			cv::Mat filterCropped = filter(cropRect);
+			cv::normalize(filterCropped, mask, 0, 255, cv::NORM_MINMAX, CV_8UC1);
+			split(imageTemp, channels);
+
+			filteredChannel[0] = channels[0].mul(mask) / 255;
+			filteredChannel[1] = channels[1].mul(mask) / 255;
+			filteredChannel[2] = channels[2].mul(mask) / 255;
+
+			filtChannel.push_back(filteredChannel[0]);
+			filtChannel.push_back(filteredChannel[1]);
+			filtChannel.push_back(filteredChannel[2]);
+
+			cv::Mat filteredImage(imageTemp.rows, imageTemp.cols, CV_8UC3);
+			cv::merge(filtChannel, filteredImage);
+			return filteredImage;
+
+		}
+
+		// Lumina noise filtering
+		/* this function luminance noise reduction is done. It will used different filtering methods for the luma noise reduction.
+		It is used the y component of the YCbCr color space for the enahncement. After enhancing the y
+		both the three components are merged and convet in to RGB color space*/
+
+		//@para: Mat * inputImage :- pointer varible for the input image
+		//	     Mat *outputImage :- pointer variable for the outout image
+		//@return value: integer
+
+		int lumaNoiseFiltering(cv::Mat *inputImage, int tempValue)
+		{
+			cv::Mat YCrCb;
+			cv::Mat channels[3];			//creating array of Mat variables for the 3 cmponents of the YCrCb
+
+			cvtColor(*inputImage, YCrCb, cv::COLOR_BGR2YCrCb, 3);
+			split(YCrCb, channels);
+
+			int parameter = tempValue;		//taking input values to select the filter type and its main parameter value for the process
+
+			if (filterType == "Box")
+			{
+				lumaNoiseBoxFilter(channels[0], channels[1], channels[2], parameter);
+			}
+			else if (filterType == "Gaussian")
+			{
+				lumaNoiseGaussianFilter(channels[0], channels[1], channels[2], parameter);
+			}
+			else if (filterType == "Median")
+			{
+				lumaNoiseMedianFilter(channels[0], channels[1], channels[2], parameter);
+			}
+			else if (filterType == "Bilateral")
+			{
+				lumaNoiseBilateralFilter(channels[0], channels[1], channels[2], parameter);
+			}
+			return 0;
+		}
+
+		//filter the Cr and Cb components of the YCrCb image using Box filter
+		int lumaNoiseBoxFilter(cv::Mat y, cv::Mat Cb, cv::Mat Cr, int i)
+		{
+			cv::Mat outputImage;
+			blur(y, y, cv::Size(i, i), cv::Point(-1, -1));
+
+			std::vector<cv::Mat> finalChannels = { y, Cb, Cr };
+
+			merge(finalChannels, outputImage);			// merge the filtered components and the luma part to creat the output image in YCrCb color space	
+			cvtColor(outputImage, tempAdjusted, cv::COLOR_YCrCb2BGR);
+			refreshPicBox(tempAdjusted);
+			refreshHistBox(Histogram(&tempAdjusted));
+			return 0;
+		}
+
+		//filter the Cr and Cb components of the YCrCb image using Gaussian filter
+		int lumaNoiseGaussianFilter(cv::Mat y, cv::Mat Cb, cv::Mat Cr, int i)
+		{
+
+			cv::Mat outputImage;
+			GaussianBlur(y, y, cv::Size(i, i), 0, 0, 1);
+
+			std::vector<cv::Mat> finalChannels = { y, Cb, Cr };
+
+			merge(finalChannels, outputImage);
+
+			cvtColor(outputImage, tempAdjusted, cv::COLOR_YCrCb2BGR);
+			refreshPicBox(tempAdjusted);
+			refreshHistBox(Histogram(&tempAdjusted));
+			return 0;
+		}
+
+		int lumaNoiseMedianFilter(cv::Mat y, cv::Mat Cb, cv::Mat Cr, int i)
+		{
+			cv::Mat outputImage;
+			medianBlur(y, y, i);
+
+			std::vector<cv::Mat> finalChannels = { y, Cb, Cr };
+			merge(finalChannels, outputImage);
+			cvtColor(outputImage, tempAdjusted, cv::COLOR_YCrCb2BGR);
+			refreshPicBox(tempAdjusted);
+			refreshHistBox(Histogram(&tempAdjusted));
+			return 0;
+		}
+
+		//filter the Cr and Cb components of the YCrCb image using Bilateral filter
+		int lumaNoiseBilateralFilter(cv::Mat y, cv::Mat Cb, cv::Mat Cr, int i)
+		{
+
+			cv::Mat outputImage;
+			bilateralFilter(y, y, i, i * 2, i / 2);
+
+			std::vector<cv::Mat> finalChannels = { y, Cb,Cr };
+			merge(finalChannels, outputImage);
+			cvtColor(outputImage, tempAdjusted, cv::COLOR_YCrCb2BGR);
+			refreshPicBox(tempAdjusted);
+			refreshHistBox(Histogram(&tempAdjusted));
+			return 0;
+		}
+
+		// Colour noise filtering
+
+		int colorNoiseFiltering(cv::Mat *inputImage, int tempValue)
+		{
+			cv::Mat YCrCb;
+			cv::Mat channels[3];			//creating array of Mat variables for the 3 cmponents of the YCrCb
+
+			cvtColor(*inputImage, YCrCb, cv::COLOR_BGR2YCrCb, 3);
+			split(YCrCb, channels);
+
+			int parameter = tempValue;		//taking input values to select the filter type and its main parameter value for the process
+
+			if (filterType == "Box")
+			{
+				colorNoiseBoxFilter(channels[0], channels[1], channels[2], parameter);
+			}
+			else if (filterType == "Gaussian")
+			{
+				colorNoiseGaussianFilter(channels[0], channels[1], channels[2], parameter);
+			}
+			else if (filterType == "Median")
+			{
+				colorNoiseMedianFilter(channels[0], channels[1], channels[2], parameter);
+			}
+			else if (filterType == "Bilateral")
+			{
+				colorNoiseBilateralFilter(channels[0], channels[1], channels[2], parameter);
+			}
+
+			return 0;
+
+		}
+
+		int colorNoiseBoxFilter(cv::Mat y, cv::Mat Cb, cv::Mat Cr, int i)
+		{
+			cv::Mat outputImage;
+			cv::blur(Cb, Cb, cv::Size(i, i), cv::Point(-1, -1));
+			cv::blur(Cr, Cr, cv::Size(i, i), cv::Point(-1, -1));
+
+			std::vector<cv::Mat> finalChannels = { y, Cb, Cr };
+
+			merge(finalChannels, outputImage);			// merge the filtered components and the luma part to creat the output image in YCrCb color space	
+			cvtColor(outputImage, tempAdjusted, cv::COLOR_YCrCb2BGR);
+			refreshPicBox(tempAdjusted);
+			refreshHistBox(Histogram(&tempAdjusted));
+			return 0;
+		}
+
+		int colorNoiseGaussianFilter(cv::Mat y, cv::Mat Cb, cv::Mat Cr, int i)
+		{
+
+			cv::Mat outputImage;
+			cv::GaussianBlur(Cb, Cb, cv::Size(i, i), 0, 0, 1);
+			cv::GaussianBlur(Cr, Cr, cv::Size(i, i), 0, 0, 1);
+
+
+			std::vector<cv::Mat> finalChannels = { y, Cb, Cr };
+
+			merge(finalChannels, outputImage);
+
+			cvtColor(outputImage, tempAdjusted, cv::COLOR_YCrCb2BGR);
+			refreshPicBox(tempAdjusted);
+			refreshHistBox(Histogram(&tempAdjusted));
+			return 0;
+		}
+
+		//filter the Cr and Cb components of the YCrCb image using Median filter
+		int colorNoiseMedianFilter(cv::Mat y, cv::Mat Cb, cv::Mat Cr, int i)
+		{
+			cv::Mat outputImage;
+			cv::medianBlur(Cb, Cb, i);
+			cv::medianBlur(Cr, Cr, i);
+
+			std::vector<cv::Mat> finalChannels = { y, Cb, Cr };
+			merge(finalChannels, outputImage);
+			cvtColor(outputImage, tempAdjusted, cv::COLOR_YCrCb2BGR);
+			refreshPicBox(tempAdjusted);
+			refreshHistBox(Histogram(&tempAdjusted));
+			return 0;
+		}
+
+		//filter the Cr and Cb components of the YCrCb image using Bilateral filter
+		int colorNoiseBilateralFilter(cv::Mat y, cv::Mat Cb, cv::Mat Cr, int i)
+		{
+			cv::Mat outputImage;
+			cv::bilateralFilter(Cb, Cb, i, i * 2, i / 2);
+			cv::bilateralFilter(Cr, Cr, i, i * 2, i / 2);
+
+			std::vector<cv::Mat> finalChannels = { y, Cb, Cr };
+			merge(finalChannels, outputImage);
+			cvtColor(outputImage, tempAdjusted, cv::COLOR_YCrCb2BGR);
+			refreshPicBox(tempAdjusted);
+			refreshHistBox(Histogram(&tempAdjusted));
+			return 0;
+		}
+
+		// Highlights and recovery
+
+		// Shadow recovery
+		int shadowRecovery(cv::Mat * image, int gamma)
+		{
+			cv::Mat im = *image;
+			int x, y;
+
+			cv::Mat redChan, greenChan, blueChan;
+			cv::Mat edited2[3];
+			split(*image, edited2);
+			redChan = edited2[2];
+			greenChan = edited2[1];
+			blueChan = edited2[0];
+
+			double gammaUnder = 0;
+			double gammaUpper = 0;
+
+			gammaUnder = 1 + 0.03*abs(gamma);				//define the appropriate gamma values for the shadow recovery
+			gammaUpper = 1 - 0.006*abs(gamma);
+
+			for (x = 0; x < im.rows; x++) {						// check the pixel values of the image change the value if the pixel values are below the 90
+				for (y = 0; y < im.cols; y++) {
+
+					int blue = blueChan.at<uchar>(x, y);
+					int green = greenChan.at<uchar>(x, y);
+					int red = redChan.at<uchar>(x, y);
+
+					//blue value
+					if (blue < 90 && gamma >0)					//changing the RGB values seperately
+					{
+						blue = (int)90 * pow(((blue) / (double)90), gammaUpper);
+					}
+					else if (blue < 90 && gamma <0)
+					{
+						blue = (int)90 * pow(((blue) / (double)90), gammaUnder);
+					}
+					//green value
+					if (green < 90 && gamma >0)
+					{
+						green = (int)90 * pow(((green) / (double)90), gammaUpper);
+
+					}
+					else if (green < 90 && gamma <0)
+					{
+						green = (int)90 * pow(((green) / (double)90), gammaUnder);
+
+					}
+					//red value
+					if (red < 90 && gamma >0)
+					{
+						red = (int)90 * pow(((red) / (double)90), gammaUpper);
+					}
+					else if (red < 90 && gamma <0)
+					{
+						red = (int)90 * pow(((red) / (double)90), gammaUnder);
+					}
+
+					//im.at<cv::Vec3b>(x, y) = cv::Vec3b(blue, green, red);
+					blueChan.at<uchar>(x, y) = blue;
+					greenChan.at<uchar>(x, y) = green;
+					redChan.at<uchar>(x, y) = red;
+				}
+			}
+			std::vector<cv::Mat> finalChannels = { blueChan, greenChan, redChan };
+			merge(finalChannels, tempAdjusted);
+
+			refreshPicBox(tempAdjusted);
+			refreshHistBox(Histogram(&tempAdjusted));
+			return 0;
+		}
+
+		//Highlights
+		int highlightsRecovery(cv::Mat * image, int gamma)
+		{
+			cv::Mat im = *image;
+
+			int x, y;
+
+			cv::Mat redChan, greenChan, blueChan;
+			cv::Mat edited2[3];
+			split(*image, edited2);
+			redChan = edited2[2];
+			greenChan = edited2[1];
+			blueChan = edited2[0];
+
+			double gammaUnder = 0;
+			double gammaUpper = 0;
+
+			gammaUpper = 1 + 0.03*abs(gamma);				//define the appropriate gamma values for the shadow recovery
+			gammaUnder = 1 - 0.006*abs(gamma);
+
+
+			for (x = 0; x < im.rows; x++) {						// check the pixel values of the image change the value if the pixel values are below the 90
+				for (y = 0; y < im.cols; y++) {
+					/*cv::Vec3b intensity = im.at<cv::Vec3b>(x, y);
+					uchar blue = intensity.val[0];				//obtain the RGB values seperately
+					uchar green = intensity.val[1];
+					uchar red = intensity.val[2]; */
+
+					int blue = blueChan.at<uchar>(x, y);
+					int green = greenChan.at<uchar>(x, y);
+					int red = redChan.at<uchar>(x, y);
+
+					//blue value
+					if (blue > 153 && gamma >0)					//changing the RGB values seperately
+					{
+						blue = 255 - (int)102 * pow(((255 - blue) / (double)102), gammaUpper);
+					}
+					else if (blue > 153 && gamma <0)
+					{
+						blue = 255 - (int)102 * pow(((255 - blue) / (double)102), gammaUnder);
+					}
+					//green value
+					if (green > 153 && gamma >0)
+					{
+						green = 255 - (int)102 * pow(((255 - green) / (double)102), gammaUpper);
+					}
+					else if (green > 153 && gamma <0)
+					{
+						green = 255 - (int)102 * pow(((255 - green) / (double)102), gammaUnder);
+					}
+					//red value
+					if (red > 153 && gamma >0)
+					{
+						red = 255 - (int)102 * pow(((255 - red) / (double)102), gammaUpper);
+					}
+					else if (red > 153 && gamma <0)
+					{
+						red = 255 - (int)102 * pow(((255 - red) / (double)102), gammaUnder);
+					}
+
+					//im.at<cv::Vec3b>(x, y) = cv::Vec3b(blue, green, red);
+					blueChan.at<uchar>(x, y) = blue;
+					greenChan.at<uchar>(x, y) = green;
+					redChan.at<uchar>(x, y) = red;
+
+				}
+
+			}
+			std::vector<cv::Mat> finalChannels = { blueChan, greenChan, redChan };
+			merge(finalChannels, tempAdjusted);
+
+			refreshPicBox(tempAdjusted);
+			refreshHistBox(Histogram(&tempAdjusted));
+			return 0;
+		}
+
+		int refreshPicBox(cv::Mat displayImage)
+		{
+			// pictureBox1->Refresh();
+			System::Drawing::Graphics^ graphics = pictureBox1->CreateGraphics();
+			//graphics->Clear(System::Drawing::Color::White);
+			System::IntPtr ptr(displayImage.ptr());
+			try {
+				System::Drawing::Bitmap^ b = gcnew System::Drawing::Bitmap(displayImage.cols, displayImage.rows, displayImage.step, System::Drawing::Imaging::PixelFormat::Format24bppRgb, ptr);
+				pictureBox1->Image = b;
+			}
+			catch (System::ArgumentException^ e) {
+				if (!displayImage.empty()) {
+					System::Drawing::Bitmap^ b = gcnew System::Drawing::Bitmap(displayImage.cols, displayImage.rows, displayImage.step, System::Drawing::Imaging::PixelFormat::Format24bppRgb, ptr);
+					pictureBox1->Image = b;
+				}
+			}
+			return 0;
+		}
+
+		int refreshHistBox(cv::Mat displayImage)
+		{
+			System::Drawing::Graphics^ graphics = RGBHist->CreateGraphics();
+			System::IntPtr ptr(displayImage.ptr());
+			System::Drawing::Bitmap^ b = gcnew System::Drawing::Bitmap(displayImage.cols, displayImage.rows, displayImage.step, System::Drawing::Imaging::PixelFormat::Format24bppRgb, ptr);
+			System::Drawing::RectangleF rect(0, 0, RGBHist->Width, RGBHist->Height);
+			graphics->DrawImage(b, rect);
+			return 0;
+		}
+
+
+};
+}
